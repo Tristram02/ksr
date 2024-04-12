@@ -1,3 +1,5 @@
+import enums.CountriesNames;
+
 import java.io.*;
 import java.util.*;
 
@@ -49,10 +51,13 @@ public class FilesExtractor {
                     }
                 } else if (line.contains("</REUTERS>")) {
                     if (isAllowedCountry) {
-                        saveArticleToFile(article.toString(),  outputDirPath + "\\" +  fileName.substring(0, fileName.lastIndexOf("."))  + "_article_" + articleCount + ".txt");
+                        saveArticleToFile(article.toString(), outputDirPath + "\\" + fileName.substring(0, fileName.lastIndexOf(".")) + "_article_" + articleCount + ".txt");
                         articleCount++;
                         System.out.println(article);
                     }
+                    article.setLength(0);
+                    isAllowedCountry = false;
+                }else if (line.contains("<TEXT ")) {
                     article.setLength(0);
                     isAllowedCountry = false;
                 } else if (line.contains("</BODY>")) {
