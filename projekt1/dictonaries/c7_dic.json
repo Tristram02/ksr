@@ -1,0 +1,60 @@
+{
+  "usa": [
+    "New York City",
+    "Los Angeles",
+    "Chicago",
+    "Washington DC",
+    "Washington",
+    "San Francisco",
+    "Boston",
+    "Miami",
+    "New York",
+    "Dallas"
+  ],
+  "uk": [
+    "London",
+    "Manchester",
+    "Birmingham",
+    "Liverpool",
+    "Glasgow",
+    "Edinburgh",
+    "Belfast"
+  ],
+  "west-germany": [
+    "Berlin",
+    "Munich",
+    "Hamburg",
+    "Cologne",
+    "Frankfurt",
+    "Stuttgart",
+    "Düsseldorf"
+  ],
+  "france": [
+    "Paris",
+    "Marseille",
+    "Lyon",
+    "Toulouse",
+    "Nice",
+    "Bordeaux",
+    "Strasbourg",
+    "Cannes"
+  ],
+  "canada": [
+    "Toronto",
+    "Montreal",
+    "Vancouver",
+    "Calgary",
+    "Ottawa",
+    "Edmonton",
+    "Quebec City"
+  ],
+  "japan": [
+    "Tokyo",
+    "Osaka",
+    "Kyoto",
+    "Yokohama",
+    "Nagoya",
+    "Hiroshima",
+    "Sapporo"
+  ]
+}

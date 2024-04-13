@@ -1,0 +1,74 @@
+{
+  "usa": [
+    "Republican Party",
+    "Wall Street",
+    "Democratic Party",
+    "Exxon",
+    "Apple",
+    "Congress",
+    "General Motors",
+    "Microsoft",
+    "Amazon",
+    "Facebook"
+  ],
+  "uk": [
+    "Conservative Party",
+    "House of Commons",
+    "House of Lords",
+    "Labour Party",
+    "British Petroleum",
+    "BP",
+    "Royal Mail",
+    "RAF",
+    "Barclays",
+    "HSBC"
+  ],
+  "west-germany": [
+    "Christian Democratic Union",
+    "CDU",
+    "Social Democratic Party of Germany",
+    "Siemens",
+    "Deutsche Bank",
+    "Volkswagen Group",
+    "BASF",
+    "Allianz",
+    "BMW",
+    "Daimler"
+  ],
+  "france": [
+    "Rally for the Republic",
+    "RPR",
+    "Renault",
+    "AXA",
+    "Socialist Party",
+    "Total",
+    "BNP Paribas",
+    "Air France",
+    "L'Oreal",
+    "Danone"
+  ],
+  "canada": [
+    "Progressive Conservative Party",
+    "Liberal Party",
+    "Royal Bank of Canada",
+    "Air Canada",
+    "Air Force",
+    "Bank of Montreal",
+    "Canadian National Railway",
+    "Bell Canada",
+    "Manulife Financial",
+    "Bombardier"
+  ],
+  "japan": [
+    "Mitsubishi",
+    "Liberal Democratic Party",
+    "LDP",
+    "Keidanren",
+    "NTT",
+    "Toyota",
+    "National Diet",
+    "Honda",
+    "Sony",
+    "Nintendo"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "usa": [
+    "US Dollar",
+    "United States Dollar",
+    "dlrs"
+  ],
+  "uk": [
+    "Pound",
+    "Pound Sterling"
+  ],
+  "west-germany": [
+    "Mark"
+  ],
+  "france": [
+    "Franc"
+  ],
+  "canada": [
+    "Canadian Dollar"
+  ],
+  "japan": [
+    "Yen"
+  ]
+}

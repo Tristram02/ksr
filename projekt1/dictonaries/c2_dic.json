@@ -1,0 +1,74 @@
+{
+  "usa": [
+    "Grand Canyon",
+    "Mississippi River",
+    "Yellowstone",
+    "Great Lakes",
+    "Niagara Falls",
+    "Yosemite National Park",
+    "Rocky Mountains",
+    "Death Valley",
+    "Everglades National Park",
+    "Mount Rushmore"
+  ],
+  "uk": [
+    "Thames",
+    "Loch Ness",
+    "Ben Nevis",
+    "Stonehenge",
+    "Lake District",
+    "Edinburgh Castle",
+    "Giant's Causeway",
+    "Hadrian's Wall",
+    "Snowdonia National Park",
+    "The Cotswolds"
+  ],
+  "west-germany": [
+    "Black Forest",
+    "Bavaria",
+    "Neuschwanstein Castle",
+    "Cologne Cathedral",
+    "Rhine Valley",
+    "Heidelberg Castle",
+    "Zugspitze",
+    "Saxon Switzerland National Park",
+    "Berchtesgaden National Park",
+    "Lüneburg Heath"
+  ],
+  "france": [
+    "Provence",
+    "Riviera",
+    "Normandy",
+    "Mont Blanc",
+    "Rhone",
+    "Eiffel Tower",
+    "Versailles Palace",
+    "Château de Chambord",
+    "Loire Valley",
+    "French Alps"
+  ],
+  "canada": [
+    "Great Bear Lake",
+    "British Columbia",
+    "Quebec",
+    "Banff National Park",
+    "Jasper National Park",
+    "Niagara-on-the-Lake",
+    "Prince Edward Island",
+    "Whistler",
+    "Gros Morne National Park",
+    "Bay of Fundy"
+  ],
+  "japan": [
+    "Mount Fuji",
+    "Hokkaido",
+    "Okinawa",
+    "Kyoto",
+    "Tokyo",
+    "Hiroshima Peace Memorial",
+    "Nara",
+    "Nikko",
+    "Kamakura",
+    "Ise Grand Shrine"
+  ]
+}

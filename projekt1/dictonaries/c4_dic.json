@@ -1,0 +1,74 @@
+{
+  "usa": [
+    "Statue of Liberty",
+    "Hollywood Walk of Fame",
+    "Sunset Boulevard",
+    "Empire State Building",
+    "Universal Studios",
+    "Times Square",
+    "Mount Rushmore",
+    "Golden Gate Bridge",
+    "Kennedy Space Center",
+    "Yellowstone"
+  ],
+  "uk": [
+    "Tower of London",
+    "British Museum",
+    "Blackpool Tower",
+    "Stonehenge",
+    "Tower Bridge",
+    "National Museum Cardiff",
+    "Science Museum",
+    "Buckingham Palace",
+    "Big Ben",
+    "London Eye"
+  ],
+  "west-germany": [
+    "Cologne Cathedral",
+    "Neuschwanstein Castle",
+    "Brandenburg Gate",
+    "Heidelberg Castle",
+    "Miniatur Wunderland",
+    "Europa-Park",
+    "Berlin Wall",
+    "Museum Island",
+    "Dachau Concentration Camp Memorial Site",
+    "Romantic Rhine"
+  ],
+  "france": [
+    "Eiffel",
+    "Louvre",
+    "Palace of Versailles",
+    "Mont Saint-Michel",
+    "Côte d'Azur",
+    "Musée d'Orsay",
+    "Loire Valley Châteaux",
+    "Notre-Dame",
+    "Puy de Dôme",
+    "Chamonix-Mont-Blanc"
+  ],
+  "canada": [
+    "Niagara Falls",
+    "Banff National Park",
+    "CN Tower",
+    "Old Quebec",
+    "Whistler",
+    "Parliament Hill",
+    "Butchart Gardens",
+    "Polar Bears of Churchill",
+    "Capilano Suspension Bridge",
+    "Royal Ontario Museum"
+  ],
+  "japan": [
+    "Mount Fuji",
+    "Imperial Tokyo",
+    "Hiroshima",
+    "Kyoto",
+    "Itsukushima",
+    "Nara",
+    "Osaka Castle",
+    "Tokyo Disneyland",
+    "Tokyo Skytree",
+    "Fushimi Inari-taisha"
+  ]
+}

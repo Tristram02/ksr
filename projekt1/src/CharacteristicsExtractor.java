@@ -1,9 +1,13 @@
 import enums.C1_9_dic;
 import enums.c10_dic;
 
+import org.json.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,15 +69,15 @@ public class CharacteristicsExtractor {
 
             Integer c1 = extractC1(filteredArticleBody.toString(), C1_9_dic.values());
 
-            Integer c2 = extractLicznosc(filteredArticleBody.toString(), "c2_dic.txt");
+            Integer c2 = extractLicznosc(filteredArticleBody.toString(), "c2_dic.json");
 
-            Integer c3 = extractLicznosc(filteredArticleBody.toString(), "c3_dic.txt");
+            Integer c3 = extractLicznosc(filteredArticleBody.toString(), "c3_dic.json");
 
-            Double c4 = extractCzestosc(filteredArticleBody.toString(), "c4_dic.txt", (int) numberOfWordsInArticle);
+            Double c4 = extractCzestosc(filteredArticleBody.toString(), "c4_dic.json", (int) numberOfWordsInArticle);
 
-            Integer c5 = extractLicznosc(filteredArticleBody.toString(), "c5_dic.txt");
+            Integer c5 = extractLicznosc(filteredArticleBody.toString(), "c5_dic.json");
 
-            Double c6 = extractCzestosc(filteredArticleBody.toString(), "c6_dic.txt", (int) numberOfWordsInArticle);
+            Double c6 = extractCzestosc(filteredArticleBody.toString(), "c6_dic.json", (int) numberOfWordsInArticle);
 
             String c7 = extractC7(articleDateline);
 
@@ -98,21 +102,30 @@ public class CharacteristicsExtractor {
     private Integer extractLicznosc(String articleBody, String dictonaryFileName) {
         Map<String, Integer> counts = new HashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\dictonaries\\" + dictonaryFileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (articleBody.contains(line)) {
-                    String regex = "\\b" + Pattern.quote(line) + "\\b";
-                    int count = (articleBody.split(regex, -1).length) - 1;
-                    counts.put(line, count);
-                } else {
-                    counts.put(line, 0);
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/" + dictonaryFileName)));
+            JSONObject jsonObject = new JSONObject(content);
+
+            Iterator<String> keys = jsonObject.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONArray array = jsonObject.getJSONArray(key);
+
+                for(int i = 0; i < array.length(); i++){
+                    String value = array.getString(i);
+                    if (articleBody.contains(value)) {
+                        String regex = "\\b" + Pattern.quote(value) + "\\b";
+                        int count = (articleBody.split(regex, -1).length) - 1;
+                        counts.put(value, count);
+                    } else {
+                        counts.put(value, 0);
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return counts.values().stream()
                 .max(Integer::compare)
@@ -121,29 +134,38 @@ public class CharacteristicsExtractor {
 
 
     private Double extractCzestosc(String articleBody, String dictonaryFileName, Integer wordsInArticleCount) {
-
         Map<String, Double> counts = new HashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\dictonaries\\" + dictonaryFileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (articleBody.contains(line)) {
-                    String regex = "\\b" + Pattern.quote(line) + "\\b";
-                    int count = (articleBody.split(regex, -1).length) - 1;
-                    counts.put(line, count / (double) wordsInArticleCount);
-                } else {
-                    counts.put(line, 0.0);
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/" + dictonaryFileName)));
+            JSONObject jsonObject = new JSONObject(content);
+
+            Iterator<String> keys = jsonObject.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONArray array = jsonObject.getJSONArray(key);
+
+                for(int i = 0; i < array.length(); i++){
+                    String value = array.getString(i);
+                    if (articleBody.contains(value)) {
+                        String regex = "\\b" + Pattern.quote(value) + "\\b";
+                        int count = (articleBody.split(regex, -1).length) - 1;
+                        counts.put(value, count / (double) wordsInArticleCount);
+                    } else {
+                        counts.put(value, 0.0);
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
         return counts.values().stream()
                 .max(Double::compare)
                 .orElse(0.0);
     }
+
 
     private StringBuilder filterStopList(StringBuilder text) {
         StringBuilder filteredText = new StringBuilder(text.toString());
@@ -189,12 +211,21 @@ public class CharacteristicsExtractor {
     }
 
     private String extractC7(String articleDateline) {
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/c7_dic.json")));
+            JSONObject jsonObject = new JSONObject(content);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\dictonaries\\c7_dic.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (articleDateline.toLowerCase().contains(line.toLowerCase())) {
-                    return line;
+            Iterator<String> keys = jsonObject.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONArray array = jsonObject.getJSONArray(key);
+
+                for(int i = 0; i < array.length(); i++){
+                    String value = array.getString(i);
+                    if (articleDateline.toLowerCase().contains(value.toLowerCase())) {
+                        return value;
+                    }
                 }
             }
         } catch (IOException e) {
@@ -204,11 +235,21 @@ public class CharacteristicsExtractor {
     }
 
     private String extractC8(String articleDateline) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\dictonaries\\c8_dic.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (articleDateline.toLowerCase().contains(line.toLowerCase())) {
-                    return line;
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/c8_dic.json")));
+            JSONObject jsonObject = new JSONObject(content);
+
+            Iterator<String> keys = jsonObject.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                JSONArray array = jsonObject.getJSONArray(key);
+
+                for(int i = 0; i < array.length(); i++){
+                    String value = array.getString(i);
+                    if (articleDateline.toLowerCase().contains(value.toLowerCase())) {
+                        return value;
+                    }
                 }
             }
         } catch (IOException e) {
@@ -216,6 +257,7 @@ public class CharacteristicsExtractor {
         }
         return "";
     }
+
 
     private Boolean extractC9(String articleBody, C1_9_dic[] c9_dictonary) {
         for (C1_9_dic c9 : c9_dictonary) {

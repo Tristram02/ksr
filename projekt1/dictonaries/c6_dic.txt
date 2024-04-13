@@ -1,8 +1,0 @@
-Yen
-Pound
-Pound Sterling
-US Dollar
-United States Dollar
-Canadian Dollar
-Franc
-Mark
