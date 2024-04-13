@@ -85,15 +85,7 @@ public class FilesExtractor {
     }
 
     private void appendArticleContent(StringBuilder article, String line) {
-        if (line.contains("TITLE>")) {
-            if(line.contains("</TITLE>") && line.contains("<TITLE>")){
-                article.append(line, line.indexOf("<TITLE>") + 7, line.lastIndexOf("</TITLE>")).append("\n");
-            } else if(line.contains("<TITLE>")){
-                article.append(line.substring(line.indexOf("<TITLE>") + 7)).append("\n");
-            } else if (line.contains("</TITLE>")) {
-                article.append(line.substring(line.lastIndexOf("</TITLE>") + 8)).append("\n");
-            }
-        } else if (line.contains("DATELINE>")) {
+        if (line.contains("DATELINE>")) {
             if(line.contains("</DATELINE>") && line.contains("<DATELINE>")){
                 article.append(line, line.indexOf("<DATELINE>") + 10, line.lastIndexOf("</DATELINE>")).append("\n");
                 article.append(line.substring(line.indexOf("<BODY>") + 6)).append("\n");
@@ -109,7 +101,7 @@ public class FilesExtractor {
     }
 
     private boolean containsTags(String line) {
-        return line.contains("TITLE>") || line.contains("DATELINE>") || line.contains("<BODY>");
+        return line.contains("DATELINE>") || line.contains("<BODY>");
     }
 
     private static boolean isAllowedCountry(String placesTagContent, EnumSet<CountriesNames> allowedCountries) {

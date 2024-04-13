@@ -1,6 +1,6 @@
 package enums;
 
-public enum C9_dic {
+public enum C1_9_dic {
 //    UK, United Kingdom, France, Canada, Japan, USA, United States of
 //    America, West Germany, FRG, Federal Republic of Germany
 
@@ -17,7 +17,7 @@ public enum C9_dic {
 
     private final String displayName;
 
-    C9_dic(String displayName) {
+    C1_9_dic(String displayName) {
         this.displayName = displayName;
     }
 
