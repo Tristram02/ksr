@@ -12,9 +12,9 @@ public class Main {
         CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor("E:\\KSR\\projekt1\\projekt1\\src\\parsed_files");
         articles = characteristicsExtractor.extractCharacteristicsForAllArticles();
 
-        List<Article> experiment = new ArrayList<>(articles.subList(0, 100));
+        List<Article> experiment = new ArrayList<>(articles.subList(0, 500));
 
-        int splitIndex = (int) (experiment.size() * 0.2);
+        int splitIndex = (int) (experiment.size() * 0.4);
         List<Article> trainingSet = new ArrayList<>(experiment.subList(0, splitIndex));
         List<Article> testingSet = new ArrayList<>(experiment.subList(splitIndex, experiment.size()));
         int k = 5;

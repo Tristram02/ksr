@@ -23,8 +23,13 @@ public class FeaturesVector extends ArrayList<Feature> {
         return -1;
     }
 
-    public void normalize(FeaturesVector X) {
-        
+    public FeaturesVector normalize(Integer numberOfWords) {
+        for (Feature x : this) {
+            if (x.isNumber() && x.getNumber() > 1) {
+                x.setNumber(x.getNumber() / (numberOfWords * 0.1));
+            }
+        }
+        return this;
     }
 
 }

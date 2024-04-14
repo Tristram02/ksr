@@ -27,4 +27,11 @@ public enum CountriesNames {
         }
         throw new IllegalArgumentException("No enum constant " + CountriesNames.class.getCanonicalName() + "." + displayName);
     }
+
+    public final static Double WeightUSA = 5.0;
+    public final static Double WeightUK = 0.5;
+    public final static Double WeightFRANCE = 0.5;
+    public final static Double WeightJAPAN = 0.5;
+    public final static Double WeightWEST_GERMANY = 0.5;
+    public final static Double WeightCANADA = 0.8;
 }

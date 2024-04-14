@@ -25,7 +25,9 @@ public class KNN {
             Map<Article, Double> objects = new HashMap<>();
 
             for (Article trainingArticle : this.trainingSet) {
-                objects.put(trainingArticle, testingArticle.features.calculateDistances(trainingArticle.features, this.metric));
+                objects.put(trainingArticle, countryWeight(trainingArticle) * testingArticle.features.normalize(testingArticle.getNumberOfWords()).calculateDistances(
+                        trainingArticle.features.normalize(trainingArticle.numberOfWords),
+                        this.metric));
             }
 
             List<Map.Entry<Article, Double>> objectsList = new ArrayList<>(objects.entrySet());
@@ -60,5 +62,22 @@ public class KNN {
 
     }
 
-
+    private Double countryWeight(Article a) {
+        switch (CountriesNames.fromDisplayName(a.country)) {
+            case CountriesNames.USA:
+                return CountriesNames.WeightUSA;
+            case CountriesNames.UK:
+                return CountriesNames.WeightUK;
+            case CountriesNames.FRANCE:
+                return CountriesNames.WeightFRANCE;
+            case CountriesNames.CANADA:
+                return CountriesNames.WeightCANADA;
+            case CountriesNames.JAPAN:
+                return CountriesNames.WeightJAPAN;
+            case CountriesNames.WEST_GERMANY:
+                return CountriesNames.WeightWEST_GERMANY;
+            default:
+                return 1.0;
+        }
+    }
 }
