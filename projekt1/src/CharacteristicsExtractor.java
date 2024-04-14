@@ -5,10 +5,7 @@ import org.json.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,36 +22,44 @@ public class CharacteristicsExtractor {
         return articlesDirectoryPath;
     }
 
-    public void extractCharacteristicsForAllArticles() {
+    public List<Article> extractCharacteristicsForAllArticles() {
+        List<Article> articles = new ArrayList<>();
+        System.out.println(getArticlesDirectoryPath());
         File directory = new File(getArticlesDirectoryPath());
         if (!directory.isDirectory()) {
             System.out.println("Specified path is not a directory.");
-            return;
+            return null;
         }
 
         File[] files = directory.listFiles();
         if (files == null || files.length == 0) {
             System.out.println("No files found in the directory.");
-            return;
+            return null;
         }
 
         for (File file : files) {
             if (file.isFile()) {
-                extractCharacteristicsFromArticle(file.getAbsolutePath(), file.getName());
+                articles.add(extractCharacteristicsFromArticle(file.getAbsolutePath(), file.getName()));
             }
         }
         System.out.println("Characteristics extracted and saved successfully.");
+        return articles;
     }
 
-    private void extractCharacteristicsFromArticle(String absolutePath, String filename) {
+    private Article extractCharacteristicsFromArticle(String absolutePath, String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(absolutePath))) {
+            Article article = new Article();
+            FeaturesVector features = new FeaturesVector();
             String line;
             String articleDateline = "";
             StringBuilder articleBody = new StringBuilder();
             int lineCounter = 0;
 
             while ((line = reader.readLine()) != null) {
-                if (lineCounter == 1) {
+                if (lineCounter == 0) {
+                    article.setCountry(line);
+                    articleBody.append(line).append("\n");
+                } else if (lineCounter == 1) {
                     articleDateline = line;
                 } else if (lineCounter > 1) {
                     articleBody.append(line).append("\n");
@@ -64,46 +69,69 @@ public class CharacteristicsExtractor {
 
             StringBuilder filteredArticleBody = new StringBuilder(filterStopList(articleBody));
             long numberOfWordsInArticle = filteredArticleBody.toString().trim().split("\\s+").length;
-
+            article.setNumberOfWords((int) numberOfWordsInArticle);
             System.out.println("filename: " + filename);
 
-            Integer c1 = extractC1(filteredArticleBody.toString(), C1_9_dic.values());
+            Feature c1 = new Feature(extractC1(filteredArticleBody.toString(), C1_9_dic.values()));
 
-            Integer c2 = extractLicznosc(filteredArticleBody.toString(), "c2_dic.json");
+            Feature c2 = new Feature(extractLicznosc(filteredArticleBody.toString(), "c2_dic.json"));
 
-            Integer c3 = extractLicznosc(filteredArticleBody.toString(), "c3_dic.json");
+            Feature c3 = new Feature(extractLicznosc(filteredArticleBody.toString(), "c3_dic.json"));
 
-            Double c4 = extractCzestosc(filteredArticleBody.toString(), "c4_dic.json", (int) numberOfWordsInArticle);
+            Feature c4 = new Feature(extractCzestosc(filteredArticleBody.toString(), "c4_dic.json", (int) numberOfWordsInArticle));
 
-            Integer c5 = extractLicznosc(filteredArticleBody.toString(), "c5_dic.json");
+            Feature c5 = new Feature(extractLicznosc(filteredArticleBody.toString(), "c5_dic.json"));
 
-            Double c6 = extractCzestosc(filteredArticleBody.toString(), "c6_dic.json", (int) numberOfWordsInArticle);
+            Feature c6 = new Feature(extractCzestosc(filteredArticleBody.toString(), "c6_dic.json", (int) numberOfWordsInArticle));
 
-            String c7 = extractC7(articleDateline);
+            Feature c7 = new Feature(extractC7(articleDateline));
 
-            String c8 = extractC8(articleDateline);
+            Feature c8 = new Feature(extractC8(articleDateline));
 
-            Boolean c9 = extractC9(filteredArticleBody.toString(), C1_9_dic.values());
+            Feature c9 = new Feature(extractC9(filteredArticleBody.toString(), C1_9_dic.values()));
 
-            String c10 = extractC10(filteredArticleBody.toString(), c10_dic.values());
+            Feature c10 = new Feature(extractC10(filteredArticleBody.toString(), c10_dic.values()));
 
             StringBuilder characteristics = new StringBuilder();
-            characteristics.append("\n").append(c1).append("\n").append(c2).append("\n")
-                    .append(c3).append("\n").append(c4).append("\n").append(c5).append("\n")
-                    .append(c6).append("\n").append(c7).append("\n").append(c8).append("\n")
-                    .append(c9).append("\n").append(c10);
+            characteristics.append("\nc1: ").append(c1.getNumber())
+                    .append("\nc2: ").append(c2.getNumber())
+                    .append("\nc3: ").append(c3.getNumber())
+                    .append("\nc4: ").append(c4.getNumber())
+                    .append("\nc5: ").append(c5.getNumber())
+                    .append("\nc6: ").append(c6.getNumber())
+                    .append("\nc7: ").append(c7.getText())
+                    .append("\nc8: ").append(c8.getText())
+                    .append("\nc9: ").append(c9.getValue())
+                    .append("\nc10: ").append(c10.getText());
+
             appendCharacteristicsToFile(absolutePath, characteristics.toString());
+
+            features.add(c1);
+            features.add(c2);
+            features.add(c3);
+            features.add(c4);
+            features.add(c5);
+            features.add(c6);
+            features.add(c7);
+            features.add(c8);
+            features.add(c9);
+            features.add(c10);
+
+            article.setFeatures(features);
+
+            return article;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private Integer extractLicznosc(String articleBody, String dictonaryFileName) {
         Map<String, Integer> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -137,7 +165,7 @@ public class CharacteristicsExtractor {
         Map<String, Double> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -169,7 +197,7 @@ public class CharacteristicsExtractor {
 
     private StringBuilder filterStopList(StringBuilder text) {
         StringBuilder filteredText = new StringBuilder(text.toString());
-        try (BufferedReader reader = new BufferedReader(new FileReader("src/dictonaries/stop_words_english.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("projekt1/src/dictonaries/stop_words_english.txt"))) {
             String line;
             String lowerCaseText = filteredText.toString().toLowerCase();
             while ((line = reader.readLine()) != null) {
@@ -212,7 +240,7 @@ public class CharacteristicsExtractor {
 
     private String extractC7(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c7_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/c7_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -236,7 +264,7 @@ public class CharacteristicsExtractor {
 
     private String extractC8(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c8_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/c8_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();

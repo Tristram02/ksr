@@ -23,4 +23,8 @@ public class FeaturesVector extends ArrayList<Feature> {
         return -1;
     }
 
+    public void normalize(FeaturesVector X) {
+        
+    }
+
 }

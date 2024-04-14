@@ -1,43 +1,63 @@
+import enums.CountriesNames;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class KNN {
     int k;
     String metric;
-    List<FeaturesVector> trainingSet;
-    List<FeaturesVector> testSet;
+    List<Article> trainingSet;
+    List<Article> testSet;
 
 
-    public KNN(int k, String metric, List<FeaturesVector> trainingSet, List<FeaturesVector> testSet) {
+    public KNN(int k, String metric, List<Article> trainingSet, List<Article> testSet) {
         this.k = k;
         this.metric = metric;
         this.trainingSet = trainingSet;
         this.testSet = testSet;
     }
 
-    public void classify() {
-        Map<String, Integer> classification = new HashMap<>();
-        Map<FeaturesVector, Double> objects = new HashMap<>();
+    public List<Article> classify() {
 
-        for (FeaturesVector testingVector : this.testSet) {
-            for (FeaturesVector trainingVector : this.trainingSet) {
-                objects.put(testingVector, testingVector.calculateDistances(trainingVector, this.metric));
+        for (Article testingArticle : this.testSet) {
+
+            Map<CountriesNames, Integer> classification = new HashMap<>();
+            Map<Article, Double> objects = new HashMap<>();
+
+            for (Article trainingArticle : this.trainingSet) {
+                objects.put(trainingArticle, testingArticle.features.calculateDistances(trainingArticle.features, this.metric));
             }
+
+            List<Map.Entry<Article, Double>> objectsList = new ArrayList<>(objects.entrySet());
+            objectsList.sort(Map.Entry.comparingByValue());
+            List<Article> nearestNeighbours = objectsList.subList(0, this.k).stream()
+                    .map(Map.Entry::getKey)
+                    .toList();
+
+            classification.put(CountriesNames.USA, 0);
+            classification.put(CountriesNames.UK, 0);
+            classification.put(CountriesNames.CANADA, 0);
+            classification.put(CountriesNames.JAPAN, 0);
+            classification.put(CountriesNames.FRANCE, 0);
+            classification.put(CountriesNames.WEST_GERMANY, 0);
+
+            nearestNeighbours.forEach((vector) -> {
+                CountriesNames country = CountriesNames.fromDisplayName(vector.getCountry());
+                classification.put(country, classification.getOrDefault(country, 0) + 1);
+            });
+
+            System.out.println(classification);
+
+            testingArticle.setCountryPrediction(classification.entrySet()
+                    .stream()
+                    .max((article1, article2) -> article1.getValue() > article2.getValue() ? 1 : -1)
+                    .get()
+                    .getKey()
+                    .getDisplayName());
         }
 
-        List<Map.Entry<FeaturesVector, Double>> objectsList = new ArrayList<>(objects.entrySet());
-        objectsList.sort(Map.Entry.comparingByValue());
+        return this.testSet;
 
-        List<FeaturesVector> nearestNeighbours = objectsList.subList(0, this.k).stream()
-                .map(Map.Entry::getKey)
-                .toList();
-
-        nearestNeighbours.forEach((vector) -> {
-            // Tu zalezy jak zdefiniujemy dokument
-            // Ale bierzemy wszystkie k sasiadow i dodajemy do classification
-            // Nastepnie zwrocimy najczesciej pojawiajacy sie element (kraj)
-//            String place = vector.
-        });
     }
 
 

@@ -18,4 +18,13 @@ public enum CountriesNames {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static CountriesNames fromDisplayName(String displayName) {
+        for (CountriesNames country : CountriesNames.values()) {
+            if (country.getDisplayName().equals(displayName)) {
+                return country;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant " + CountriesNames.class.getCanonicalName() + "." + displayName);
+    }
 }
