@@ -64,17 +64,17 @@ public class KNN {
 
     private Double countryWeight(Article a) {
         switch (CountriesNames.fromDisplayName(a.country)) {
-            case CountriesNames.USA:
+            case USA:
                 return CountriesNames.WeightUSA;
-            case CountriesNames.UK:
+            case UK:
                 return CountriesNames.WeightUK;
-            case CountriesNames.FRANCE:
+            case FRANCE:
                 return CountriesNames.WeightFRANCE;
-            case CountriesNames.CANADA:
+            case CANADA:
                 return CountriesNames.WeightCANADA;
-            case CountriesNames.JAPAN:
+            case JAPAN:
                 return CountriesNames.WeightJAPAN;
-            case CountriesNames.WEST_GERMANY:
+            case WEST_GERMANY:
                 return CountriesNames.WeightWEST_GERMANY;
             default:
                 return 1.0;

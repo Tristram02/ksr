@@ -131,7 +131,7 @@ public class CharacteristicsExtractor {
         Map<String, Integer> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -165,7 +165,7 @@ public class CharacteristicsExtractor {
         Map<String, Double> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -197,7 +197,7 @@ public class CharacteristicsExtractor {
 
     private StringBuilder filterStopList(StringBuilder text) {
         StringBuilder filteredText = new StringBuilder(text.toString());
-        try (BufferedReader reader = new BufferedReader(new FileReader("projekt1/src/dictonaries/stop_words_english.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/dictonaries/stop_words_english.txt"))) {
             String line;
             String lowerCaseText = filteredText.toString().toLowerCase();
             while ((line = reader.readLine()) != null) {
@@ -240,7 +240,7 @@ public class CharacteristicsExtractor {
 
     private String extractC7(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/c7_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c7_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -264,7 +264,7 @@ public class CharacteristicsExtractor {
 
     private String extractC8(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("projekt1/src/dictonaries/c8_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c8_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();

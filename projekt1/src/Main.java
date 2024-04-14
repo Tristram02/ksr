@@ -7,12 +7,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-//        FilesExtractor filesExtractor = new FilesExtractor("E:\\KSR\\projekt1\\projekt1\\reuters_files", "E:\\KSR\\projekt1\\projekt1\\src\\parsed_files");
+//        FilesExtractor filesExtractor = new FilesExtractor("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\reuters_files", "C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\parsed_files");
 //        filesExtractor.extractFiles();
 
         List<Article> articles;
 
-        CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor("E:\\KSR\\projekt1\\projekt1\\src\\parsed_files");
+        CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\parsed_files");
         articles = characteristicsExtractor.extractCharacteristicsForAllArticles();
 
         List<Article> experiment = new ArrayList<>(articles.subList(0, 1000));
@@ -125,7 +125,7 @@ public class Main {
             }
         }
 
-        acc = (double)good / predictions.size();
+        acc = (double)(tp_fra+tp_can+tp_wg+tp_usa+tp_jap+tp_uk) / predictions.size();
 
         ppv_usa = (double) tp_usa / (tp_usa + fp_usa);
         ppv_uk = (double) tp_uk / (tp_uk + fp_uk);
@@ -150,7 +150,7 @@ public class Main {
 
         System.out.println("Zbiór uczacy: " + trainingSet.size());
         System.out.println("Zbior testowy: " + testingSet.size());
-        System.out.println("Dobrze sklasifikowane: " + good);
+        System.out.println("Dobrze sklasifikowane: " + (tp_fra+tp_can+tp_wg+tp_usa+tp_jap+tp_uk) );
         System.out.println("Dokladnosc: " + acc);
 
         System.out.println("PPV_USA: " + ppv_usa);

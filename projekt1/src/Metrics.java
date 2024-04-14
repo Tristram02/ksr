@@ -11,7 +11,7 @@ public class Metrics {
             } else if (X.get(i).isBoolean()) {
                 result += Math.pow((X.get(i).getValue() ? 1 : 0) - (Y.get(i).getValue() ? 1 : 0), 2);
             } else {
-                result += Trigram(X.get(i).getText(), Y.get(i).getText()); // ngramy
+                result += Math.pow(Trigram(X.get(i).getText(), Y.get(i).getText()), 2); // ngramy
             }
         }
 
@@ -27,7 +27,7 @@ public class Metrics {
             } else if (X.get(i).isBoolean()) {
                 result.add(Math.abs((X.get(i).getValue() ? 1.0 : 0) - (Y.get(i).getValue() ? 1.0 : 0)));
             } else {
-                result.add(Trigram(X.get(i).getText(), Y.get(i).getText()));
+                result.add(Math.abs(Trigram(X.get(i).getText(), Y.get(i).getText())));
             }
         }
 
@@ -43,7 +43,7 @@ public class Metrics {
             } else if (X.get(i).isBoolean()) {
                 result += Math.abs((X.get(i).getValue() ? 1 : 0) - (Y.get(i).getValue() ? 1 : 0));
             } else {
-                result += Trigram(X.get(i).getText(), Y.get(i).getText());
+                result += Math.abs(Trigram(X.get(i).getText(), Y.get(i).getText()));
             }
         }
 
@@ -68,7 +68,13 @@ public class Metrics {
             }
         }
 
-        return 1 - (sum / ngramsX.size());
+        if (!ngramsX.isEmpty()) {
+            return 1 - (sum / ngramsX.size());
+        } else if (!ngramsY.isEmpty()) {
+            return 1 - (sum / ngramsY.size());
+        } else {
+            return 0;
+        }
     }
 
 }
