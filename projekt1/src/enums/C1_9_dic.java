@@ -11,6 +11,7 @@ public enum C1_9_dic {
     JAPAN("Japan"),
     USA("USA"),
     UNITED_STATES_OF_AMERICA("United States of America"),
+    AMERICA("America"),
     WEST_GERMANY("West Germany"),
     FRG("FRG"),
     FEDERAL_REPUBLIC_OF_GERMANY("Federal Republic of Germany");

@@ -103,7 +103,7 @@ public class CharacteristicsExtractor {
         Map<String, Integer> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -114,9 +114,9 @@ public class CharacteristicsExtractor {
 
                 for(int i = 0; i < array.length(); i++){
                     String value = array.getString(i);
-                    if (articleBody.contains(value)) {
-                        String regex = "\\b" + Pattern.quote(value) + "\\b";
-                        int count = (articleBody.split(regex, -1).length) - 1;
+                    if (articleBody.toLowerCase().contains(value.toLowerCase())) {
+                        String regex = "\\b" + Pattern.quote(value.toLowerCase()) + "\\b";
+                        int count = (articleBody.toLowerCase().split(regex, -1).length) - 1;
                         counts.put(value, count);
                     } else {
                         counts.put(value, 0);
@@ -137,7 +137,7 @@ public class CharacteristicsExtractor {
         Map<String, Double> counts = new HashMap<>();
 
         try {
-            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/" + dictonaryFileName)));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/" + dictonaryFileName)));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -148,9 +148,9 @@ public class CharacteristicsExtractor {
 
                 for(int i = 0; i < array.length(); i++){
                     String value = array.getString(i);
-                    if (articleBody.contains(value)) {
-                        String regex = "\\b" + Pattern.quote(value) + "\\b";
-                        int count = (articleBody.split(regex, -1).length) - 1;
+                    if (articleBody.toLowerCase().contains(value.toLowerCase())) {
+                        String regex = "\\b" + Pattern.quote(value.toLowerCase()) + "\\b";
+                        int count = (articleBody.toLowerCase().split(regex, -1).length) - 1;
                         counts.put(value, count / (double) wordsInArticleCount);
                     } else {
                         counts.put(value, 0.0);
@@ -169,7 +169,7 @@ public class CharacteristicsExtractor {
 
     private StringBuilder filterStopList(StringBuilder text) {
         StringBuilder filteredText = new StringBuilder(text.toString());
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\PLIKI\\semestr_6\\KSRy\\repo\\ksr\\projekt1\\dictonaries\\stop_words_english.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/dictonaries/stop_words_english.txt"))) {
             String line;
             String lowerCaseText = filteredText.toString().toLowerCase();
             while ((line = reader.readLine()) != null) {
@@ -196,9 +196,9 @@ public class CharacteristicsExtractor {
         Map<C1_9_dic, Integer> counts = new EnumMap<>(C1_9_dic.class);
 
         for (C1_9_dic c1 : c1_dictonary) {
-            if (articleBody.contains(c1.getDisplayName())) {
-                String regex = "\\b" + Pattern.quote(c1.getDisplayName()) + "\\b";
-                int count = (articleBody.split(regex, -1).length) - 1;
+            if (articleBody.toLowerCase().contains(c1.getDisplayName().toLowerCase())) {
+                String regex = "\\b" + Pattern.quote(c1.getDisplayName().toLowerCase()) + "\\b";
+                int count = (articleBody.toLowerCase().split(regex, -1).length) - 1;
                 counts.put(c1, count);
             } else {
                 counts.put(c1, 0);
@@ -212,7 +212,7 @@ public class CharacteristicsExtractor {
 
     private String extractC7(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/c7_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c7_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -236,7 +236,7 @@ public class CharacteristicsExtractor {
 
     private String extractC8(String articleDateline) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("../dictonaries/c8_dic.json")));
+            String content = new String(Files.readAllBytes(Paths.get("src/dictonaries/c8_dic.json")));
             JSONObject jsonObject = new JSONObject(content);
 
             Iterator<String> keys = jsonObject.keys();
@@ -261,7 +261,7 @@ public class CharacteristicsExtractor {
 
     private Boolean extractC9(String articleBody, C1_9_dic[] c9_dictonary) {
         for (C1_9_dic c9 : c9_dictonary) {
-            if (articleBody.contains(c9.getDisplayName())) {
+            if (articleBody.toLowerCase().contains(c9.getDisplayName().toLowerCase())) {
                 return true;
             }
         }
@@ -270,7 +270,7 @@ public class CharacteristicsExtractor {
 
     private String extractC10(String articleBody, c10_dic[] c10_dictonary) {
         for (c10_dic c10 : c10_dictonary) {
-            if (articleBody.contains(c10.getDisplayName())) {
+            if (articleBody.toLowerCase().contains(c10.getDisplayName().toLowerCase())) {
                 return c10.getDisplayName();
             }
         }
