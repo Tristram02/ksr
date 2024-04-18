@@ -7,15 +7,20 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        String fullPathReutersFilesDir, fullPathArticlesToSaveDir;
+        System.out.println("Full path to reuters files directory: ");
+        fullPathReutersFilesDir = in.nextLine();
+        System.out.println("Full path to directory where you want articles to be saved: ");
+        fullPathArticlesToSaveDir = in.nextLine();
 
-        FilesExtractor filesExtractor = new FilesExtractor("E:\\KSR\\projekt1\\projekt1\\reuters_files", "E:\\KSR\\projekt1\\projekt1\\src\\parsed_files");
+        FilesExtractor filesExtractor = new FilesExtractor(fullPathReutersFilesDir, fullPathArticlesToSaveDir);
         filesExtractor.extractFiles();
 
-        Scanner in = new Scanner(System.in);
 
         List<Article> articles;
 
-        CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor("E:\\KSR\\projekt1\\projekt1\\src\\parsed_files");
+        CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor(fullPathArticlesToSaveDir);
         articles = characteristicsExtractor.extractCharacteristicsForAllArticles();
 
 //        Collections.shuffle(articles);
@@ -38,7 +43,7 @@ public class Main {
                 System.out.print("k: ");
                 k = Integer.parseInt(in.nextLine());
 
-                System.out.print("k: ");
+                System.out.print("Size of training set in fraction: ");
                 setSize = Double.parseDouble(in.nextLine());
 
                 int splitIndex = (int) (experiment.size() * setSize);

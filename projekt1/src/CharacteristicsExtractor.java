@@ -70,7 +70,6 @@ public class CharacteristicsExtractor {
             StringBuilder filteredArticleBody = new StringBuilder(filterStopList(articleBody));
             long numberOfWordsInArticle = filteredArticleBody.toString().trim().split("\\s+").length;
             article.setNumberOfWords((int) numberOfWordsInArticle);
-            System.out.println("filename: " + filename);
 
             Feature c1 = new Feature(extractC1(filteredArticleBody.toString(), C1_9_dic.values()));
 
