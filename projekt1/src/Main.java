@@ -24,7 +24,7 @@ public class Main {
         articles = characteristicsExtractor.extractCharacteristicsForAllArticles();
 
 //        Collections.shuffle(articles);
-        List<Article> experiment = new ArrayList<>(articles.subList(0, 1000));
+        List<Article> experiment = new ArrayList<>(articles);
 //        Collections.shuffle(experiment);
 
         String metric = "euclidean";

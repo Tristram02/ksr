@@ -16,6 +16,7 @@ public class FilesExtractor {
     }
 
     private boolean inBodyTag = false;
+    private boolean inOnlyTextTag = false;
 
     public void extractFiles() {
         File directory = new File(sgmlFilesPath);
@@ -57,15 +58,22 @@ public class FilesExtractor {
                     }
                     article.setLength(0);
                     isAllowedCountry = false;
-                }else if (line.contains("<TEXT ")) {
-                    article.setLength(0);
-                    isAllowedCountry = false;
-                } else if (line.contains("</BODY>")) {
+                } else if (line.contains("</BODY>" )|| line.contains("</TEXT>")){
                     inBodyTag = false;
+                    inOnlyTextTag = false;
+                } else if (line.contains("<TEXT ")){
+                    inOnlyTextTag = true;
+                    article.append("\n");
                 } else if (isAllowedCountry && containsTags(line)) {
                     appendArticleContent(article, line);
                 } else if (inBodyTag && isAllowedCountry) {
                     article.append(line).append("\n");
+                } else if (inOnlyTextTag && isAllowedCountry && !line.contains("<TITLE>")){
+                    if(line.contains("/TITLE>") ){
+                        article.append(line.substring(line.indexOf("/TITLE>") + 7)).append("\n");
+                    } else {
+                        article.append(line).append("\n");
+                    }
                 }
             }
 
@@ -95,13 +103,14 @@ public class FilesExtractor {
 
             } else if (line.contains("</DATELINE>")) {
                 article.append(line.substring(line.lastIndexOf("</DATELINE><BODY>") + 17)).append("\n");
+                inBodyTag = true;
             }
 
         }
     }
 
     private boolean containsTags(String line) {
-        return line.contains("DATELINE>") || line.contains("<BODY>");
+        return line.contains("DATELINE>") || line.contains("<BODY>") || line.contains("<TEXT ");
     }
 
     private static boolean isAllowedCountry(String placesTagContent, EnumSet<CountriesNames> allowedCountries) {
