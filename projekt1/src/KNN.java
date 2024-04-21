@@ -1,7 +1,6 @@
 import enums.CountriesNames;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class KNN {
     int k;
@@ -47,8 +46,6 @@ public class KNN {
                 CountriesNames country = CountriesNames.fromDisplayName(vector.getCountry());
                 classification.put(country, classification.getOrDefault(country, 0) + 1);
             });
-
-            System.out.println(classification);
 
             testingArticle.setCountryPrediction(classification.entrySet()
                     .stream()

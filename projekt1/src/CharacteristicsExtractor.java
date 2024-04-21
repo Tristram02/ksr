@@ -24,7 +24,6 @@ public class CharacteristicsExtractor {
 
     public List<Article> extractCharacteristicsForAllArticles() {
         List<Article> articles = new ArrayList<>();
-        System.out.println(getArticlesDirectoryPath());
         File directory = new File(getArticlesDirectoryPath());
         if (!directory.isDirectory()) {
             System.out.println("Specified path is not a directory.");
@@ -36,7 +35,7 @@ public class CharacteristicsExtractor {
             System.out.println("No files found in the directory.");
             return null;
         }
-
+        System.out.println("Starting characteristics extraction...");
         for (File file : files) {
             if (file.isFile()) {
                 articles.add(extractCharacteristicsFromArticle(file.getAbsolutePath(), file.getName()));
@@ -307,7 +306,6 @@ public class CharacteristicsExtractor {
     private void appendCharacteristicsToFile(String filePath, String appendString) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(appendString);
-            System.out.println("Characteristics appended to file: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }

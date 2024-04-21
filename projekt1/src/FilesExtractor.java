@@ -30,12 +30,13 @@ public class FilesExtractor {
             System.out.println("No files found in the directory.");
             return;
         }
-
+        System.out.println("Starting articles extraction...");
         for (File file : files) {
             if (file.isFile()) {
                 extractFromFile(file.getAbsolutePath(), outputDirPath, filterCountries, file.getName());
             }
         }
+        System.out.println("Articles extracted and saved successfully.");
     }
     private void extractFromFile(String filePath, String outputDirPath, EnumSet<CountriesNames> filterCountries, String fileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -54,7 +55,6 @@ public class FilesExtractor {
                     if (isAllowedCountry) {
                         saveArticleToFile(article.toString(), outputDirPath + "\\" + fileName.substring(0, fileName.lastIndexOf(".")) + "_article_" + articleCount + ".txt");
                         articleCount++;
-                        System.out.println(article);
                     }
                     article.setLength(0);
                     isAllowedCountry = false;
@@ -77,7 +77,6 @@ public class FilesExtractor {
                 }
             }
 
-            System.out.println("Articles extracted and saved successfully.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +85,6 @@ public class FilesExtractor {
     private static void saveArticleToFile(String content, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(content);
-            System.out.println("Article saved to: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,6 @@
 import enums.CountriesNames;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,9 +22,7 @@ public class Main {
         CharacteristicsExtractor characteristicsExtractor = new CharacteristicsExtractor(fullPathArticlesToSaveDir);
         articles = characteristicsExtractor.extractCharacteristicsForAllArticles();
 
-//        Collections.shuffle(articles);
         List<Article> experiment = new ArrayList<>(articles);
-//        Collections.shuffle(experiment);
 
         String metric = "euclidean";
         int k = 5;
@@ -45,7 +42,7 @@ public class Main {
 
                 System.out.print("Size of training set in fraction: ");
                 setSize = Double.parseDouble(in.nextLine());
-
+                System.out.println("Counting...");
                 int splitIndex = (int) (experiment.size() * setSize);
                 List<Article> trainingSet = new ArrayList<>(experiment.subList(0, splitIndex));
                 List<Article> testingSet = new ArrayList<>(experiment.subList(splitIndex, experiment.size()));

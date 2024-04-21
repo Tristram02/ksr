@@ -1,8 +1,6 @@
 package enums;
 
 public enum C1_9_dic {
-//    UK, United Kingdom, France, Canada, Japan, USA, United States of
-//    America, West Germany, FRG, Federal Republic of Germany
 
     UK("UK"),
     UNITED_KINGDOM("United Kingdom"),

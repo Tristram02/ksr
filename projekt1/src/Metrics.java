@@ -11,7 +11,7 @@ public class Metrics {
             } else if (X.get(i).isBoolean()) {
                 result += Math.pow((X.get(i).getValue() ? 1 : 0) - (Y.get(i).getValue() ? 1 : 0), 2);
             } else {
-                result += Math.pow(Trigram(X.get(i).getText(), Y.get(i).getText()), 2); // ngramy
+                result += Math.pow(Trigram(X.get(i).getText(), Y.get(i).getText()), 2);
             }
         }
 
