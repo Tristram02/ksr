@@ -102,7 +102,6 @@ public class Main {
                                 break;
                         }
                     } else {
-                        System.out.println("Expected: " + prediction.country + "\nActual: " + prediction.countryPrediction);
                         switch (CountriesNames.fromDisplayName(prediction.country)) {
                             case USA:
                                 fn_usa++;
