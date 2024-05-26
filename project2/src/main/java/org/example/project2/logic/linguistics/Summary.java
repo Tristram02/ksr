@@ -29,52 +29,69 @@ public class Summary<T> {
 
     /* T1 */
     public double degreeOfTruth() {
-        double r = 0;
-        double r2 = 0;
-        double m = 0;
-        double m2 = 0;
-
-        if (qualifiers == null) { // summary without qualifier
-            for (DataEntry obj : objects) {
-                if (summarizers.length == 1) {
-                    r += summarizers[0].getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName()));
-                } else if (summarizers.length > 1) {
-                    double min = 1.0;
-                    for (Label<T> summarizer : summarizers) {
-                        double membership = summarizer.getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName()));
-                        if (membership < min) {
-                            min = membership;
-                        }
+        if (qualifiers == null) {
+            List<Double> getMin = new ArrayList<>();
+            double sum = 0;
+            if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
+                for (DataEntry dataEntry : objects) {
+                    for (Label summarizer : summarizers) {
+                        getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
                     }
-                    r += min;
+                    sum += Collections.min(getMin);
+                    getMin.removeAll(getMin);
                 }
+                return quantifier.getFuzzySet().degreeOfMembership(sum);
+            } else {
+                for (DataEntry dataEntry : objects) {
+                    for (Label summarizer : summarizers) {
+                        getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
+                    }
+                    sum += Collections.min(getMin);
+                    getMin.removeAll(getMin);
+                }
+                return quantifier.getFuzzySet().degreeOfMembership(sum / objects.size());
             }
-            m = objects.size();
         } else {
-            for (DataEntry obj : objects) {
-                if (summarizers.length == 1) {
-                    r += Math.min(summarizers[0].getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName())), qualifiers[0].getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName())));
-                } else if (summarizers.length > 1) {
-                    double a;
-                    double min = 1.0;
-                    for (Label<T> summarizer : summarizers) {
-                        double membership = summarizer.getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName()));
-                        if (membership < min) {
-                            min = membership;
-                        }
-                    }
-                    a = min;
-                    r += Math.min(a, qualifiers[0].getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName())));
+            List<Double> getMin = new ArrayList<>();
+            List<Double> getMinQ = new ArrayList<>();
+            List<Double> valuesForWMinS = new ArrayList<>();
+            double sumForS;
+            double sumForW;
+            for (DataEntry dataEntry : objects) {
+                sumForS = 0;
+                sumForW = 0;
+                for (Label summarizer : summarizers) {
+                    getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
                 }
-                m += qualifiers[0].getFuzzySet().degreeOfMembership(obj.getValueByName(summarizers[0].getLinguisticVariable().getName()));
+                sumForS += Collections.min(getMin);
+                for (Label qualifier : qualifiers) {
+                    getMinQ.add(qualifier.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifier.getLinguisticVariable().getName())));
+                }
+                sumForW += Collections.min(getMin);
+                if (sumForS < sumForW) {
+                    valuesForWMinS.add(sumForS);
+                } else {
+                    valuesForWMinS.add(sumForW);
+                }
+                getMin.removeAll(getMin);
+                getMinQ.removeAll(getMinQ);
             }
+            sumForW = 0;
+            for (DataEntry dataEntry : objects) {
+                for (Label qualifier : qualifiers) {
+                    getMin.add(qualifier.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifier.getLinguisticVariable().getName())));
+                }
+                sumForW += Collections.min(getMin);
+                getMin.removeAll(getMin);
+            }
+            double sumWandS = 0;
+            for (double value : valuesForWMinS) {
+                sumWandS += value;
+            }
+            sumWandS = sumWandS / objects.size();
+            sumForW = sumForW / objects.size();
+            return quantifier.getFuzzySet().degreeOfMembership(sumWandS / sumForW);
         }
-
-        if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE && qualifiers == null) {
-            return quantifier.getFuzzySet().getMembershipFunction().degreeOfMembership(r);
-        } else if (!(quantifier.getQuantifierType() == QuantifierType.ABSOLUTE)) {
-            return quantifier.getFuzzySet().getMembershipFunction().degreeOfMembership(r / m);
-        } else return 0.0;
     }
 
     /* T2 */
