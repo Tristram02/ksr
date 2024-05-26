@@ -26,6 +26,10 @@ public class FuzzySet {
         return this.universeOfDiscourse;
     }
 
+    public MembershipFunction getMembershipFunction() {
+        return this.membershipFunction;
+    }
+
     public ClassicSet support() {
         if (universeOfDiscourse.isDiscrete()) {
             List<Double> set = universeOfDiscourse.getSet()

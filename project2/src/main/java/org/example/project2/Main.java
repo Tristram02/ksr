@@ -96,7 +96,7 @@ public class Main {//HelloApplication extends Application {
 
         boolean keepGoing = true;
         while (keepGoing) {
-            System.out.println("Choose qualifier (Qj): ");
+            System.out.println("Choose summarizer (Sj): ");
             System.out.println("1. bigCoalAnnualChangeProdTwh");
             System.out.println("2. averageCoalAnnualChangeProdTwh");
             System.out.println("3. smallCoalAnnualChangeProdTwh");
@@ -136,7 +136,7 @@ public class Main {//HelloApplication extends Application {
         if (type == 2) {
             keepGoing = true;
             while (keepGoing) {
-                System.out.println("Choose qualifier (Qj): ");
+                System.out.println("Choose qualifier (W): ");
                 System.out.println("1. bigCoalAnnualChangeProdTwh");
                 System.out.println("2. averageCoalAnnualChangeProdTwh");
                 System.out.println("3. smallCoalAnnualChangeProdTwh");

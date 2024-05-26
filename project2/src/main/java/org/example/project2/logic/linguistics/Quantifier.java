@@ -34,4 +34,8 @@ public class Quantifier {
         return fuzzySet;
     }
 
+    public QuantifierType getQuantifierType() {
+        return this.quantifierType;
+    }
+
 }
