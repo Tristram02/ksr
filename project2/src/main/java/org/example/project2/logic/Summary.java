@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Summary<T> {
-    private final Quantifier quantifier;
+    private final Quantifier[] quantifiers;
     private final Label<T> qualifier;
     private final Label<T>[] summarizers;
     private final FuzzySet<T> fuzzySetOfCompoundSummarizer;
     private final List<T> objects;
 
-    public Summary(Quantifier quantifier, Label<T> qualifier, List<T> objects,
+    public Summary(Quantifier[] quantifiers, Label<T> qualifier, List<T> objects,
                              Label<T>... summarizers) {
-        this.quantifier = quantifier;
+        this.quantifiers = quantifiers;
         this.qualifier = qualifier;
         this.summarizers = summarizers;
         FuzzySet<T> tmpFuzzySet = summarizers[0].getFuzzySet();

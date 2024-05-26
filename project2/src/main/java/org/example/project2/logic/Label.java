@@ -34,4 +34,5 @@ public class Label<T> implements Serializable {
     public Variable<T> getLinguisticVariable() {
         return linguisticVariable;
     }
+
 }
