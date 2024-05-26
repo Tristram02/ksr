@@ -65,9 +65,8 @@ public class FuzzySet {
                 }
                 return new ClassicSet(set);
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     public double height() {

@@ -93,4 +93,29 @@ public class DataEntry {
         sb.append('}');
         return sb.toString();
     }
+
+    public double getValueByName(String variableName) {
+        switch (variableName) {
+            case "coalChangeProdTwh":
+                return coalChangeProdTwh;
+            case "coalProdPerCapita":
+                return coalProdPerCapita;
+            case "coalProd":
+                return coalProd;
+            case "gasChangeProdTwh":
+                return gasChangeProdTwh;
+            case "gasProdPerCapita":
+                return gasProdPerCapita;
+            case "gasProd":
+                return gasProd;
+            case "oilChangeProdTwh":
+                return oilChangeProdTwh;
+            case "oilProdPerCapita":
+                return oilProdPerCapita;
+            case "oilProd":
+                return oilProd;
+            default:
+                return 0.0;
+        }
+    }
 }

@@ -2,6 +2,7 @@ package org.example.project2.logic.linguistics;
 
 import org.example.project2.logic.sets.FuzzySet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class Summary<T> {
     private final Label<T> qualifier;
     private final Label<T>[] summarizers;
     private final FuzzySet fuzzySetOfCompoundSummarizer;
-    private final List<T> objects;
+    private final List<DataEntry> objects;
 
-    public Summary(Quantifier[] quantifiers, Label<T> qualifier, List<T> objects,
+    public Summary(Quantifier[] quantifiers, Label<T> qualifier, List<DataEntry> objects,
                              Label<T>... summarizers) {
         this.quantifiers = quantifiers;
         this.qualifier = qualifier;
@@ -26,7 +27,7 @@ public class Summary<T> {
     }
 
     public Summary(Quantifier chosenQuantifier, Label<T> qualifiler, List<DataEntry> dataEntries, Label<T>[] summarizers) {
-        this(new Quantifier[]{chosenQuantifier}, qualifiler, (List<T>) dataEntries, summarizers);
+        this(new Quantifier[]{chosenQuantifier}, qualifiler, dataEntries, summarizers);
     }
 
     /* T1 */
@@ -48,10 +49,14 @@ public class Summary<T> {
 
     /* T2 */
     public double degreeOfImprecision() {
-        return 1.0 - Arrays.stream(summarizers)
-                .map(Label::getFuzzySet)
-                .mapToDouble(fuzzySet -> fuzzySet.degreeOfFuzziness((List<Double>) objects))
-                .reduce(1.0, (a, b) -> a * b);
+        double t2 = 1;
+        List<Double> values = new ArrayList<>();
+        for (Label summarizer: this.summarizers) {
+            for (DataEntry dataEntry: objects) {
+                
+            }
+            t2 *= summarizer.getFuzzySet().degreeOfFuzziness();
+        }
     }
 
     /* T3 */

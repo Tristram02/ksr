@@ -29,7 +29,7 @@ public class Label<T> implements Serializable {
         return name;
     }
 
-    public FuzzySet<T> getFuzzySet() {
+    public FuzzySet getFuzzySet() {
         return fuzzySet;
     }
 
