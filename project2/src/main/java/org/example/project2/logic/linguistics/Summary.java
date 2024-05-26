@@ -33,12 +33,10 @@ public class Summary<T> {
         if (qualifier == null) {
             return 0.0;
         }
-        /* If quantifier is absolute, it has to be the first form of linguistic summary */
+
         if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
             return quantifier.compatibilityLevel(fuzzySetOfCompoundSummarizer.cardinality());
-        }
-        /* If quantifier is relative, calculate as for the first, or the second form */
-        else {
+        } else {
             return quantifier
                     .compatibilityLevel(fuzzySetOfCompoundSummarizer
                             .and(qualifier.getFuzzySet())
@@ -183,5 +181,42 @@ public class Summary<T> {
     /* T11 */
     public double lengthOfQualifier() {
         return 2.0 * Math.pow(0.5, 1); //there is only one fuzzy set in qualifier for now
+    }
+
+    public double quality() {
+        List<Double> weights = new ArrayList<>();
+        double q = 0.0;
+        double sum = 0.0;
+        if (qualifier == null) {
+            List<Double> measures = new ArrayList<>() {{
+                add(degreeOfTruth()); add(degreeOfImprecision()); add(degreeOfCovering()); add(degreeOfAppropriateness());
+                add(lengthOfSummary()); add(degreeOfQuantifierImprecision()); add(degreeOfQuantifierCardinality());
+                add(degreeOfSummarizerCardinality());
+            }};
+            weights.add(0.7);
+            for (int i = 0; i < measures.size() - 1; i++) {
+                weights.add(0.03);
+            }
+            for (int i = 0; i < measures.size(); i++) {
+                q += weights.get(i) * measures.get(i);
+                sum += weights.get(i);
+            }
+        } else {
+            List<Double> measures = new ArrayList<>() {{
+                add(degreeOfTruth()); add(degreeOfImprecision()); add(degreeOfCovering()); add(degreeOfAppropriateness());
+                add(lengthOfSummary()); add(degreeOfQuantifierImprecision()); add(degreeOfQuantifierCardinality());
+                add(degreeOfSummarizerCardinality()); add(degreeOfQualifierImprecision()); add(degreeOfQualifierCardinality());
+                add(lengthOfQualifier());
+            }};
+            weights.add(0.7);
+            for (int i = 0; i < measures.size() - 1; i++) {
+                weights.add(0.03);
+            }
+            for (int i = 0; i < measures.size(); i++) {
+                q += weights.get(i) * measures.get(i);
+                sum += weights.get(i);
+            }
+        }
+        return q / sum;
     }
 }

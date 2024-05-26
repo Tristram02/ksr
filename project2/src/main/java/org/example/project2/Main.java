@@ -252,10 +252,12 @@ public class Main {//HelloApplication extends Application {
         values.add(summary.degreeOfQualifierImprecision());
         values.add(summary.degreeOfQualifierCardinality());
         values.add(summary.lengthOfQualifier());
+        values.add(summary.quality());
         return values;
     }
 
     public static void printValuesOfT(List<Double> values) {
+        System.out.println("Quality: " + values.get(11));
         System.out.println("Degree of truth: " + values.get(0));
         System.out.println("Degree of imprecision: " + values.get(1));
         System.out.println("Degree of covering: " + values.get(2));
