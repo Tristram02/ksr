@@ -55,7 +55,7 @@ public class Main {//HelloApplication extends Application {
                 printValuesOfT(values);
             } else {
                 Map<String, ArrayList<Integer>> choices = getChoices(2);
-                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers"))[0], dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
                 List<Double> values = getValuesOfT(summary);
                 printValuesOfT(values);
             }

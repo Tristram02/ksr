@@ -4,21 +4,20 @@ import org.example.project2.logic.functions.TrapezoidalFunction;
 import org.example.project2.logic.sets.FuzzySet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Summary<T> {
     private final Quantifier quantifier;
-    private final Label<T> qualifier;
+    private final Label<T>[] qualifiers;
     private final Label<T>[] summarizers;
     private final FuzzySet fuzzySetOfCompoundSummarizer;
     private final List<DataEntry> objects;
 
-    public Summary(Quantifier quantifier, Label<T> qualifier, List<DataEntry> objects,
+    public Summary(Quantifier quantifier, Label<T>[] qualifiers, List<DataEntry> objects,
                              Label<T>... summarizers) {
         this.quantifier = quantifier;
-        this.qualifier = qualifier;
+        this.qualifiers = qualifiers;
         this.summarizers = summarizers;
         FuzzySet tmpFuzzySet = summarizers[0].getFuzzySet();
         for (int i = 1; i < summarizers.length; i++) {
@@ -30,7 +29,7 @@ public class Summary<T> {
 
     /* T1 */
     public double degreeOfTruth() {
-        if (qualifier == null) {
+        if (qualifiers == null) {
             return 0.0;
         }
 
@@ -39,8 +38,8 @@ public class Summary<T> {
         } else {
             return quantifier
                     .compatibilityLevel(fuzzySetOfCompoundSummarizer
-                            .and(qualifier.getFuzzySet())
-                            .cardinality() / qualifier
+                            .and(qualifiers[0].getFuzzySet())
+                            .cardinality() / qualifiers[0]
                             .getFuzzySet().cardinality());
         }
     }
@@ -66,8 +65,8 @@ public class Summary<T> {
         double membershipQ = 0.0;
         List<Double> listQ = new ArrayList<>();
         for (DataEntry dataEntry : objects) {
-            if (qualifier != null) {
-                membershipQ = qualifier.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifier.getName()));
+            if (qualifiers != null) {
+                membershipQ = qualifiers[0].getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifiers[0].getName()));
             }
             if (membershipQ > 0.0) {
                 h++;
@@ -81,7 +80,7 @@ public class Summary<T> {
                 }
             }
         }
-        if (qualifier != null) {
+        if (qualifiers != null) {
             if (h == 0 || t == 0) {
                 return 0.0;
             } else {
@@ -164,18 +163,18 @@ public class Summary<T> {
                 values.add(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName()));
             }
         }
-        if (qualifier == null) {
+        if (qualifiers == null) {
             return 0.0;
         }
-        return 1.0 - qualifier.getFuzzySet().degreeOfFuzziness(values);
+        return 1.0 - qualifiers[0].getFuzzySet().degreeOfFuzziness(values);
     }
 
     /* T10 */
     public double degreeOfQualifierCardinality() {
-        if (qualifier == null) {
+        if (qualifiers == null) {
             return 0.0;
         }
-        return 1.0 - qualifier.getFuzzySet().cardinality() / qualifier.getFuzzySet().getUniverseOfDiscourse().getSize();
+        return 1.0 - qualifiers[0].getFuzzySet().cardinality() / qualifiers[0].getFuzzySet().getUniverseOfDiscourse().getSize();
     }
 
     /* T11 */
@@ -187,7 +186,7 @@ public class Summary<T> {
         List<Double> weights = new ArrayList<>();
         double q = 0.0;
         double sum = 0.0;
-        if (qualifier == null) {
+        if (qualifiers == null) {
             List<Double> measures = new ArrayList<>() {{
                 add(degreeOfTruth()); add(degreeOfImprecision()); add(degreeOfCovering()); add(degreeOfAppropriateness());
                 add(lengthOfSummary()); add(degreeOfQuantifierImprecision()); add(degreeOfQuantifierCardinality());
