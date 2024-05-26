@@ -23,6 +23,10 @@ public class Summary<T> {
         this.objects = objects;
     }
 
+    public Summary(Quantifier quantifier, Label<T> qualifier, List<DataEntry> dataEntries, Label<T> summarizer) {
+        this(new Quantifier[]{quantifier}, qualifier, (List<T>) dataEntries, summarizer);
+    }
+
     /* T1 */
     public double degreeOfTruth() {
         /* If quantifier is absolute, it has to be the first form of linguistic summary */
@@ -50,10 +54,13 @@ public class Summary<T> {
 
     /* T3 */
     public double degreeOfCovering() {
-        return fuzzySetOfCompoundSummarizer.and(qualifier.getFuzzySet())
-                .support(objects)
-                .size() / (float) qualifier
-                .getFuzzySet().support(objects).size();
+        if (qualifier != null) {
+            return fuzzySetOfCompoundSummarizer.and(qualifier.getFuzzySet())
+                    .support(objects)
+                    .size() / (float) qualifier
+                    .getFuzzySet().support(objects).size();
+        }
+        return 0.0;
     }
 
     /* T4 */
@@ -113,11 +120,17 @@ public class Summary<T> {
 
     /* T9 */
     public double degreeOfQualifierImprecision() {
+        if (qualifier == null) {
+            return 0.0;
+        }
         return 1.0 - qualifier.getFuzzySet().degreeOfFuzziness(objects);
     }
 
     /* T10 */
     public double degreeOfQualifierCardinality() {
+        if (qualifier == null) {
+            return 0.0;
+        }
         return 1.0 - qualifier.getFuzzySet().cardinality(objects) / objects.size();
     }
 
