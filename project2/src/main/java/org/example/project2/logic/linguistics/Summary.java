@@ -251,4 +251,28 @@ public class Summary<T> {
         }
         return q / sum;
     }
+
+    public String toString() {
+        String result = "";
+        result += quantifier.getName() + " data entries ";
+        if (qualifiers != null && qualifiers.length > 0) {
+            result += "being/having ";
+            for (int i = 0; i < qualifiers.length; i++) {
+                result += qualifiers[i].getName() + " " + qualifiers[i].getLinguisticVariable().getName();
+                if (i < qualifiers.length - 1) {
+                    result += " and ";
+                }
+            }
+        }
+
+        result += " are/have ";
+        for (int i = 0; i < summarizers.length; i++) {
+            result += summarizers[i].getName() + " " + summarizers[i].getLinguisticVariable().getName();
+            if (i < summarizers.length - 1) {
+                result += " and ";
+            }
+        }
+
+        return result;
+    }
 }

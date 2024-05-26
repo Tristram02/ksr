@@ -52,11 +52,13 @@ public class Main {//HelloApplication extends Application {
                 Map<String, ArrayList<Integer>> choices = getChoices(1);
                 Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
                 List<Double> values = getValuesOfT(summary);
+                System.out.println(summary);
                 printValuesOfT(values);
             } else {
                 Map<String, ArrayList<Integer>> choices = getChoices(2);
                 Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
                 List<Double> values = getValuesOfT(summary);
+                System.out.println(summary);
                 printValuesOfT(values);
             }
 
