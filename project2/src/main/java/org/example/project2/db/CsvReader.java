@@ -47,6 +47,6 @@ public class CsvReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return dataEntries;
     }
 }

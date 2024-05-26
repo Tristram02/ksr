@@ -15,4 +15,5 @@ public class CoalAnnChangeProdTwh extends Variable<DataEntry>{
     public Double extractAttribute(DataEntry object) {
         return object.getCoalChangeProdTwh();
     }
+
 }
