@@ -1,5 +1,6 @@
 package org.example.project2.logic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class Summary<T> {
         this.objects = objects;
     }
 
-    public Summary(Quantifier quantifier, Label<T> qualifier, List<DataEntry> dataEntries, Label<T> summarizer) {
-        this(new Quantifier[]{quantifier}, qualifier, (List<T>) dataEntries, summarizer);
+    public Summary(Quantifier chosenQuantifier, Label<T> qualifiler, List<DataEntry> dataEntries, Label<T>[] summarizers) {
+        this(new Quantifier[]{chosenQuantifier}, qualifiler, (List<T>) dataEntries, summarizers);
     }
 
     /* T1 */

@@ -37,6 +37,10 @@ public class VarCoalLables {
         return labelsCoalProdPerCapita;
     }
 
+    public List<Label> getLabelsCoalProd() {
+        return labelsCoalProd;
+    }
+
 
 
 }

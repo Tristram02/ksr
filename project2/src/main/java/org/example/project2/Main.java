@@ -1,9 +1,5 @@
 package org.example.project2;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.example.project2.db.CsvReader;
 import org.example.project2.logic.DataEntry;
 import org.example.project2.logic.Label;
@@ -19,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {//HelloApplication extends Application {
 
@@ -42,19 +39,44 @@ public class Main {//HelloApplication extends Application {
 //        launch();
         CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
         List<DataEntry> dataEntries = csvReader.readData();
+        boolean end = false;
+        while (!end) {
 
-        ArrayList<Integer> choices = getChoices();
+            System.out.println("########### PROJECT 2 #########");
 
-        Summary summary = new Summary(getChosenQuantifier(choices.get(0)), null, dataEntries, getChosenSummarizer(choices.get(1)));
-        List<Double> values = getValuesOfT(summary);
-        printValuesOfT(values);
+            System.out.println("Choose type of summary: ");
+            System.out.println("1. Q data entries are/have Sj [T]");
+            System.out.println("2. Q data entries being/having W are/have Sj [T]");
+            String type = new DataInputStream(System.in).readLine();
+            if (type.equals("1")) {
+                Map<String, ArrayList<Integer>> choices = getChoices(1);
+                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                List<Double> values = getValuesOfT(summary);
+                printValuesOfT(values);
+            } else {
+                Map<String, ArrayList<Integer>> choices = getChoices(2);
+                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers"))[0], dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                List<Double> values = getValuesOfT(summary);
+                printValuesOfT(values);
+            }
+
+            System.out.println("Do you want to continue? (y/n)");
+            DataInputStream reader = new DataInputStream(System.in);
+            String answer = reader.readLine();
+            if (answer.equals("n")) {
+                end = true;
+            }
+        }
+
     }
 
-    private static ArrayList<Integer> getChoices() throws IOException {
-        ArrayList<Integer> choices = new ArrayList<>();
+    private static Map<String, ArrayList<Integer>> getChoices(int type) throws IOException {
+        Map<String, ArrayList<Integer>> choicesMap = new java.util.HashMap<>();
         DataInputStream reader = new DataInputStream(System.in);
-        System.out.println("########### PROJECT 2 #########");
-        System.out.println("Q data entries are/have Sj [T]");
+        ArrayList<Integer> quantifierChoices = new ArrayList<>();
+        ArrayList<Integer> summarizerChoices = new ArrayList<>();
+        ArrayList<Integer> qualifierChoices = new ArrayList<>();
+
         System.out.println("Choose quantifier (Q): ");
         System.out.println("RELATIVE:");
         System.out.println("1. NEARLY_NONE");
@@ -70,77 +92,154 @@ public class Main {//HelloApplication extends Application {
         System.out.println("10. ABOUT_6000");
         System.out.println("11. OVER_8000");
         System.out.println("12. OVER_10000");
-        choices.add(Integer.parseInt(reader.readLine()));
-        System.out.println("Choose summarizer (Sj): ");
-        System.out.println("1. COAL_ANNUAL_CHANGE_PROD_TWH");
-        System.out.println("2. COAL_PROD_PER_CAPITA");
-        System.out.println("3. COAL_PROD");
-        System.out.println("4. OIL_ANNUAL_CHANGE_PROD_TWH");
-        System.out.println("5. OIL_PROD_PER_CAPITA");
-        System.out.println("6. OIL_PROD");
-        System.out.println("7. GAS_ANNUAL_CHANGE_PROD_TWH");
-        System.out.println("8. GAS_PROD_PER_CAPITA");
-        System.out.println("9. GAS_PROD");
-        choices.add(Integer.parseInt(reader.readLine()));
+        quantifierChoices.add(Integer.parseInt(reader.readLine()));
 
-        return choices;
-    }
+        boolean keepGoing = true;
+        while (keepGoing) {
+            System.out.println("Choose qualifier (Qj): ");
+            System.out.println("1. bigCoalAnnualChangeProdTwh");
+            System.out.println("2. averageCoalAnnualChangeProdTwh");
+            System.out.println("3. smallCoalAnnualChangeProdTwh");
+            System.out.println("4. bigCoalProdPerCapita");
+            System.out.println("5. averageCoalProdPerCapita");
+            System.out.println("6. smallCoalProdPerCapita");
+            System.out.println("7. bigCoalProd");
+            System.out.println("8. averageCoalProd");
+            System.out.println("9. smallCoalProd");
+            System.out.println("10. bigOilAnnualChangeProdTwh");
+            System.out.println("11. averageOilAnnualChangeProdTwh");
+            System.out.println("12. smallOilAnnualChangeProdTwh");
+            System.out.println("13. bigOilProdPerCapita");
+            System.out.println("14. averageOilProdPerCapita");
+            System.out.println("15. smallOilProdPerCapita");
+            System.out.println("16. bigOilProd");
+            System.out.println("17. averageOilProd");
+            System.out.println("18. smallOilProd");
+            System.out.println("19. bigGasAnnualChangeProdTwh");
+            System.out.println("20. averageGasAnnualChangeProdTwh");
+            System.out.println("21. smallGasAnnualChangeProdTwh");
+            System.out.println("22. bigGasProdPerCapita");
+            System.out.println("23. averageGasProdPerCapita");
+            System.out.println("24. smallGasProdPerCapita");
+            System.out.println("25. bigGasProd");
+            System.out.println("26. averageGasProd");
+            System.out.println("27. smallGasProd");
+            summarizerChoices.add(Integer.parseInt(reader.readLine()));
 
-    private static Quantifier getChosenQuantifier(int choice) {
-        switch (choice) {
-            case 1:
-                return relativeQuantifiers.getNearlyNone();
-            case 2:
-                return relativeQuantifiers.getAround1_4();
-            case 3:
-                return relativeQuantifiers.getAroundHalf();
-            case 4:
-                return relativeQuantifiers.getAround3_4();
-            case 5:
-                return relativeQuantifiers.getMost();
-            case 6:
-                return relativeQuantifiers.getNearlyAll();
-            case 7:
-                return absoluteQuantifiers.getLessThan1000();
-            case 8:
-                return absoluteQuantifiers.getAbout2000();
-            case 9:
-                return absoluteQuantifiers.getAbout5000();
-            case 10:
-                return absoluteQuantifiers.getAbout6000();
-            case 11:
-                return absoluteQuantifiers.getOver8000();
-            case 12:
-                return absoluteQuantifiers.getOver10000();
+            System.out.println("Do you want to add another summarizer? (y/n): ");
+            String response = reader.readLine();
+            if (!response.equalsIgnoreCase("y")) {
+                keepGoing = false;
+            }
         }
-        return null;
-    }
 
-    private static Label getChosenSummarizer(int choice) {
-        switch (choice) {
-            case 1:
-                return varCoalLables.labelsCoalProd.get(0);
-            case 2:
-                return varCoalLables.labelsCoalProd.get(1);
-            case 3:
-                return varCoalLables.labelsCoalProd.get(2);
-            case 4:
-                return varOilLables.labelsOilProd.get(0);
-            case 5:
-                return varOilLables.labelsOilProd.get(1);
-            case 6:
-                return varOilLables.labelsOilProd.get(2);
-            case 7:
-                return varGasLables.labelsGasProd.get(0);
-            case 8:
-                return varGasLables.labelsGasProd.get(1);
-            case 9:
-                return varGasLables.labelsGasProd.get(2);
+        if (type == 2) {
+            keepGoing = true;
+            while (keepGoing) {
+                System.out.println("Choose qualifier (Qj): ");
+                System.out.println("1. bigCoalAnnualChangeProdTwh");
+                System.out.println("2. averageCoalAnnualChangeProdTwh");
+                System.out.println("3. smallCoalAnnualChangeProdTwh");
+                System.out.println("4. bigCoalProdPerCapita");
+                System.out.println("5. averageCoalProdPerCapita");
+                System.out.println("6. smallCoalProdPerCapita");
+                System.out.println("7. bigCoalProd");
+                System.out.println("8. averageCoalProd");
+                System.out.println("9. smallCoalProd");
+                System.out.println("10. bigOilAnnualChangeProdTwh");
+                System.out.println("11. averageOilAnnualChangeProdTwh");
+                System.out.println("12. smallOilAnnualChangeProdTwh");
+                System.out.println("13. bigOilProdPerCapita");
+                System.out.println("14. averageOilProdPerCapita");
+                System.out.println("15. smallOilProdPerCapita");
+                System.out.println("16. bigOilProd");
+                System.out.println("17. averageOilProd");
+                System.out.println("18. smallOilProd");
+                System.out.println("19. bigGasAnnualChangeProdTwh");
+                System.out.println("20. averageGasAnnualChangeProdTwh");
+                System.out.println("21. smallGasAnnualChangeProdTwh");
+                System.out.println("22. bigGasProdPerCapita");
+                System.out.println("23. averageGasProdPerCapita");
+                System.out.println("24. smallGasProdPerCapita");
+                System.out.println("25. bigGasProd");
+                System.out.println("26. averageGasProd");
+                System.out.println("27. smallGasProd");
+                qualifierChoices.add(Integer.parseInt(reader.readLine()));
+
+//                System.out.println("Do you want to add another qualifier? (y/n): ");
+//                String response = reader.readLine();
+//                if (!response.equalsIgnoreCase("y")) {
+//                    keepGoing = false;
+//                }
+                keepGoing = false;
+            }
         }
-        return null;
+
+        choicesMap.put("Quantifier", quantifierChoices);
+        choicesMap.put("Summarizers", summarizerChoices);
+        if (type == 2) {
+            choicesMap.put("Qualifiers", qualifierChoices);
+        }
+
+        return choicesMap;
     }
 
-    public static List<Double> getValuesOfT(Summary summary){
+    private static Quantifier getChosenQuantifier(ArrayList<Integer> choice) {
+        return switch (choice.getFirst()) {
+            case 1 -> relativeQuantifiers.getNearlyNone();
+            case 2 -> relativeQuantifiers.getAround1_4();
+            case 3 -> relativeQuantifiers.getAroundHalf();
+            case 4 -> relativeQuantifiers.getAround3_4();
+            case 5 -> relativeQuantifiers.getMost();
+            case 6 -> relativeQuantifiers.getNearlyAll();
+            case 7 -> absoluteQuantifiers.getLessThan1000();
+            case 8 -> absoluteQuantifiers.getAbout2000();
+            case 9 -> absoluteQuantifiers.getAbout5000();
+            case 10 -> absoluteQuantifiers.getAbout6000();
+            case 11 -> absoluteQuantifiers.getOver8000();
+            case 12 -> absoluteQuantifiers.getOver10000();
+            default -> null;
+        };
+
+    }
+
+    private static Label[] getChosenSummarizers(ArrayList<Integer> choices) {
+        List<Label> summarizers = new ArrayList<>();
+        for (int choice : choices) {
+            switch (choice) {
+                case 1 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(0));
+                case 2 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(1));
+                case 3 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(2));
+                case 4 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(0));
+                case 5 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(1));
+                case 6 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(2));
+                case 7 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(0));
+                case 8 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(1));
+                case 9 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(2));
+                case 10 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(0));
+                case 11 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(1));
+                case 12 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(2));
+                case 13 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(0));
+                case 14 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(1));
+                case 15 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(2));
+                case 16 -> summarizers.add(varOilLables.getLabelsOilProd().get(0));
+                case 17 -> summarizers.add(varOilLables.getLabelsOilProd().get(1));
+                case 18 -> summarizers.add(varOilLables.getLabelsOilProd().get(2));
+                case 19 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(0));
+                case 20 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(1));
+                case 21 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(2));
+                case 22 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(0));
+                case 23 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(1));
+                case 24 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(2));
+                case 25 -> summarizers.add(varGasLables.getLabelsGasProd().get(0));
+                case 26 -> summarizers.add(varGasLables.getLabelsGasProd().get(1));
+                case 27 -> summarizers.add(varGasLables.getLabelsGasProd().get(2));
+            }
+        }
+        return summarizers.toArray(new Label[0]);
+    }
+
+    public static List<Double> getValuesOfT(Summary summary) {
         List<Double> values = new ArrayList<>();
         values.add(summary.degreeOfTruth());
         values.add(summary.degreeOfImprecision());
@@ -156,7 +255,7 @@ public class Main {//HelloApplication extends Application {
         return values;
     }
 
-    public static void printValuesOfT(List<Double> values){
+    public static void printValuesOfT(List<Double> values) {
         System.out.println("Degree of truth: " + values.get(0));
         System.out.println("Degree of imprecision: " + values.get(1));
         System.out.println("Degree of covering: " + values.get(2));

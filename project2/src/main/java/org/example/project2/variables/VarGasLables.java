@@ -37,6 +37,10 @@ public class VarGasLables {
         return labelsGasProdPerCapita;
     }
 
+    public List<Label> getLabelsGasProd() {
+        return labelsGasProd;
+    }
+
 
 
 }

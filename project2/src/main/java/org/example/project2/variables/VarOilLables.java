@@ -37,6 +37,10 @@ public class VarOilLables {
         return labelsOilProdPerCapita;
     }
 
+    public List<Label> getLabelsOilProd() {
+        return labelsOilProd;
+    }
+
 
 
 }
