@@ -1,12 +1,14 @@
-package org.example.project2.logic;
+package org.example.project2.logic.linguistics;
+
+import org.example.project2.logic.sets.FuzzySet;
 
 public class Quantifier {
     private Long id;
     private final String name;
-    private final FuzzySet<Double> fuzzySet;
+    private final FuzzySet fuzzySet;
     private final QuantifierType quantifierType;
 
-    public Quantifier(String name, FuzzySet<Double> fuzzySet, QuantifierType quantifierType) {
+    public Quantifier(String name, FuzzySet fuzzySet, QuantifierType quantifierType) {
         this.name = name;
         this.fuzzySet = fuzzySet;
         this.quantifierType = quantifierType;
@@ -28,7 +30,7 @@ public class Quantifier {
         return name;
     }
 
-    public FuzzySet<Double> getFuzzySet() {
+    public FuzzySet getFuzzySet() {
         return fuzzySet;
     }
 

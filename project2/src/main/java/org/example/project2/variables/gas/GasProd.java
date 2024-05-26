@@ -1,8 +1,8 @@
 package org.example.project2.variables.gas;
 
 import org.example.project2.enums.VariablesEnum;
-import org.example.project2.logic.DataEntry;
-import org.example.project2.logic.Variable;
+import org.example.project2.logic.linguistics.DataEntry;
+import org.example.project2.logic.linguistics.Variable;
 
 public class GasProd extends Variable<DataEntry> {
 

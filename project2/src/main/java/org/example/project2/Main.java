@@ -1,10 +1,10 @@
 package org.example.project2;
 
 import org.example.project2.db.CsvReader;
-import org.example.project2.logic.DataEntry;
-import org.example.project2.logic.Label;
-import org.example.project2.logic.Quantifier;
-import org.example.project2.logic.Summary;
+import org.example.project2.logic.linguistics.DataEntry;
+import org.example.project2.logic.linguistics.Label;
+import org.example.project2.logic.linguistics.Quantifier;
+import org.example.project2.logic.linguistics.Summary;
 import org.example.project2.quantifiers.AbsoluteQuantifiers;
 import org.example.project2.quantifiers.RelativeQuantifiers;
 import org.example.project2.variables.VarCoalLables;

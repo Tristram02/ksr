@@ -1,6 +1,6 @@
 package org.example.project2.db;
 
-import org.example.project2.logic.DataEntry;
+import org.example.project2.logic.linguistics.DataEntry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

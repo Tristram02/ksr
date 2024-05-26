@@ -1,6 +1,7 @@
-package org.example.project2.logic;
+package org.example.project2.logic.linguistics;
 
-import java.util.ArrayList;
+import org.example.project2.logic.sets.FuzzySet;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class Summary<T> {
     private final Quantifier[] quantifiers;
     private final Label<T> qualifier;
     private final Label<T>[] summarizers;
-    private final FuzzySet<T> fuzzySetOfCompoundSummarizer;
+    private final FuzzySet fuzzySetOfCompoundSummarizer;
     private final List<T> objects;
 
     public Summary(Quantifier[] quantifiers, Label<T> qualifier, List<T> objects,
@@ -16,7 +17,7 @@ public class Summary<T> {
         this.quantifiers = quantifiers;
         this.qualifier = qualifier;
         this.summarizers = summarizers;
-        FuzzySet<T> tmpFuzzySet = summarizers[0].getFuzzySet();
+        FuzzySet tmpFuzzySet = summarizers[0].getFuzzySet();
         for (int i = 1; i < summarizers.length; i++) {
             tmpFuzzySet = tmpFuzzySet.and(summarizers[i].getFuzzySet());
         }
@@ -49,7 +50,7 @@ public class Summary<T> {
     public double degreeOfImprecision() {
         return 1.0 - Arrays.stream(summarizers)
                 .map(Label::getFuzzySet)
-                .mapToDouble(fuzzySet -> fuzzySet.degreeOfFuzziness(objects))
+                .mapToDouble(fuzzySet -> fuzzySet.degreeOfFuzziness((List<Double>) objects))
                 .reduce(1.0, (a, b) -> a * b);
     }
 
@@ -57,9 +58,9 @@ public class Summary<T> {
     public double degreeOfCovering() {
         if (qualifier != null) {
             return fuzzySetOfCompoundSummarizer.and(qualifier.getFuzzySet())
-                    .support(objects)
-                    .size() / (float) qualifier
-                    .getFuzzySet().support(objects).size();
+                    .support((List<Double>) objects)
+                    .getSize() / (float) qualifier
+                    .getFuzzySet().support((List<Double>) objects).getSize();
         }
         return 0.0;
     }
@@ -68,8 +69,8 @@ public class Summary<T> {
     public double degreeOfAppropriateness() {
         return Math.abs(Arrays.stream(summarizers)
                 .mapToDouble(summarizer -> summarizer.getFuzzySet()
-                        .support(objects)
-                        .size() / (double) objects.size())
+                        .support((List<Double>) objects)
+                        .getSize() / (double) objects.size())
                 .reduce(1.0, (a, b) -> a * b) - degreeOfCovering());
     }
 
@@ -115,7 +116,7 @@ public class Summary<T> {
     public double degreeOfSummarizerCardinality() {
         return 1.0 - Arrays.stream(summarizers)
                 .mapToDouble(summarizer -> summarizer.getFuzzySet()
-                        .cardinality(objects) / objects.size())
+                        .cardinality() / objects.size())
                 .reduce(1.0, (a, b) -> a * b);
     }
 
@@ -124,7 +125,7 @@ public class Summary<T> {
         if (qualifier == null) {
             return 0.0;
         }
-        return 1.0 - qualifier.getFuzzySet().degreeOfFuzziness(objects);
+        return 1.0 - qualifier.getFuzzySet().degreeOfFuzziness((List<Double>) objects);
     }
 
     /* T10 */
@@ -132,7 +133,7 @@ public class Summary<T> {
         if (qualifier == null) {
             return 0.0;
         }
-        return 1.0 - qualifier.getFuzzySet().cardinality(objects) / objects.size();
+        return 1.0 - qualifier.getFuzzySet().cardinality() / objects.size();
     }
 
     /* T11 */

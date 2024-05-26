@@ -1,14 +1,16 @@
-package org.example.project2.logic;
+package org.example.project2.logic.linguistics;
+
+import org.example.project2.logic.sets.FuzzySet;
 
 import java.io.Serializable;
 
 public class Label<T> implements Serializable {
     private Long id;
     private final String name;
-    private final FuzzySet<T> fuzzySet;
+    private final FuzzySet fuzzySet;
     private final Variable<T> linguisticVariable;
 
-    public Label(final String name, final FuzzySet<T> fuzzySet,
+    public Label(final String name, final FuzzySet fuzzySet,
                  final Variable<T> linguisticVariable) {
         this.name = name;
         this.fuzzySet = fuzzySet;

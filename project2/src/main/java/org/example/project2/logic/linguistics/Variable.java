@@ -1,4 +1,4 @@
-package org.example.project2.logic;
+package org.example.project2.logic.linguistics;
 
 import java.io.Serializable;
 

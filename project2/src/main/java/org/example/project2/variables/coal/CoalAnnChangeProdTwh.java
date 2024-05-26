@@ -1,9 +1,10 @@
 package org.example.project2.variables.coal;
 
 import org.example.project2.enums.VariablesEnum;
-import org.example.project2.logic.*;
+import org.example.project2.logic.linguistics.DataEntry;
+import org.example.project2.logic.linguistics.Variable;
 
-public class CoalAnnChangeProdTwh extends Variable<DataEntry>{
+public class CoalAnnChangeProdTwh extends Variable<DataEntry> {
 
 
 
