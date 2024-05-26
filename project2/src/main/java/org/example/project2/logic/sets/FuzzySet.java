@@ -97,4 +97,26 @@ public class FuzzySet {
         MembershipFunction intersect = new IntersectMembershipFunction(this.membershipFunction, set.membershipFunction);
         return new FuzzySet(this.universeOfDiscourse, intersect);
     }
+
+    public boolean isNormal() {
+        if (height() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isConvex() {
+        for (double x1 : universeOfDiscourse.getSet()) {
+            for (double x2 : universeOfDiscourse.getSet()) {
+                if (x1 < x2) {
+                    double x = 0.5 * (x1 + x2);
+                    if (membershipFunction.degreeOfMembership(x) < Math.min(membershipFunction.degreeOfMembership(x1), membershipFunction.degreeOfMembership(x2))) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

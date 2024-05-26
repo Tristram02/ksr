@@ -177,7 +177,7 @@ public class Summary<T> {
         if (qualifier == null) {
             return 0.0;
         }
-        return 1.0 - qualifier.getFuzzySet().cardinality() / objects.size();
+        return 1.0 - qualifier.getFuzzySet().cardinality() / qualifier.getFuzzySet().getUniverseOfDiscourse().getSize();
     }
 
     /* T11 */
