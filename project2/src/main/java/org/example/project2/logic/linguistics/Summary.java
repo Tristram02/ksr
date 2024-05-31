@@ -9,181 +9,126 @@ import java.util.List;
 
 public class Summary<T> {
     private final Quantifier quantifier;
-    private final Label<T>[] qualifiers;
-    private final Label<T>[] summarizers;
-    private final FuzzySet fuzzySetOfCompoundSummarizer;
+    private final List<Label<T>> qualifiers;
+    private final List<Label<T>> summarizers;
     private final List<DataEntry> objects;
 
-    public Summary(Quantifier quantifier, Label<T>[] qualifiers, List<DataEntry> objects,
-                             Label<T>... summarizers) {
+    public Summary(Quantifier quantifier, List<Label<T>> qualifiers, List<DataEntry> objects,
+                   List<Label<T>> summarizers) {
         this.quantifier = quantifier;
         this.qualifiers = qualifiers;
         this.summarizers = summarizers;
-        FuzzySet tmpFuzzySet = summarizers[0].getFuzzySet();
-        for (int i = 1; i < summarizers.length; i++) {
-            tmpFuzzySet = tmpFuzzySet.and(summarizers[i].getFuzzySet());
-        }
-        this.fuzzySetOfCompoundSummarizer = tmpFuzzySet;
         this.objects = objects;
     }
 
     /* T1 */
     public double degreeOfTruth() {
-        if (qualifiers == null) {
-            List<Double> getMin = new ArrayList<>();
-            double sum = 0;
-            if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
-                for (DataEntry dataEntry : objects) {
-                    for (Label summarizer : summarizers) {
-                        getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
-                    }
-                    sum += Collections.min(getMin);
-                    getMin.removeAll(getMin);
-                }
-                return quantifier.getFuzzySet().degreeOfMembership(sum);
-            } else {
-                for (DataEntry dataEntry : objects) {
-                    for (Label summarizer : summarizers) {
-                        getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
-                    }
-                    sum += Collections.min(getMin);
-                    getMin.removeAll(getMin);
-                }
-                return quantifier.getFuzzySet().degreeOfMembership(sum / objects.size());
+        double t1 = 0.0;
+        List<Double> a = new ArrayList<>();
+        List<Double> b = new ArrayList<>();
+        double sumB = 0.0;
+        for (DataEntry data: objects) {
+            for (Label label: summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
+            if (qualifiers != null) {
+                for (Label label: qualifiers) {
+                    b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+                }
+            }
+
+            double minB = 1.0;
+            if (qualifiers != null) {
+                minB = Collections.min(b);
+            }
+            t1 += Math.min(Collections.min(a), minB);
+            sumB += minB;
+        }
+        if (qualifiers != null) {
+            return quantifier.getFuzzySet().degreeOfMembership(t1 / sumB);
         } else {
-            List<Double> getMin = new ArrayList<>();
-            List<Double> getMinQ = new ArrayList<>();
-            List<Double> valuesForWMinS = new ArrayList<>();
-            double sumForS;
-            double sumForW;
-            for (DataEntry dataEntry : objects) {
-                sumForS = 0;
-                sumForW = 0;
-                for (Label summarizer : summarizers) {
-                    getMin.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName())));
-                }
-                sumForS += Collections.min(getMin);
-                for (Label qualifier : qualifiers) {
-                    getMinQ.add(qualifier.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifier.getLinguisticVariable().getName())));
-                }
-                sumForW += Collections.min(getMin);
-                if (sumForS < sumForW) {
-                    valuesForWMinS.add(sumForS);
-                } else {
-                    valuesForWMinS.add(sumForW);
-                }
-                getMin.removeAll(getMin);
-                getMinQ.removeAll(getMinQ);
-            }
-            sumForW = 0;
-            for (DataEntry dataEntry : objects) {
-                for (Label qualifier : qualifiers) {
-                    getMin.add(qualifier.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifier.getLinguisticVariable().getName())));
-                }
-                sumForW += Collections.min(getMin);
-                getMin.removeAll(getMin);
-            }
-            double sumWandS = 0;
-            for (double value : valuesForWMinS) {
-                sumWandS += value;
-            }
-            sumWandS = sumWandS / objects.size();
-            sumForW = sumForW / objects.size();
-            return quantifier.getFuzzySet().degreeOfMembership(sumWandS / sumForW);
+            return quantifier.getFuzzySet().degreeOfMembership(t1);
         }
     }
 
     /* T2 */
     public double degreeOfImprecision() {
         double t2 = 1;
-        List<Double> values = new ArrayList<>();
-        for (Label summarizer: this.summarizers) {
-            for (DataEntry dataEntry: objects) {
-                values.add(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName()));
-            }
-            t2 *= summarizer.getFuzzySet().degreeOfFuzziness(values);
-            values.clear();
+        for (Label label: summarizers) {
+            t2 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
-        return 1 - Math.pow(t2, 1.0 / this.summarizers.length);
+        t2 = Math.pow(t2, 1.0 / summarizers.size());
+        t2 = 1 - t2;
+        return t2;
     }
 
     /* T3 */
     public double degreeOfCovering() {
-        int t = 0;
-        int h = 0;
-        double membershipQ = 0.0;
-        List<Double> listQ = new ArrayList<>();
-        for (DataEntry dataEntry : objects) {
+        double t3 = 0.0;
+        List<Double> a = new ArrayList<>();
+        List<Double> b = new ArrayList<>();
+        double resA = 0.0;
+        double resB = 0.0;
+        for (DataEntry data: objects) {
+            for (Label label: summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            }
             if (qualifiers != null) {
-                membershipQ = qualifiers[0].getFuzzySet().degreeOfMembership(dataEntry.getValueByName(qualifiers[0].getName()));
+                for (Label label: qualifiers) {
+                    b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+                }
             }
-            if (membershipQ > 0.0) {
-                h++;
-                for (Label summarizer : summarizers) {
-                    listQ.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getName())));
-                }
-                membershipQ = Collections.min(listQ);
-                listQ.removeAll(listQ);
-                if (membershipQ > 0.0) {
-                    t++;
-                }
+
+            double minB = 1.0;
+            if (qualifiers != null) {
+                minB = Collections.min(b);
+            }
+            t3 += Math.min(Collections.min(a), minB);
+
+            if (t3 > 0) {
+                resA += 1.0;
+            }
+
+            if (minB > 0) {
+                resB += 1.0;
             }
         }
-        if (qualifiers != null) {
-            if (h == 0 || t == 0) {
-                return 0.0;
-            } else {
-                return (double) t / h;
-            }
-        } else {
-            for (DataEntry dataEntry : objects) {
-                for (Label summarizer : summarizers) {
-                    listQ.add(summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getName())));
-                }
-                membershipQ = Collections.min(listQ);
-                listQ.removeAll(listQ);
-                if (membershipQ > 0.0) {
-                    t++;
-                }
-            }
-            return (double) t / objects.size();
-        }
+        return resA / resB;
     }
 
     /* T4 */
     public double degreeOfAppropriateness() {
-        double p = 1.0;
-        for (Label summarizer : summarizers) {
-            double r = 0.0;
-            for (DataEntry dataEntry : objects) {
-                if (summarizer.getFuzzySet().degreeOfMembership(dataEntry.getValueByName(summarizer.getName())) > 0.0) {
-                    r++;
+        List<Integer> moreThanZero = new ArrayList<>();
+        for (DataEntry data: objects) {
+            for (Label label: summarizers) {
+                double a = (label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+                if (a > 0) {
+                    moreThanZero.add(1);
+                } else {
+                    moreThanZero.add(0);
                 }
             }
-            p *= r / objects.size();
         }
-        return Math.abs(p - this.degreeOfCovering());
+        double t4 = 1.0;
+        for (Integer x: moreThanZero) {
+            t4 *= (x * 1.0) / objects.size();
+        }
+        t4 -= degreeOfCovering();
+        return Math.abs(t4);
     }
 
     /* T5 */
     public double lengthOfSummary() {
-        return 2.0 * Math.pow(0.5, summarizers.length);
+        return 2.0 * Math.pow(0.5, summarizers.size());
     }
 
     /* T6 */
     public double degreeOfQuantifierImprecision() {
-        if (quantifier.getFuzzySet().getMembershipFunction() instanceof TrapezoidalFunction) {
-            FuzzySet quantifierFuzzySet =
-                    (FuzzySet) quantifier.getFuzzySet();
-            double continuousSupportLength = quantifierFuzzySet.getUniverseOfDiscourse().getEnd() - quantifierFuzzySet.getUniverseOfDiscourse().getBegin();
-            if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
-                return 1.0 - continuousSupportLength / objects.size();
-            } else {
-                return 1.0 - continuousSupportLength;
-            }
+        double supp = quantifier.getFuzzySet().getMembershipFunction().support();
+        if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
+            supp /= objects.size();
         }
-        return 0.0;
+        return 1 - supp;
     }
 
     /* T7 */
@@ -201,35 +146,42 @@ public class Summary<T> {
         for (Label summarizer: summarizers) {
             card *= summarizer.getFuzzySet().cardinality() / summarizer.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
-        card = Math.pow(card, 1.0 / summarizers.length);
+        card = Math.pow(card, 1.0 / summarizers.size());
         return 1 - card;
     }
 
     /* T9 */
     public double degreeOfQualifierImprecision() {
-        List<Double> values = new ArrayList<>();
-        for (Label summarizer: this.summarizers) {
-            for (DataEntry dataEntry: objects) {
-                values.add(dataEntry.getValueByName(summarizer.getLinguisticVariable().getName()));
-            }
-        }
         if (qualifiers == null) {
-            return 0.0;
+            return 1.0;
         }
-        return 1.0 - qualifiers[0].getFuzzySet().degreeOfFuzziness(values);
+        double t9 = 1.0;
+        for (Label label: qualifiers) {
+            t9 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
+        }
+        t9 = Math.pow(t9, 1.0 / qualifiers.size());
+        return 1.0 - t9;
     }
 
     /* T10 */
     public double degreeOfQualifierCardinality() {
         if (qualifiers == null) {
-            return 0.0;
+            return 1.0;
         }
-        return 1.0 - qualifiers[0].getFuzzySet().cardinality() / qualifiers[0].getFuzzySet().getUniverseOfDiscourse().getSize();
+        double t10 = 1.0;
+        for (Label label: qualifiers) {
+            t10 *= label.getFuzzySet().cardinality() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
+        }
+        t10 = Math.pow(t10, 1.0 / qualifiers.size());
+        return 1 - t10;
     }
 
     /* T11 */
     public double lengthOfQualifier() {
-        return 2.0 * Math.pow(0.5, 1); //there is only one fuzzy set in qualifier for now
+        if (qualifiers == null) {
+            return 0.0;
+        }
+        return 2.0 * Math.pow(0.5, qualifiers.size());
     }
 
     public double quality() {
@@ -244,7 +196,7 @@ public class Summary<T> {
             }};
             weights.add(0.7);
             for (int i = 0; i < measures.size() - 1; i++) {
-                weights.add(0.03);
+                weights.add(0.042);
             }
             for (int i = 0; i < measures.size(); i++) {
                 q += weights.get(i) * measures.get(i);
@@ -272,20 +224,20 @@ public class Summary<T> {
     public String toString() {
         String result = "";
         result += quantifier.getName() + " data entries ";
-        if (qualifiers != null && qualifiers.length > 0) {
+        if (qualifiers != null && qualifiers.size() > 0) {
             result += "being/having ";
-            for (int i = 0; i < qualifiers.length; i++) {
-                result += qualifiers[i].getName() + " " + qualifiers[i].getLinguisticVariable().getName();
-                if (i < qualifiers.length - 1) {
+            for (int i = 0; i < qualifiers.size(); i++) {
+                result += qualifiers.get(i).getName() + " " + qualifiers.get(i).getLinguisticVariableName();
+                if (i < qualifiers.size() - 1) {
                     result += " and ";
                 }
             }
         }
 
         result += " are/have ";
-        for (int i = 0; i < summarizers.length; i++) {
-            result += summarizers[i].getName() + " " + summarizers[i].getLinguisticVariable().getName();
-            if (i < summarizers.length - 1) {
+        for (int i = 0; i < summarizers.size(); i++) {
+            result += summarizers.get(i).getName() + " " + summarizers.get(i).getLinguisticVariableName();
+            if (i < summarizers.size() - 1) {
                 result += " and ";
             }
         }

@@ -1,15 +1,12 @@
 package org.example.project2;
 
+import javafx.application.Application;
 import org.example.project2.db.CsvReader;
 import org.example.project2.logic.linguistics.DataEntry;
 import org.example.project2.logic.linguistics.Label;
 import org.example.project2.logic.linguistics.Quantifier;
 import org.example.project2.logic.linguistics.Summary;
-import org.example.project2.quantifiers.AbsoluteQuantifiers;
-import org.example.project2.quantifiers.RelativeQuantifiers;
-import org.example.project2.variables.VarCoalLables;
-import org.example.project2.variables.VarGasLables;
-import org.example.project2.variables.VarOilLables;
+import org.example.project2.view.WindowMode;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -17,59 +14,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Main {//HelloApplication extends Application {
+public class Main {
 
-    static AbsoluteQuantifiers absoluteQuantifiers = new AbsoluteQuantifiers();
-    static RelativeQuantifiers relativeQuantifiers = new RelativeQuantifiers();
-    static VarCoalLables varCoalLables = new VarCoalLables();
-    static VarOilLables varOilLables = new VarOilLables();
-    static VarGasLables varGasLables = new VarGasLables();
-
-//    @Override
-//    public void start(Stage stage) throws IOException {
-////        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
-////        Scene scene = new Scene(fxmlLoader.load(), 500, 700);
-////        stage.setTitle("Project 2");
-////        stage.setScene(scene);
-////        stage.show();
-//
-//    }
+    static Initialization initialData = new Initialization();
 
     public static void main(String[] args) throws IOException {
-//        launch();
-        CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
-        List<DataEntry> dataEntries = csvReader.readData();
-        boolean end = false;
-        while (!end) {
 
-            System.out.println("########### PROJECT 2 #########");
+        if (args.length == 0) {
+            Application.launch(WindowMode.class, args);
+        } else {
+            CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
+            List<DataEntry> dataEntries = csvReader.readData();
+            boolean end = false;
+            while (!end) {
 
-            System.out.println("Choose type of summary: ");
-            System.out.println("1. Q data entries are/have Sj [T]");
-            System.out.println("2. Q data entries being/having W are/have Sj [T]");
-            String type = new DataInputStream(System.in).readLine();
-            if (type.equals("1")) {
-                Map<String, ArrayList<Integer>> choices = getChoices(1);
-                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
-                List<Double> values = getValuesOfT(summary);
-                System.out.println(summary);
-                printValuesOfT(values);
-            } else {
-                Map<String, ArrayList<Integer>> choices = getChoices(2);
-                Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
-                List<Double> values = getValuesOfT(summary);
-                System.out.println(summary);
-                printValuesOfT(values);
-            }
+                System.out.println("########### PROJECT 2 #########");
 
-            System.out.println("Do you want to continue? (y/n)");
-            DataInputStream reader = new DataInputStream(System.in);
-            String answer = reader.readLine();
-            if (answer.equals("n")) {
-                end = true;
+                System.out.println("Choose type of summary: ");
+                System.out.println("1. Q data entries are/have Sj [T]");
+                System.out.println("2. Q data entries being/having W are/have Sj [T]");
+                String type = new DataInputStream(System.in).readLine();
+                if (type.equals("1")) {
+                    Map<String, ArrayList<Integer>> choices = getChoices(1);
+                    Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                    List<Double> values = getValuesOfT(summary);
+                    System.out.println(summary);
+                    printValuesOfT(values);
+                } else {
+                    Map<String, ArrayList<Integer>> choices = getChoices(2);
+                    Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                    List<Double> values = getValuesOfT(summary);
+                    System.out.println(summary);
+                    printValuesOfT(values);
+                }
+
+                System.out.println("Do you want to continue? (y/n)");
+                DataInputStream reader = new DataInputStream(System.in);
+                String answer = reader.readLine();
+                if (answer.equals("n")) {
+                    end = true;
+                }
             }
         }
-
     }
 
     private static Map<String, ArrayList<Integer>> getChoices(int type) throws IOException {
@@ -188,57 +174,57 @@ public class Main {//HelloApplication extends Application {
 
     private static Quantifier getChosenQuantifier(ArrayList<Integer> choice) {
         return switch (choice.getFirst()) {
-            case 1 -> relativeQuantifiers.getNearlyNone();
-            case 2 -> relativeQuantifiers.getAround1_4();
-            case 3 -> relativeQuantifiers.getAroundHalf();
-            case 4 -> relativeQuantifiers.getAround3_4();
-            case 5 -> relativeQuantifiers.getMost();
-            case 6 -> relativeQuantifiers.getNearlyAll();
-            case 7 -> absoluteQuantifiers.getLessThan1000();
-            case 8 -> absoluteQuantifiers.getAbout2000();
-            case 9 -> absoluteQuantifiers.getAbout5000();
-            case 10 -> absoluteQuantifiers.getAbout6000();
-            case 11 -> absoluteQuantifiers.getOver8000();
-            case 12 -> absoluteQuantifiers.getOver10000();
+            case 1 -> initialData.getNearlyNone();
+            case 2 -> initialData.getAround1_4();
+            case 3 -> initialData.getAroundHalf();
+            case 4 -> initialData.getAround3_4();
+            case 5 -> initialData.getMost();
+            case 6 -> initialData.getNearlyAll();
+            case 7 -> initialData.getLessThan1000();
+            case 8 -> initialData.getAbout2000();
+            case 9 -> initialData.getAbout5000();
+            case 10 -> initialData.getAbout6000();
+            case 11 -> initialData.getOver8000();
+            case 12 -> initialData.getOver10000();
             default -> null;
         };
 
     }
 
-    private static Label[] getChosenSummarizers(ArrayList<Integer> choices) {
+    private static List<Label> getChosenSummarizers(ArrayList<Integer> choices) {
         List<Label> summarizers = new ArrayList<>();
         for (int choice : choices) {
             switch (choice) {
-                case 1 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(0));
-                case 2 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(1));
-                case 3 -> summarizers.add(varCoalLables.getLabelsCoalAnnChangeProdTwh().get(2));
-                case 4 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(0));
-                case 5 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(1));
-                case 6 -> summarizers.add(varCoalLables.getLabelsCoalProdPerCapita().get(2));
-                case 7 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(0));
-                case 8 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(1));
-                case 9 -> summarizers.add(varCoalLables.getLabelsCoalProd().get(2));
-                case 10 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(0));
-                case 11 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(1));
-                case 12 -> summarizers.add(varOilLables.getLabelsOilAnnChangeProdTwh().get(2));
-                case 13 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(0));
-                case 14 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(1));
-                case 15 -> summarizers.add(varOilLables.getLabelsOilProdPerCapita().get(2));
-                case 16 -> summarizers.add(varOilLables.getLabelsOilProd().get(0));
-                case 17 -> summarizers.add(varOilLables.getLabelsOilProd().get(1));
-                case 18 -> summarizers.add(varOilLables.getLabelsOilProd().get(2));
-                case 19 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(0));
-                case 20 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(1));
-                case 21 -> summarizers.add(varGasLables.getLabelsGasAnnChangeProdTwh().get(2));
-                case 22 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(0));
-                case 23 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(1));
-                case 24 -> summarizers.add(varGasLables.getLabelsGasProdPerCapita().get(2));
-                case 25 -> summarizers.add(varGasLables.getLabelsGasProd().get(0));
-                case 26 -> summarizers.add(varGasLables.getLabelsGasProd().get(1));
-                case 27 -> summarizers.add(varGasLables.getLabelsGasProd().get(2));
+                case 1 -> summarizers.add(initialData.getLabelsCoalAnnChangeProdTwh().get(0));
+                case 2 -> summarizers.add(initialData.getLabelsCoalAnnChangeProdTwh().get(1));
+                case 3 -> summarizers.add(initialData.getLabelsCoalAnnChangeProdTwh().get(2));
+                case 4 -> summarizers.add(initialData.getLabelsCoalProdPerCapita().get(0));
+                case 5 -> summarizers.add(initialData.getLabelsCoalProdPerCapita().get(1));
+                case 6 -> summarizers.add(initialData.getLabelsCoalProdPerCapita().get(2));
+                case 7 -> summarizers.add(initialData.getLabelsCoalProd().get(0));
+                case 8 -> summarizers.add(initialData.getLabelsCoalProd().get(1));
+                case 9 -> summarizers.add(initialData.getLabelsCoalProd().get(2));
+                case 10 -> summarizers.add(initialData.getLabelsOilAnnChangeProdTwh().get(0));
+                case 11 -> summarizers.add(initialData.getLabelsOilAnnChangeProdTwh().get(1));
+                case 12 -> summarizers.add(initialData.getLabelsOilAnnChangeProdTwh().get(2));
+                case 13 -> summarizers.add(initialData.getLabelsOilProdPerCapita().get(0));
+                case 14 -> summarizers.add(initialData.getLabelsOilProdPerCapita().get(1));
+                case 15 -> summarizers.add(initialData.getLabelsOilProdPerCapita().get(2));
+                case 16 -> summarizers.add(initialData.getLabelsOilProd().get(0));
+                case 17 -> summarizers.add(initialData.getLabelsOilProd().get(1));
+                case 18 -> summarizers.add(initialData.getLabelsOilProd().get(2));
+                case 19 -> summarizers.add(initialData.getLabelsGasAnnChangeProdTwh().get(0));
+                case 20 -> summarizers.add(initialData.getLabelsGasAnnChangeProdTwh().get(1));
+                case 21 -> summarizers.add(initialData.getLabelsGasAnnChangeProdTwh().get(2));
+                case 22 -> summarizers.add(initialData.getLabelsGasProdPerCapita().get(0));
+                case 23 -> summarizers.add(initialData.getLabelsGasProdPerCapita().get(1));
+                case 24 -> summarizers.add(initialData.getLabelsGasProdPerCapita().get(2));
+                case 25 -> summarizers.add(initialData.getLabelsGasProd().get(0));
+                case 26 -> summarizers.add(initialData.getLabelsGasProd().get(1));
+                case 27 -> summarizers.add(initialData.getLabelsGasProd().get(2));
             }
         }
-        return summarizers.toArray(new Label[0]);
+        return summarizers;
     }
 
     public static List<Double> getValuesOfT(Summary summary) {

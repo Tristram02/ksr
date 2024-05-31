@@ -96,26 +96,29 @@ public class DataEntry {
 
     public double getValueByName(String variableName) {
         switch (variableName) {
-            case "coalChangeProdTwh":
+            case "Annual change in coal production":
                 return coalChangeProdTwh;
-            case "coalProdPerCapita":
+            case "Coal production per capita":
                 return coalProdPerCapita;
-            case "coalProd":
+            case "Coal production":
                 return coalProd;
-            case "gasChangeProdTwh":
+            case "Annual change in gas production":
                 return gasChangeProdTwh;
-            case "gasProdPerCapita":
+            case "Gas production per capita":
                 return gasProdPerCapita;
-            case "gasProd":
+            case "Gas production":
                 return gasProd;
-            case "oilChangeProdTwh":
+            case "Annual change in oil production":
                 return oilChangeProdTwh;
-            case "oilProdPerCapita":
+            case "Oil production per capita":
                 return oilProdPerCapita;
-            case "oilProd":
+            case "Oil production":
                 return oilProd;
-            default:
-                return 0.0;
+            default: {
+                System.out.println(variableName);
+                throw new IllegalArgumentException("There is no variable with this name!");
+            }
+
         }
     }
 }

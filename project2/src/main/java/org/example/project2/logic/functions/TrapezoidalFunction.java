@@ -24,11 +24,11 @@ public class TrapezoidalFunction implements MembershipFunction {
         if (x < this.a) {
             return 0;
         } else if (x < this.b) {
-            return (x - this.a) / (this.b - this.a);
+            return Math.abs((x - this.a) / (this.b - this.a));
         } else if (x < this.c) {
             return 1;
         } else if (x < this.d) {
-            return (this.d - x) / (this.d - this.c);
+            return Math.abs((this.d - x) / (this.d - this.c));
         } else {
             return 0;
         }

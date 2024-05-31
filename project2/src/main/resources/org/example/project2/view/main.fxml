@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project2.view.WindowMode">
+   <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Jednopodmiotowe">
+            <content>
+              <AnchorPane maxWidth="500.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="quantifierCB" layoutX="14.0" layoutY="43.0" prefWidth="150.0" promptText="Kwantyfikator" />
+                        <TreeView fx:id="qualifiersTV" layoutX="225.0" layoutY="43.0" prefHeight="200" prefWidth="200.0" />
+                        <TreeView fx:id="summarizersTV" layoutX="436.0" layoutY="43.0" prefHeight="200" prefWidth="200.0" />
+                         <Label fx:id="T1" alignment="CENTER" layoutX="141.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T1:" textAlignment="CENTER" />
+                         <Label fx:id="T2" alignment="CENTER" layoutX="222.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T2:" textAlignment="CENTER" />
+                         <Label fx:id="T3" alignment="CENTER" layoutX="303.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T3:" textAlignment="CENTER" />
+                         <Label fx:id="T4" alignment="CENTER" layoutX="384.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T4:" textAlignment="CENTER" />
+                         <Label fx:id="T5" alignment="CENTER" layoutX="465.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T5:" textAlignment="CENTER" />
+                         <Label fx:id="T6" alignment="CENTER" layoutX="546.0" layoutY="251.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T6:" textAlignment="CENTER" />
+                         <Label fx:id="T7" alignment="CENTER" layoutX="141.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T7:" textAlignment="CENTER" />
+                         <Label fx:id="T8" alignment="CENTER" layoutX="222.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T8:" textAlignment="CENTER" />
+                         <Label fx:id="T9" alignment="CENTER" layoutX="303.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T9:" textAlignment="CENTER" />
+                         <Label fx:id="T10" alignment="CENTER" layoutX="384.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T10:" textAlignment="CENTER" />
+                         <Label fx:id="T11" alignment="CENTER" layoutX="465.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T11:" textAlignment="CENTER" />
+                         <Label fx:id="T" alignment="CENTER" layoutX="546.0" layoutY="301.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T:" textAlignment="CENTER" />
+                        <Label fx:id="summary" layoutX="141.0" layoutY="392.0" wrapText="true" maxWidth="500" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Wielopodmiotowe">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</StackPane>

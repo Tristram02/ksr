@@ -5,24 +5,16 @@ import org.example.project2.logic.sets.FuzzySet;
 import java.io.Serializable;
 
 public class Label<T> implements Serializable {
-    private Long id;
+
     private final String name;
     private final FuzzySet fuzzySet;
-    private final Variable<T> linguisticVariable;
+    private final String linguisticVariableName;
 
     public Label(final String name, final FuzzySet fuzzySet,
-                 final Variable<T> linguisticVariable) {
+                 final String linguisticVariableName) {
         this.name = name;
         this.fuzzySet = fuzzySet;
-        this.linguisticVariable = linguisticVariable;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.linguisticVariableName = linguisticVariableName;
     }
 
     public String getName() {
@@ -33,8 +25,8 @@ public class Label<T> implements Serializable {
         return fuzzySet;
     }
 
-    public Variable<T> getLinguisticVariable() {
-        return linguisticVariable;
+    public String getLinguisticVariableName() {
+        return linguisticVariableName;
     }
 
 }
