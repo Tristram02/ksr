@@ -33,7 +33,7 @@ public class Summary<T> {
             }
             if (qualifiers != null) {
                 for (Label label: qualifiers) {
-                    b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+                    a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
                 }
             }
 
