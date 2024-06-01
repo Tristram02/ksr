@@ -5,15 +5,23 @@ import java.util.List;
 
 public abstract class Variable<T> implements Serializable {
     private final String name;
-    private List<Label> labels;
+    private final List<Label> labels;
 
-    public Variable(final String name) {
+    public Variable(String name, List<Label> labels) {
         this.name = name;
+        this.labels = labels;
     }
 
     public abstract Double extractAttribute(T object);
 
     public String getName() {
         return name;
+    }
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void addLabel(Label label) {
+        labels.add(label);
     }
 }

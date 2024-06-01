@@ -9,12 +9,12 @@ import java.util.List;
 
 public class Summary<T> {
     private final Quantifier quantifier;
-    private final List<Label<T>> qualifiers;
-    private final List<Label<T>> summarizers;
+    private final List<Label> qualifiers;
+    private final List<Label> summarizers;
     private final List<DataEntry> objects;
 
-    public Summary(Quantifier quantifier, List<Label<T>> qualifiers, List<DataEntry> objects,
-                   List<Label<T>> summarizers) {
+    public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
+                   List<Label> summarizers) {
         this.quantifier = quantifier;
         this.qualifiers = qualifiers;
         this.summarizers = summarizers;

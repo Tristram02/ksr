@@ -4,13 +4,13 @@ import org.example.project2.logic.sets.FuzzySet;
 
 import java.io.Serializable;
 
-public class Label<T> implements Serializable {
+public class Label implements Serializable {
 
     private final String name;
     private final FuzzySet fuzzySet;
     private final String linguisticVariableName;
 
-    public Label(final String name, final FuzzySet fuzzySet,
+    public Label(String name, FuzzySet fuzzySet,
                  final String linguisticVariableName) {
         this.name = name;
         this.fuzzySet = fuzzySet;
@@ -18,7 +18,7 @@ public class Label<T> implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public FuzzySet getFuzzySet() {

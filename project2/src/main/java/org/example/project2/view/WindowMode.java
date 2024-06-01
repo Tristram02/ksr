@@ -9,16 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.example.project2.Initialization;
 import org.example.project2.db.CsvReader;
 import org.example.project2.logic.functions.GaussianFunction;
 import org.example.project2.logic.functions.TrapezoidalFunction;
 import org.example.project2.logic.functions.TriangularFunction;
-import org.example.project2.logic.linguistics.DataEntry;
-import org.example.project2.logic.linguistics.Quantifier;
-import org.example.project2.logic.linguistics.QuantifierType;
-import org.example.project2.logic.linguistics.Summary;
+import org.example.project2.logic.linguistics.*;
 import org.example.project2.logic.sets.ClassicSet;
 import org.example.project2.logic.sets.FuzzySet;
 
@@ -127,59 +125,59 @@ public class WindowMode extends Application {
 
     private void addQualifiersAndSummarizers() {
 
-        qualifiersTV.setRoot(new TreeItem("Kwalifikatory"));
-        summarizersTV.setRoot(new TreeItem("Summaryzatory"));
+        qualifiersTV.setRoot(new TreeItem<>("Kwalifikatory"));
+        summarizersTV.setRoot(new TreeItem<>("Summaryzatory"));
 
-        TreeItem treeItem1 = new TreeItem("Coal");
-        TreeItem treeItem2 = new TreeItem("Coal");
+        TreeItem<String> treeItem1 = new TreeItem<>("Coal");
+        TreeItem<String> treeItem2 = new TreeItem<>("Coal");
 
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalAnnChangeProdTwh()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalProdPerCapita()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalProd()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
         qualifiersTV.getRoot().getChildren().add(treeItem1);
         summarizersTV.getRoot().getChildren().add(treeItem2);
 
-        treeItem1 = new TreeItem("Oil");
-        treeItem2 = new TreeItem("Oil");
+        treeItem1 = new TreeItem<>("Oil");
+        treeItem2 = new TreeItem<>("Oil");
 
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilAnnChangeProdTwh()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilProdPerCapita()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilProd()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
         qualifiersTV.getRoot().getChildren().add(treeItem1);
         summarizersTV.getRoot().getChildren().add(treeItem2);
 
-        treeItem1 = new TreeItem("Gas");
-        treeItem2 = new TreeItem("Gas");
+        treeItem1 = new TreeItem<>("Gas");
+        treeItem2 = new TreeItem<>("Gas");
 
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasAnnChangeProdTwh()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasProdPerCapita()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasProd()) {
-            treeItem1.getChildren().add(new TreeItem(label.getName()));
-            treeItem2.getChildren().add(new TreeItem(label.getName()));
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
         qualifiersTV.getRoot().getChildren().add(treeItem1);
         summarizersTV.getRoot().getChildren().add(treeItem2);
@@ -195,9 +193,11 @@ public class WindowMode extends Application {
                 for (Integer id: selected) {
                     TreeItem treeItem = qualifiersTV.getTreeItem(id);
                     if (qualifiersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (org.example.project2.logic.linguistics.Label label: initialData.getAllLabels()) {
-                            if (label.getName().equals(treeItem.getValue())) {
-                                qualifiers.add(label);
+                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
+                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
+                                if (label.getName().equals(treeItem.getValue())) {
+                                    qualifiers.add(label);
+                                }
                             }
                         }
                     }
@@ -217,9 +217,11 @@ public class WindowMode extends Application {
                 for (Integer id: selected) {
                     TreeItem treeItem = summarizersTV.getTreeItem(id);
                     if (summarizersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (org.example.project2.logic.linguistics.Label label: initialData.getAllLabels()) {
-                            if (label.getName().equals(treeItem.getValue())) {
-                                summarizers.add(label);
+                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
+                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
+                                if (label.getName().equals(treeItem.getValue())) {
+                                    summarizers.add(label);
+                                }
                             }
                         }
                     }
