@@ -3,17 +3,24 @@ package org.example.project2.view;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.example.project2.db.CsvReader;
-import org.example.project2.logic.linguistics.DataEntry;
-import org.example.project2.logic.linguistics.Label;
-import org.example.project2.logic.linguistics.Quantifier;
 import org.example.project2.Initialization;
+import org.example.project2.db.CsvReader;
+import org.example.project2.logic.functions.GaussianFunction;
+import org.example.project2.logic.functions.TrapezoidalFunction;
+import org.example.project2.logic.functions.TriangularFunction;
+import org.example.project2.logic.linguistics.DataEntry;
+import org.example.project2.logic.linguistics.Quantifier;
+import org.example.project2.logic.linguistics.QuantifierType;
 import org.example.project2.logic.linguistics.Summary;
+import org.example.project2.logic.sets.ClassicSet;
+import org.example.project2.logic.sets.FuzzySet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,11 +29,15 @@ import java.util.List;
 public class WindowMode extends Application {
 
     Quantifier quantifier;
-    List<Label> summarizers = new ArrayList<>();
-    List<Label> qualifiers = new ArrayList<>();
-
+    List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>();
+    List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
     Initialization initialData = new Initialization();
-
+    Double a;
+    Double b;
+    Double c;
+    Double d;
+    String name;
+    boolean isAbsolute;
 
     @FXML
     private ComboBox quantifierCB;
@@ -35,31 +46,55 @@ public class WindowMode extends Application {
     @FXML
     private TreeView summarizersTV;
     @FXML
-    private javafx.scene.control.Label summary;
+    private Label summary;
     @FXML
-    private javafx.scene.control.Label T1;
+    private Label T1;
     @FXML
-    private javafx.scene.control.Label T2;
+    private Label T2;
     @FXML
-    private javafx.scene.control.Label T3;
+    private Label T3;
     @FXML
-    private javafx.scene.control.Label T4;
+    private Label T4;
     @FXML
-    private javafx.scene.control.Label T5;
+    private Label T5;
     @FXML
-    private javafx.scene.control.Label T6;
+    private Label T6;
     @FXML
-    private javafx.scene.control.Label T7;
+    private Label T7;
     @FXML
-    private javafx.scene.control.Label T8;
+    private Label T8;
     @FXML
-    private javafx.scene.control.Label T9;
+    private Label T9;
     @FXML
-    private javafx.scene.control.Label T10;
+    private Label T10;
     @FXML
-    private javafx.scene.control.Label T11;
+    private Label T11;
     @FXML
-    private javafx.scene.control.Label T;
+    private Label T;
+    @FXML
+    private TextField quantifierName;
+    @FXML
+    private ComboBox quantifierMembershipFunction;
+    @FXML
+    private Label quantifierParameter1;
+    @FXML
+    private Label quantifierParameter2;
+    @FXML
+    private Label quantifierParameter3;
+    @FXML
+    private Label quantifierParameter4;
+    @FXML
+    private TextField quantifierParameter1TF;
+    @FXML
+    private TextField quantifierParameter2TF;
+    @FXML
+    private TextField quantifierParameter3TF;
+    @FXML
+    private TextField quantifierParameter4TF;
+    @FXML
+    private CheckBox quantifierType;
+    @FXML
+    private Button createQuantifier;
 
     private void addQuantifiers() {
         quantifierCB.getItems().add(initialData.getNearlyNone().getName());
@@ -98,15 +133,15 @@ public class WindowMode extends Application {
         TreeItem treeItem1 = new TreeItem("Coal");
         TreeItem treeItem2 = new TreeItem("Coal");
 
-        for (Label label: initialData.getLabelsCoalAnnChangeProdTwh()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalAnnChangeProdTwh()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsCoalProdPerCapita()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalProdPerCapita()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsCoalProd()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsCoalProd()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
@@ -116,15 +151,15 @@ public class WindowMode extends Application {
         treeItem1 = new TreeItem("Oil");
         treeItem2 = new TreeItem("Oil");
 
-        for (Label label: initialData.getLabelsOilAnnChangeProdTwh()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilAnnChangeProdTwh()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsOilProdPerCapita()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilProdPerCapita()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsOilProd()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsOilProd()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
@@ -134,15 +169,15 @@ public class WindowMode extends Application {
         treeItem1 = new TreeItem("Gas");
         treeItem2 = new TreeItem("Gas");
 
-        for (Label label: initialData.getLabelsGasAnnChangeProdTwh()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasAnnChangeProdTwh()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsGasProdPerCapita()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasProdPerCapita()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
-        for (Label label: initialData.getLabelsGasProd()) {
+        for (org.example.project2.logic.linguistics.Label label: initialData.getLabelsGasProd()) {
             treeItem1.getChildren().add(new TreeItem(label.getName()));
             treeItem2.getChildren().add(new TreeItem(label.getName()));
         }
@@ -160,7 +195,7 @@ public class WindowMode extends Application {
                 for (Integer id: selected) {
                     TreeItem treeItem = qualifiersTV.getTreeItem(id);
                     if (qualifiersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Label label: initialData.getAllLabels()) {
+                        for (org.example.project2.logic.linguistics.Label label: initialData.getAllLabels()) {
                             if (label.getName().equals(treeItem.getValue())) {
                                 qualifiers.add(label);
                             }
@@ -182,7 +217,7 @@ public class WindowMode extends Application {
                 for (Integer id: selected) {
                     TreeItem treeItem = summarizersTV.getTreeItem(id);
                     if (summarizersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Label label: initialData.getAllLabels()) {
+                        for (org.example.project2.logic.linguistics.Label label: initialData.getAllLabels()) {
                             if (label.getName().equals(treeItem.getValue())) {
                                 summarizers.add(label);
                             }
@@ -208,6 +243,111 @@ public class WindowMode extends Application {
         T11.setText(STR."T11: \{Math.round(summary.lengthOfQualifier() * 100.0) / 100.0}");
         T.setText(STR."T: \{Math.round(summary.quality() * 100.0) / 100.0}");
     }
+
+    private void initializeNewQuantifierPane() {
+        quantifierMembershipFunction.getItems().add("Trapezoidalna");
+        quantifierMembershipFunction.getItems().add("Trójkątna");
+        quantifierMembershipFunction.getItems().add("Gaussa");
+
+        quantifierMembershipFunction.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                switch ((String)quantifierMembershipFunction.getItems().get((Integer)t1)) {
+                    case "Trapezoidalna": {
+                        quantifierParameter3.setVisible(true);
+                        quantifierParameter4.setVisible(true);
+                        quantifierParameter3TF.setVisible(true);
+                        quantifierParameter4TF.setVisible(true);
+                        quantifierParameter1.setText("Lewe minimum");
+                        quantifierParameter2.setText("Lewe maksimum");
+                        quantifierParameter3.setText("Prawe maksimum");
+                        quantifierParameter4.setText("Prawe minimum");
+                        break;
+                    }
+                    case "Trójkątna": {
+                        quantifierParameter3.setVisible(true);
+                        quantifierParameter3TF.setVisible(true);
+                        quantifierParameter1.setText("Lewe minimum");
+                        quantifierParameter2.setText("Maksimum");
+                        quantifierParameter3.setText("Prawe minimum");
+                        quantifierParameter4.setVisible(false);
+                        quantifierParameter4TF.setVisible(false);
+                        break;
+                    }
+                    case "Gaussa": {
+                        quantifierParameter1.setText("Średnia");
+                        quantifierParameter2.setText("Odchylenie standardowe");
+                        quantifierParameter3.setVisible(false);
+                        quantifierParameter4.setVisible(false);
+                        quantifierParameter3TF.setVisible(false);
+                        quantifierParameter4TF.setVisible(false);
+                        break;
+                    }
+                }
+            }
+        });
+
+        quantifierParameter1TF.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*\\.?\\d*") || t1.startsWith(".") || t1.chars().filter(ch -> ch == '.').count() > 1) {
+                    String corrected = t1.replaceAll("[^\\d.]", "");
+                    corrected = corrected.replaceFirst("^\\.", "");
+                    while (corrected.chars().filter(ch -> ch == '.').count() > 1) {
+                        corrected = corrected.replaceFirst("\\.(?=.*\\.)", "");
+                    }
+                    quantifierParameter1TF.setText(corrected);
+                }
+            }
+        });
+        quantifierParameter2TF.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*\\.?\\d*") || t1.startsWith(".") || t1.chars().filter(ch -> ch == '.').count() > 1) {
+                    String corrected = t1.replaceAll("[^\\d.]", "");
+                    corrected = corrected.replaceFirst("^\\.", "");
+                    while (corrected.chars().filter(ch -> ch == '.').count() > 1) {
+                        corrected = corrected.replaceFirst("\\.(?=.*\\.)", "");
+                    }
+                    quantifierParameter2TF.setText(corrected);
+                }
+            }
+        });
+        quantifierParameter3TF.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*\\.?\\d*") || t1.startsWith(".") || t1.chars().filter(ch -> ch == '.').count() > 1) {
+                    String corrected = t1.replaceAll("[^\\d.]", "");
+                    corrected = corrected.replaceFirst("^\\.", "");
+                    while (corrected.chars().filter(ch -> ch == '.').count() > 1) {
+                        corrected = corrected.replaceFirst("\\.(?=.*\\.)", "");
+                    }
+                    quantifierParameter3TF.setText(corrected);
+                }
+            }
+        });
+        quantifierParameter4TF.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (!t1.matches("\\d*\\.?\\d*") || t1.startsWith(".") || t1.chars().filter(ch -> ch == '.').count() > 1) {
+                    String corrected = t1.replaceAll("[^\\d.]", "");
+                    corrected = corrected.replaceFirst("^\\.", "");
+                    while (corrected.chars().filter(ch -> ch == '.').count() > 1) {
+                        corrected = corrected.replaceFirst("\\.(?=.*\\.)", "");
+                    }
+                    quantifierParameter4TF.setText(corrected);
+                }
+            }
+        });
+
+        createQuantifier.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                createNewQuantifier();
+            }
+        });
+    }
+
     private void generateSummary() {
         if (quantifier != null && summarizers.size() > 0) {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
@@ -224,9 +364,45 @@ public class WindowMode extends Application {
 
         }
     }
+
+    private void createNewQuantifier() {
+        String membershipFunction = (String) quantifierMembershipFunction.getItems().get(quantifierMembershipFunction.getSelectionModel().getSelectedIndex());
+        Quantifier newQuantifier;
+        name = quantifierName.getText();
+        isAbsolute = quantifierType.isSelected();
+        switch (membershipFunction) {
+            case "Trapezoidalna": {
+                a = Double.parseDouble(quantifierParameter1TF.getText());
+                b = Double.parseDouble(quantifierParameter2TF.getText());
+                c = Double.parseDouble(quantifierParameter3TF.getText());
+                d = Double.parseDouble(quantifierParameter4TF.getText());
+                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TrapezoidalFunction(a, b, c, d, a, d)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                break;
+            }
+            case "Trójkątna": {
+                a = Double.parseDouble(quantifierParameter1TF.getText());
+                b = Double.parseDouble(quantifierParameter2TF.getText());
+                c = Double.parseDouble(quantifierParameter3TF.getText());
+                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TriangularFunction(a, b, c, a, d)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                break;
+            }
+            case "Gaussa": {
+                a = Double.parseDouble(quantifierParameter1TF.getText());
+                b = Double.parseDouble(quantifierParameter2TF.getText());
+                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new GaussianFunction(a, b)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                break;
+            }
+            default:
+                throw new IllegalStateException("Unexpected value: " + membershipFunction);
+        }
+
+        quantifierCB.getItems().add(newQuantifier.getName());
+        initialData.addQuantifier(newQuantifier);
+    }
     public void initialize() {
         addQuantifiers();
         addQualifiersAndSummarizers();
+        initializeNewQuantifierPane();
     }
 
     @Override
