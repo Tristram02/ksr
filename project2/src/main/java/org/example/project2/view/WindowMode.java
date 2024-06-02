@@ -40,11 +40,21 @@ public class WindowMode extends Application {
     @FXML
     private ComboBox quantifierCB;
     @FXML
+    private ComboBox mQuantifierCB;
+    @FXML
     private TreeView qualifiersTV;
     @FXML
     private TreeView summarizersTV;
     @FXML
+    private TreeView mQualifiersTV;
+    @FXML
+    private TreeView mSummarizersTV;
+    @FXML
     private Label summary;
+    @FXML
+    private Label mSummary;
+    @FXML
+    private Label mT1;
     @FXML
     private Label T1;
     @FXML
