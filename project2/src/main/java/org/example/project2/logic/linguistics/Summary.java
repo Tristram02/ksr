@@ -124,6 +124,9 @@ public class  Summary<T> {
                 resB += 1.0;
             }
         }
+        if (resB == 0) {
+            return 0.0;
+        }
         return resA / resB;
     }
 
