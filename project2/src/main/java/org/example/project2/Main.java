@@ -25,29 +25,70 @@ public class Main {
         } else {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
+
             boolean end = false;
             while (!end) {
 
                 System.out.println("########### PROJECT 2 #########");
-
-                System.out.println("Choose type of summary: ");
-                System.out.println("1. Q data entries are/have Sj [T]");
-                System.out.println("2. Q data entries being/having W are/have Sj [T]");
-                String type = new DataInputStream(System.in).readLine();
-                if (type.equals("1")) {
-                    Map<String, ArrayList<Integer>> choices = getChoices(1);
-                    Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
-                    List<Double> values = getValuesOfT(summary);
-                    System.out.println(summary);
-                    printValuesOfT(values);
-                } else {
-                    Map<String, ArrayList<Integer>> choices = getChoices(2);
-                    Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
-                    List<Double> values = getValuesOfT(summary);
-                    System.out.println(summary);
-                    printValuesOfT(values);
+                System.out.println("Choose one or multi subject summary: ");
+                System.out.println("1. One subject summary");
+                System.out.println("2. Multi subject summary");
+                String subject = new DataInputStream(System.in).readLine();
+                if (subject.equals("1")) {
+                    System.out.println("Choose type of summary: ");
+                    System.out.println("1. Q data entries are/have Sj [T]");
+                    System.out.println("2. Q data entries being/having W are/have Sj [T]");
+                    String type = new DataInputStream(System.in).readLine();
+                    if (type.equals("1")) {
+                        Map<String, ArrayList<Integer>> choices = getChoices(1);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                        List<Double> values = getValuesOfT(summary);
+                        System.out.println(summary);
+                        printValuesOfT(values);
+                    } else {
+                        Map<String, ArrayList<Integer>> choices = getChoices(2);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                        List<Double> values = getValuesOfT(summary);
+                        System.out.println(summary);
+                        printValuesOfT(values);
+                    }
+                } else if (subject.equals("2")) {
+                    System.out.println("Choose type of summary: ");
+                    System.out.println("1. Q P1 comparing to P2 are/have Sj [T]");
+                    System.out.println("2. Q P1 comparing to P2 that are being/having W are/have Sj [T]");
+                    System.out.println("3. Q P1 that are being/having W comparing to P2 are/have Sj [T]");
+                    System.out.println("4. More P1 than P2 are/have Sj [T]");
+                    String multiSubjectType = new DataInputStream(System.in).readLine();
+                    if (multiSubjectType.equals("1")) {
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(1);
+                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), null, getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                                getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
+                        System.out.println(summary);
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                    } else if (multiSubjectType.equals("2")) {
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(2);
+                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), getChosenSummarizers(multiChoices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                                getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
+                        System.out.println(summary);
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                    } else if (multiSubjectType.equals("3")) {
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(3);
+                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), getChosenSummarizers(multiChoices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                                getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
+                        System.out.println(summary);
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                    } else if (multiSubjectType.equals("4")) {
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(4);
+                        Summary summary = new Summary(null, null, getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                                getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
+                        System.out.println(summary);
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                    }
                 }
-
                 System.out.println("Do you want to continue? (y/n)");
                 DataInputStream reader = new DataInputStream(System.in);
                 String answer = reader.readLine();
@@ -56,6 +97,15 @@ public class Main {
                 }
             }
         }
+    }
+
+    private static String getChosenSubjectName(ArrayList<Integer> subject1) {
+        return null;
+    }
+
+
+    private static Map<String, ArrayList<Integer>> getMultiChoices(int type) throws IOException {
+        return null;
     }
 
     private static Map<String, ArrayList<Integer>> getChoices(int type) throws IOException {
@@ -154,12 +204,12 @@ public class Main {
                 System.out.println("27. smallGasProd");
                 qualifierChoices.add(Integer.parseInt(reader.readLine()));
 
-//                System.out.println("Do you want to add another qualifier? (y/n): ");
-//                String response = reader.readLine();
-//                if (!response.equalsIgnoreCase("y")) {
-//                    keepGoing = false;
-//                }
-                keepGoing = false;
+                System.out.println("Do you want to add another qualifier? (y/n): ");
+                String response = reader.readLine();
+                if (!response.equalsIgnoreCase("y")) {
+                    keepGoing = false;
+                }
+//                keepGoing = false;
             }
         }
 
@@ -189,6 +239,10 @@ public class Main {
             default -> null;
         };
 
+    }
+
+    private static List<DataEntry> getChosenSubject(ArrayList<Integer> subject) {
+        return null;
     }
 
     private static List<Label> getChosenSummarizers(ArrayList<Integer> choices) {

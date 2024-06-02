@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Summary<T> {
+public class  Summary<T> {
     private Quantifier quantifier;
     private List<Label> qualifiers;
     private List<Label> qualifiers2;
@@ -119,6 +119,9 @@ public class Summary<T> {
             if (minB > 0) {
                 resB += 1.0;
             }
+        }
+        if(resA == 0.0 && resB == 0.0){
+            return 0.0;
         }
         return resA / resB;
     }
@@ -258,6 +261,19 @@ public class Summary<T> {
             }
         }
         return q / sum;
+    }
+
+    public double degreeOfTruthMultiType1() {
+        return 0.0;
+    }
+    public double degreeOfTruthMultiType2() {
+        return 0.0;
+    }
+    public double degreeOfTruthMultiType3() {
+        return 0.0;
+    }
+    public double degreeOfTruthMultiType4() {
+        return 0.0;
     }
 
     public String toStringSingle() {
