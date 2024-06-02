@@ -27,6 +27,7 @@ public class CsvReader {
             Long id = 1L;
             for (CSVRecord csvRecord : csvParser) {
                 String country = csvRecord.get("COUNTRY");
+                String continent = csvRecord.get("CONTINENT");
                 int year = Integer.parseInt(csvRecord.get("YEAR"));
                 double coalProductionChangeInTwh = Double.parseDouble(csvRecord.get("COAL_PRODUCTION_CHANGE_IN_TWH"));
                 double coalProductionPerCapita = Double.parseDouble(csvRecord.get("COAL_PRODUCTION_PER_CAPITA"));
@@ -38,7 +39,7 @@ public class CsvReader {
                 double oilProductionPerCapita = Double.parseDouble(csvRecord.get("OIL_PRODUCTION_PER_CAPITA"));
                 double oilProduction = Double.parseDouble(csvRecord.get("OIL_PRODUCTION"));
 
-                DataEntry dataEntry = new DataEntry(id, country, year, coalProductionChangeInTwh, coalProductionPerCapita,
+                DataEntry dataEntry = new DataEntry(id, country, continent, year, coalProductionChangeInTwh, coalProductionPerCapita,
                         coalProduction, gasProductionChangeInTwh, gasProductionPerCapita, gasProduction, oilProductionChangeInTwh,
                         oilProductionPerCapita, oilProduction);
                 id++;

@@ -4,6 +4,7 @@ public class DataEntry {
 
     private final Long id;
     private final String country;
+    private final String continent;
     private final Integer year;
     private final double coalChangeProdTwh;
     private final double coalProdPerCapita;
@@ -16,8 +17,9 @@ public class DataEntry {
     private final double oilProd;
 
 
-    public DataEntry(Long id, String country, Integer year, double coalChangeProdTwh, double coalProdPerCapita, double coalProd, double gasChangeProdTwh, double gasProdPerCapita, double gasProd, double oilChangeProdTwh, double oilProdPerCapita, double oilProd) {
+    public DataEntry(Long id, String country, String continent, Integer year, double coalChangeProdTwh, double coalProdPerCapita, double coalProd, double gasChangeProdTwh, double gasProdPerCapita, double gasProd, double oilChangeProdTwh, double oilProdPerCapita, double oilProd) {
         this.id = id;
+        this.continent = continent;
         this.country = country;
         this.year = year;
         this.coalChangeProdTwh = coalChangeProdTwh;
@@ -34,6 +36,8 @@ public class DataEntry {
     public String getCountry() {
         return country;
     }
+
+    public String getContinent() { return continent; }
 
     public Integer getYear() {
         return year;
@@ -80,6 +84,7 @@ public class DataEntry {
         final StringBuilder sb = new StringBuilder("DataEntry{");
         sb.append("id=").append(id);
         sb.append(", country='").append(country).append('\'');
+        sb.append(", continent='").append(continent).append('\'');
         sb.append(", year=").append(year);
         sb.append(", coalChangeProdTwh=").append(coalChangeProdTwh);
         sb.append(", coalProdPerCapita=").append(coalProdPerCapita);

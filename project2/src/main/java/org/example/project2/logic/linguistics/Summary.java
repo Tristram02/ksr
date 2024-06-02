@@ -27,13 +27,13 @@ public class Summary<T> {
         List<Double> a = new ArrayList<>();
         List<Double> b = new ArrayList<>();
         double sumB = 0.0;
-        for (DataEntry data: objects) {
-            for (Label label: summarizers) {
+        for (DataEntry data : objects) {
+            for (Label label : summarizers) {
                 a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
             if (qualifiers != null) {
-                for (Label label: qualifiers) {
-                    a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+                for (Label label : qualifiers) {
+                    b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
                 }
             }
 
@@ -54,7 +54,7 @@ public class Summary<T> {
     /* T2 */
     public double degreeOfImprecision() {
         double t2 = 1;
-        for (Label label: summarizers) {
+        for (Label label : summarizers) {
             t2 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
         t2 = Math.pow(t2, 1.0 / summarizers.size());
@@ -69,12 +69,12 @@ public class Summary<T> {
         List<Double> b = new ArrayList<>();
         double resA = 0.0;
         double resB = 0.0;
-        for (DataEntry data: objects) {
-            for (Label label: summarizers) {
+        for (DataEntry data : objects) {
+            for (Label label : summarizers) {
                 a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
             if (qualifiers != null) {
-                for (Label label: qualifiers) {
+                for (Label label : qualifiers) {
                     b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
                 }
             }
@@ -99,8 +99,8 @@ public class Summary<T> {
     /* T4 */
     public double degreeOfAppropriateness() {
         List<Integer> moreThanZero = new ArrayList<>();
-        for (DataEntry data: objects) {
-            for (Label label: summarizers) {
+        for (DataEntry data : objects) {
+            for (Label label : summarizers) {
                 double a = (label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
                 if (a > 0) {
                     moreThanZero.add(1);
@@ -110,7 +110,7 @@ public class Summary<T> {
             }
         }
         double t4 = 1.0;
-        for (Integer x: moreThanZero) {
+        for (Integer x : moreThanZero) {
             t4 *= (x * 1.0) / objects.size();
         }
         t4 -= degreeOfCovering();
@@ -143,7 +143,7 @@ public class Summary<T> {
     /* T8 */
     public double degreeOfSummarizerCardinality() {
         double card = 1;
-        for (Label summarizer: summarizers) {
+        for (Label summarizer : summarizers) {
             card *= summarizer.getFuzzySet().cardinality() / summarizer.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
         card = Math.pow(card, 1.0 / summarizers.size());
@@ -156,7 +156,7 @@ public class Summary<T> {
             return 1.0;
         }
         double t9 = 1.0;
-        for (Label label: qualifiers) {
+        for (Label label : qualifiers) {
             t9 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
         t9 = Math.pow(t9, 1.0 / qualifiers.size());
@@ -169,7 +169,7 @@ public class Summary<T> {
             return 1.0;
         }
         double t10 = 1.0;
-        for (Label label: qualifiers) {
+        for (Label label : qualifiers) {
             t10 *= label.getFuzzySet().cardinality() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
         }
         t10 = Math.pow(t10, 1.0 / qualifiers.size());
@@ -190,8 +190,13 @@ public class Summary<T> {
         double sum = 0.0;
         if (qualifiers == null) {
             List<Double> measures = new ArrayList<>() {{
-                add(degreeOfTruth()); add(degreeOfImprecision()); add(degreeOfCovering()); add(degreeOfAppropriateness());
-                add(lengthOfSummary()); add(degreeOfQuantifierImprecision()); add(degreeOfQuantifierCardinality());
+                add(degreeOfTruth());
+                add(degreeOfImprecision());
+                add(degreeOfCovering());
+                add(degreeOfAppropriateness());
+                add(lengthOfSummary());
+                add(degreeOfQuantifierImprecision());
+                add(degreeOfQuantifierCardinality());
                 add(degreeOfSummarizerCardinality());
             }};
             weights.add(0.7);
@@ -204,9 +209,16 @@ public class Summary<T> {
             }
         } else {
             List<Double> measures = new ArrayList<>() {{
-                add(degreeOfTruth()); add(degreeOfImprecision()); add(degreeOfCovering()); add(degreeOfAppropriateness());
-                add(lengthOfSummary()); add(degreeOfQuantifierImprecision()); add(degreeOfQuantifierCardinality());
-                add(degreeOfSummarizerCardinality()); add(degreeOfQualifierImprecision()); add(degreeOfQualifierCardinality());
+                add(degreeOfTruth());
+                add(degreeOfImprecision());
+                add(degreeOfCovering());
+                add(degreeOfAppropriateness());
+                add(lengthOfSummary());
+                add(degreeOfQuantifierImprecision());
+                add(degreeOfQuantifierCardinality());
+                add(degreeOfSummarizerCardinality());
+                add(degreeOfQualifierImprecision());
+                add(degreeOfQualifierCardinality());
                 add(lengthOfQualifier());
             }};
             weights.add(0.7);
@@ -227,7 +239,7 @@ public class Summary<T> {
         if (qualifiers != null && qualifiers.size() > 0) {
             result += "being/having ";
             for (int i = 0; i < qualifiers.size(); i++) {
-                result += qualifiers.get(i).getName() + " " + qualifiers.get(i).getLinguisticVariableName();
+                result += STR."\{parseNameOfSummarizer(qualifiers.get(i).getName())} \{qualifiers.get(i).getLinguisticVariableName()}";
                 if (i < qualifiers.size() - 1) {
                     result += " and ";
                 }
@@ -236,12 +248,21 @@ public class Summary<T> {
 
         result += " are/have ";
         for (int i = 0; i < summarizers.size(); i++) {
-            result += summarizers.get(i).getName() + " " + summarizers.get(i).getLinguisticVariableName();
+            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName())} \{summarizers.get(i).getLinguisticVariableName()}";
             if (i < summarizers.size() - 1) {
                 result += " and ";
             }
         }
 
         return result;
+    }
+
+    private String parseNameOfSummarizer(String nameOfSummarizer) {
+        for (int i = 0; i < nameOfSummarizer.length(); i++) {
+            if (Character.isUpperCase(nameOfSummarizer.charAt(i))) {
+                return nameOfSummarizer.substring(0, i);
+            }
+        }
+        return nameOfSummarizer;
     }
 }
