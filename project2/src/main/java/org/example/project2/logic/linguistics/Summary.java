@@ -112,7 +112,7 @@ public class Summary<T> {
             }
             t3 += Math.min(Collections.min(a), minB);
 
-            if (t3 > 0) {
+            if (t3 > 0 && minB > 0) {
                 resA += 1.0;
             }
 
