@@ -300,17 +300,17 @@ public class  Summary<T> {
     public double degreeOfTruthMultiType1() {
         double sigma1 = sigmaCount(this.objects);
         double sigma2 = sigmaCount(this.objects2);
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType2() {
         double sigma1 = sigmaCount(this.objects);
         double sigma2 = sigmaCount(this.objects2, Stream.concat(this.qualifiers2.stream(), this.summarizers.stream()).toList());
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType3() {
         double sigma1 = sigmaCount(this.objects, Stream.concat(this.qualifiers.stream(), this.summarizers.stream()).toList());
         double sigma2 = sigmaCount(this.objects2);
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType4() {
         double sum = 0;
