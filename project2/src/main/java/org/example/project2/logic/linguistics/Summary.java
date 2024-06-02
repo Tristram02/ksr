@@ -93,12 +93,13 @@ public class  Summary<T> {
 
     /* T3 */
     public double degreeOfCovering() {
-        double t3 = 0.0;
-        List<Double> a = new ArrayList<>();
-        List<Double> b = new ArrayList<>();
+        List<Double> a;
+        List<Double> b;
         double resA = 0.0;
         double resB = 0.0;
         for (DataEntry data : objects) {
+            a = new ArrayList<>();
+            b = new ArrayList<>();
             for (Label label : summarizers) {
                 a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
@@ -112,18 +113,15 @@ public class  Summary<T> {
             if (qualifiers != null) {
                 minB = Collections.min(b);
             }
-            t3 += Math.min(Collections.min(a), minB);
+            double membership = Math.min(Collections.min(a), minB);
 
-            if (t3 > 0 && minB > 0) {
+            if (membership > 0) {
                 resA += 1.0;
             }
 
             if (minB > 0) {
                 resB += 1.0;
             }
-        }
-        if(resA == 0.0 && resB == 0.0){
-            return 0.0;
         }
         return resA / resB;
     }
@@ -265,8 +263,27 @@ public class  Summary<T> {
         return q / sum;
     }
 
+    private double sigmaCount(List<DataEntry> objects) {
+        double sum = 0;
+        List<Double> a;
+        for (DataEntry data: objects) {
+            a = new ArrayList<>();
+            for (Label label: summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            }
+            sum += Collections.min(a);
+        }
+        return sum;
+    }
+
+    private double implication(double a, double b) {
+        return Math.min(1, 1 - a + b);
+    }
+
     public double degreeOfTruthMultiType1() {
-        return 0.0;
+        double sigma1 = sigmaCount(this.objects);
+        double sigma2 = sigmaCount(this.objects2);
+        return quantifier.getFuzzySet().degreeOfMembership(sigma1 / this.objects.size()) / ((sigma1 / objects.size()) + (sigma2 / objects2.size()));
     }
     public double degreeOfTruthMultiType2() {
         return 0.0;
