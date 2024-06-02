@@ -24,10 +24,11 @@ public class Summary<T> {
     /* T1 */
     public double degreeOfTruth() {
         double t1 = 0.0;
-        List<Double> a = new ArrayList<>();
-        List<Double> b = new ArrayList<>();
-        double sumB = 0.0;
+        List<Double> a;
+        List<Double> b;
         for (DataEntry data : objects) {
+            a = new ArrayList<>();
+            b = new ArrayList<>();
             for (Label label : summarizers) {
                 a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
@@ -42,12 +43,11 @@ public class Summary<T> {
                 minB = Collections.min(b);
             }
             t1 += Math.min(Collections.min(a), minB);
-            sumB += minB;
         }
-        if (qualifiers != null) {
-            return quantifier.getFuzzySet().degreeOfMembership(t1 / sumB);
-        } else {
+        if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
             return quantifier.getFuzzySet().degreeOfMembership(t1);
+        } else {
+            return quantifier.getFuzzySet().degreeOfMembership(t1 / objects.size());
         }
     }
 
