@@ -3,6 +3,7 @@ package org.example.project2.logic.linguistics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class  Summary<T> {
     private Quantifier quantifier;
@@ -276,6 +277,19 @@ public class  Summary<T> {
         return sum;
     }
 
+    private double sigmaCount(List<DataEntry> objects, List<Label> summarizers) {
+        double sum = 0;
+        List<Double> a;
+        for (DataEntry data: objects) {
+            a = new ArrayList<>();
+            for (Label label: summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            }
+            sum += Collections.min(a);
+        }
+        return sum;
+    }
+
     private double implication(double a, double b) {
         return Math.min(1, 1 - a + b);
     }
@@ -283,16 +297,38 @@ public class  Summary<T> {
     public double degreeOfTruthMultiType1() {
         double sigma1 = sigmaCount(this.objects);
         double sigma2 = sigmaCount(this.objects2);
-        return quantifier.getFuzzySet().degreeOfMembership(sigma1 / this.objects.size()) / ((sigma1 / objects.size()) + (sigma2 / objects2.size()));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
     }
     public double degreeOfTruthMultiType2() {
-        return 0.0;
+        double sigma1 = sigmaCount(this.objects);
+        double sigma2 = sigmaCount(this.objects2, Stream.concat(this.qualifiers2.stream(), this.summarizers.stream()).toList());
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
     }
     public double degreeOfTruthMultiType3() {
-        return 0.0;
+        double sigma1 = sigmaCount(this.objects, Stream.concat(this.qualifiers.stream(), this.summarizers.stream()).toList());
+        double sigma2 = sigmaCount(this.objects2);
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size())) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size()));
     }
     public double degreeOfTruthMultiType4() {
-        return 0.0;
+        double sum = 0;
+        List<Double> a;
+        for (DataEntry data: this.objects) {
+            a = new ArrayList<>();
+
+            for (Label label: this.summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            }
+            sum += implication(0, Collections.min(a));
+        }
+        for (DataEntry data: this.objects2) {
+            a = new ArrayList<>();
+
+            for (Label label: this.summarizers) {
+                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            }
+            sum += implication(0, Collections.min(a));
+        }
+        return 1 - (sum / (this.objects.size() + this.objects2.size()));
     }
 
     public String toStringSingle() {
