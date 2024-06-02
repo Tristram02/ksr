@@ -47,13 +47,13 @@ public class Main {
                         Map<String, ArrayList<Integer>> choices = getChoices(1);
                         Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
                         List<Double> values = getValuesOfT(summary);
-                        System.out.println(summary);
+                        System.out.println(summary.toStringSingle());
                         printValuesOfT(values);
                     } else {
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
                         Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
                         List<Double> values = getValuesOfT(summary);
-                        System.out.println(summary);
+                        System.out.println(summary.toStringSingle());
                         printValuesOfT(values);
                     }
                 } else if (subject.equals("2")) {
@@ -305,33 +305,33 @@ public class Main {
         List<Label> summarizers = new ArrayList<>();
         for (int choice : choices) {
             switch (choice) {
-                case 1 -> summarizers.add((Label) initialData.getCoalAnnChangeProdTwh().getLabels().get(0));
+                case 1 -> summarizers.add((Label) initialData.getCoalAnnChangeProdTwh().getLabels().get(2));
                 case 2 -> summarizers.add((Label) initialData.getCoalAnnChangeProdTwh().getLabels().get(1));
-                case 3 -> summarizers.add((Label) initialData.getCoalAnnChangeProdTwh().getLabels().get(2));
-                case 4 -> summarizers.add((Label) initialData.getCoalProdPerCapita().getLabels().get(0));
+                case 3 -> summarizers.add((Label) initialData.getCoalAnnChangeProdTwh().getLabels().get(0));
+                case 4 -> summarizers.add((Label) initialData.getCoalProdPerCapita().getLabels().get(2));
                 case 5 -> summarizers.add((Label) initialData.getCoalProdPerCapita().getLabels().get(1));
-                case 6 -> summarizers.add((Label) initialData.getCoalProdPerCapita().getLabels().get(2));
-                case 7 -> summarizers.add((Label) initialData.getCoalProd().getLabels().get(0));
+                case 6 -> summarizers.add((Label) initialData.getCoalProdPerCapita().getLabels().get(0));
+                case 7 -> summarizers.add((Label) initialData.getCoalProd().getLabels().get(2));
                 case 8 -> summarizers.add((Label) initialData.getCoalProd().getLabels().get(1));
-                case 9 -> summarizers.add((Label) initialData.getCoalProd().getLabels().get(2));
-                case 10 -> summarizers.add((Label) initialData.getOilAnnChangeProdTwh().getLabels().get(0));
+                case 9 -> summarizers.add((Label) initialData.getCoalProd().getLabels().get(0));
+                case 10 -> summarizers.add((Label) initialData.getOilAnnChangeProdTwh().getLabels().get(2));
                 case 11 -> summarizers.add((Label) initialData.getOilAnnChangeProdTwh().getLabels().get(1));
-                case 12 -> summarizers.add((Label) initialData.getOilAnnChangeProdTwh().getLabels().get(2));
-                case 13 -> summarizers.add((Label) initialData.getOilProdPerCapita().getLabels().get(0));
+                case 12 -> summarizers.add((Label) initialData.getOilAnnChangeProdTwh().getLabels().get(0));
+                case 13 -> summarizers.add((Label) initialData.getOilProdPerCapita().getLabels().get(2));
                 case 14 -> summarizers.add((Label) initialData.getOilProdPerCapita().getLabels().get(1));
-                case 15 -> summarizers.add((Label) initialData.getOilProdPerCapita().getLabels().get(2));
-                case 16 -> summarizers.add((Label) initialData.getOilProd().getLabels().get(0));
+                case 15 -> summarizers.add((Label) initialData.getOilProdPerCapita().getLabels().get(0));
+                case 16 -> summarizers.add((Label) initialData.getOilProd().getLabels().get(2));
                 case 17 -> summarizers.add((Label) initialData.getOilProd().getLabels().get(1));
-                case 18 -> summarizers.add((Label) initialData.getOilProd().getLabels().get(2));
-                case 19 -> summarizers.add((Label) initialData.getGasAnnChangeProdTwh().getLabels().get(0));
+                case 18 -> summarizers.add((Label) initialData.getOilProd().getLabels().get(0));
+                case 19 -> summarizers.add((Label) initialData.getGasAnnChangeProdTwh().getLabels().get(2));
                 case 20 -> summarizers.add((Label) initialData.getGasAnnChangeProdTwh().getLabels().get(1));
-                case 21 -> summarizers.add((Label) initialData.getGasAnnChangeProdTwh().getLabels().get(2));
-                case 22 -> summarizers.add((Label) initialData.getGasProdPerCapita().getLabels().get(0));
+                case 21 -> summarizers.add((Label) initialData.getGasAnnChangeProdTwh().getLabels().get(0));
+                case 22 -> summarizers.add((Label) initialData.getGasProdPerCapita().getLabels().get(2));
                 case 23 -> summarizers.add((Label) initialData.getGasProdPerCapita().getLabels().get(1));
-                case 24 -> summarizers.add((Label) initialData.getGasProdPerCapita().getLabels().get(2));
-                case 25 -> summarizers.add((Label) initialData.getGasProd().getLabels().get(0));
+                case 24 -> summarizers.add((Label) initialData.getGasProdPerCapita().getLabels().get(0));
+                case 25 -> summarizers.add((Label) initialData.getGasProd().getLabels().get(2));
                 case 26 -> summarizers.add((Label) initialData.getGasProd().getLabels().get(1));
-                case 27 -> summarizers.add((Label) initialData.getGasProd().getLabels().get(2));
+                case 27 -> summarizers.add((Label) initialData.getGasProd().getLabels().get(0));
             }
         }
         return summarizers;
