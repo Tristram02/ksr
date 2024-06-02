@@ -2,6 +2,7 @@ package org.example.project2;
 
 import javafx.application.Application;
 import org.example.project2.db.CsvReader;
+import org.example.project2.enums.ContinentsEnum;
 import org.example.project2.logic.linguistics.DataEntry;
 import org.example.project2.logic.linguistics.Label;
 import org.example.project2.logic.linguistics.Quantifier;
@@ -11,8 +12,11 @@ import org.example.project2.view.WindowMode;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.example.project2.enums.ContinentsEnum.*;
 
 public class Main {
 
@@ -60,30 +64,34 @@ public class Main {
                     System.out.println("4. More P1 than P2 are/have Sj [T]");
                     String multiSubjectType = new DataInputStream(System.in).readLine();
                     if (multiSubjectType.equals("1")) {
-                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(1);
-                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), null, getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
+                        Map<String, ArrayList<Integer>> choices = getChoices(1);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
                     } else if (multiSubjectType.equals("2")) {
-                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(2);
-                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), getChosenSummarizers(multiChoices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
+                        Map<String, ArrayList<Integer>> choices = getChoices(2);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType2()}");
                     } else if (multiSubjectType.equals("3")) {
-                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(3);
-                        Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), getChosenSummarizers(multiChoices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
+                        Map<String, ArrayList<Integer>> choices = getChoices(2);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType3()}");
                     } else if (multiSubjectType.equals("4")) {
-                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(4);
+                        Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
+                        Map<String, ArrayList<Integer>> choices = getChoices(3);
                         Summary summary = new Summary(null, null, getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
+                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType4()}");
@@ -100,37 +108,74 @@ public class Main {
     }
 
     private static String getChosenSubjectName(ArrayList<Integer> subject1) {
-        return null;
+        return switch (subject1.getFirst()) {
+            case 1 -> AFRICA.getName();
+            case 2 -> ASIA.getName();
+            case 3 -> EUROPE.getName();
+            case 4 -> NORTH_AMERICA.getName();
+            case 5 -> OCEANIA.getName();
+            case 6 -> SOUTH_AMERICA.getName();
+            default -> null;
+        };
     }
 
 
-    private static Map<String, ArrayList<Integer>> getMultiChoices(int type) throws IOException {
-        return null;
+    private static Map<String, ArrayList<Integer>> getMultiChoices() throws IOException {
+        Map<String, ArrayList<Integer>> multiChoicesMap = new HashMap<>();
+        DataInputStream reader = new DataInputStream(System.in);
+        ArrayList<Integer> subject1Choices = new ArrayList<>();
+        ArrayList<Integer> subject2Choices = new ArrayList<>();
+
+        System.out.println("Choose first subject: ");
+        System.out.println("1. data entries from Africa");
+        System.out.println("2. data entries from Asia");
+        System.out.println("3. data entries from Europe");
+        System.out.println("4. data entries from North America");
+        System.out.println("5. data entries from Oceania");
+        System.out.println("6. data entries from South America");
+        subject1Choices.add(Integer.parseInt(reader.readLine()));
+
+        System.out.println("Choose second subject: ");
+        System.out.println("1. data entries from Africa");
+        System.out.println("2. data entries from Asia");
+        System.out.println("3. data entries from Europe");
+        System.out.println("4. data entries from North America");
+        System.out.println("5. data entries from Oceania");
+        System.out.println("6. data entries from South America");
+        subject2Choices.add(Integer.parseInt(reader.readLine()));
+
+        multiChoicesMap.put("Subject1", subject1Choices);
+        multiChoicesMap.put("Subject2", subject2Choices);
+
+        return multiChoicesMap;
     }
+
 
     private static Map<String, ArrayList<Integer>> getChoices(int type) throws IOException {
-        Map<String, ArrayList<Integer>> choicesMap = new java.util.HashMap<>();
+        Map<String, ArrayList<Integer>> choicesMap = new HashMap<>();
         DataInputStream reader = new DataInputStream(System.in);
         ArrayList<Integer> quantifierChoices = new ArrayList<>();
         ArrayList<Integer> summarizerChoices = new ArrayList<>();
         ArrayList<Integer> qualifierChoices = new ArrayList<>();
 
-        System.out.println("Choose quantifier (Q): ");
-        System.out.println("RELATIVE:");
-        System.out.println("1. NEARLY_NONE");
-        System.out.println("2. AROUND_1/4");
-        System.out.println("3. AROUND_HALF");
-        System.out.println("4. AROUND_3/4");
-        System.out.println("5. MOST");
-        System.out.println("6. NEARLY_ALL");
-        System.out.println("ABSOLUTE:");
-        System.out.println("7. LESS_THAN_1000");
-        System.out.println("8. ABOUT_2000");
-        System.out.println("9. ABOUT_5000");
-        System.out.println("10. ABOUT_6000");
-        System.out.println("11. OVER_8000");
-        System.out.println("12. OVER_10000");
-        quantifierChoices.add(Integer.parseInt(reader.readLine()));
+        if (type != 3) {
+            System.out.println("Choose quantifier (Q): ");
+            System.out.println("RELATIVE:");
+            System.out.println("1. NEARLY_NONE");
+            System.out.println("2. AROUND_1/4");
+            System.out.println("3. AROUND_HALF");
+            System.out.println("4. AROUND_3/4");
+            System.out.println("5. MOST");
+            System.out.println("6. NEARLY_ALL");
+            System.out.println("ABSOLUTE:");
+            System.out.println("7. LESS_THAN_1000");
+            System.out.println("8. ABOUT_2000");
+            System.out.println("9. ABOUT_5000");
+            System.out.println("10. ABOUT_6000");
+            System.out.println("11. OVER_8000");
+            System.out.println("12. OVER_10000");
+            quantifierChoices.add(Integer.parseInt(reader.readLine()));
+        }
 
         boolean keepGoing = true;
         while (keepGoing) {
@@ -212,8 +257,9 @@ public class Main {
 //                keepGoing = false;
             }
         }
-
-        choicesMap.put("Quantifier", quantifierChoices);
+        if(type != 3) {
+            choicesMap.put("Quantifier", quantifierChoices);
+        }
         choicesMap.put("Summarizers", summarizerChoices);
         if (type == 2) {
             choicesMap.put("Qualifiers", qualifierChoices);
