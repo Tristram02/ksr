@@ -66,32 +66,32 @@ public class Main {
                     if (multiSubjectType.equals("1")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(1);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, getChosenSubject(multiChoices.get("Subject1"), dataEntries),
+                                getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
                     } else if (multiSubjectType.equals("2")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1"), dataEntries),
+                                getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType2()}");
                     } else if (multiSubjectType.equals("3")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1"), dataEntries),
+                                getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType3()}");
                     } else if (multiSubjectType.equals("4")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(3);
-                        Summary summary = new Summary(null, null, getChosenSubject(multiChoices.get("Subject1")),
-                                getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(choices.get("Summarizers")),
+                        Summary summary = new Summary(null, null, getChosenSubject(multiChoices.get("Subject1"), dataEntries),
+                                getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
                         System.out.println(STR."T: \{summary.degreeOfTruthMultiType4()}");
@@ -287,8 +287,18 @@ public class Main {
 
     }
 
-    private static List<DataEntry> getChosenSubject(ArrayList<Integer> subject) {
-        return null;
+    private static List<DataEntry> getChosenSubject(ArrayList<Integer> subject, List<DataEntry> dataEntries) {
+        return switch (subject.getFirst()) {
+            case 1 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(AFRICA.getName())).toList();
+            case 2 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(ASIA.getName())).toList();
+            case 3 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(EUROPE.getName())).toList();
+            case 4 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(NORTH_AMERICA.getName())).toList();
+            case 5 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(OCEANIA.getName())).toList();
+            case 6 -> dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(SOUTH_AMERICA.getName())).toList();
+            default -> null;
+        };
+
+
     }
 
     private static List<Label> getChosenSummarizers(ArrayList<Integer> choices) {
