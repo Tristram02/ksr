@@ -1,17 +1,20 @@
 package org.example.project2.logic.linguistics;
 
-import org.example.project2.logic.functions.TrapezoidalFunction;
-import org.example.project2.logic.sets.FuzzySet;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Summary<T> {
-    private final Quantifier quantifier;
-    private final List<Label> qualifiers;
+    private Quantifier quantifier;
+    private List<Label> qualifiers;
+    private List<Label> qualifiers2;
     private final List<Label> summarizers;
     private final List<DataEntry> objects;
+    private List<DataEntry> objects2;
+    private int form;
+    private String subject1;
+    private String subject2;
+
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
                    List<Label> summarizers) {
@@ -19,6 +22,30 @@ public class Summary<T> {
         this.qualifiers = qualifiers;
         this.summarizers = summarizers;
         this.objects = objects;
+    }
+
+    public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
+                   List<DataEntry> objects2, List<Label> summarizers, String subject1, String subject2, boolean subject1Qualifier) {
+        this.objects = objects;
+        this.objects2 = objects2;
+        this.subject1 = subject1;
+        this.subject2 = subject2;
+        this.summarizers = summarizers;
+        if (quantifier == null) {
+            form = 4;
+            this.quantifier = null;
+        } else if (qualifiers != null) {
+            if (subject1Qualifier) {
+                form = 3;
+                this.qualifiers = qualifiers;
+            } else {
+                form = 2;
+                this.qualifiers2 = qualifiers;
+            }
+        } else {
+            form = 1;
+            this.quantifier = quantifier;
+        }
     }
 
     /* T1 */
@@ -233,7 +260,7 @@ public class Summary<T> {
         return q / sum;
     }
 
-    public String toString() {
+    public String toStringSingle() {
         String result = "";
         result += quantifier.getName() + " data entries ";
         if (qualifiers != null && qualifiers.size() > 0) {
@@ -254,6 +281,48 @@ public class Summary<T> {
             }
         }
 
+        return result;
+    }
+
+    public String toStringMultiple() {
+        String result = "";
+        if (this.form != 4) {
+            result += quantifier.getName() + " ";
+        } else {
+            result += "More ";
+        }
+        result += subject1;
+
+        if (this.form == 3) {
+            result += "being/having ";
+            for (int i = 0; i < qualifiers.size(); i++) {
+                result += qualifiers.get(i).getName() + " " + qualifiers.get(i).getLinguisticVariableName();
+                if (i < qualifiers.size() - 1) {
+                    result += " and ";
+                }
+            }
+        }
+
+        result += " compare to " + subject2;
+
+        if (this.form == 2) {
+            result += " being/having ";
+            for (int i = 0; i < qualifiers2.size(); i++) {
+                result += qualifiers2.get(i).getName() + " " + qualifiers2.get(i).getLinguisticVariableName();
+                if (i < qualifiers2.size() - 1) {
+                    result += " and ";
+                }
+            }
+        }
+
+        result += " are/have ";
+
+        for (int i = 0; i < summarizers.size(); i++) {
+            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName())} \{summarizers.get(i).getLinguisticVariableName()}";
+            if (i < summarizers.size() - 1) {
+                result += " and ";
+            }
+        }
         return result;
     }
 

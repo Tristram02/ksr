@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.example.project2.Initialization;
 import org.example.project2.db.CsvReader;
+import org.example.project2.enums.ContinentsEnum;
 import org.example.project2.logic.functions.GaussianFunction;
 import org.example.project2.logic.functions.TrapezoidalFunction;
 import org.example.project2.logic.functions.TriangularFunction;
@@ -37,6 +38,14 @@ public class WindowMode extends Application {
     String name;
     boolean isAbsolute;
 
+    @FXML
+    private ComboBox subject1CB;
+    @FXML
+    private ComboBox subject2CB;
+    @FXML
+    private CheckBox subject1ChB;
+    @FXML
+    private CheckBox subject2ChB;
     @FXML
     private ComboBox quantifierCB;
     @FXML
@@ -366,11 +375,11 @@ public class WindowMode extends Application {
             List<DataEntry> dataEntries = csvReader.readData();
             if (qualifiers.size() > 0) {
                 Summary generatedSummary = new Summary(quantifier, qualifiers, dataEntries, summarizers);
-                summary.setText(generatedSummary.toString());
+                summary.setText(generatedSummary.toStringSingle());
                 setMetrics(generatedSummary);
             } else {
                 Summary generatedSummary = new Summary(quantifier, null, dataEntries, summarizers);
-                summary.setText(generatedSummary.toString());
+                summary.setText(generatedSummary.toStringSingle());
                 setMetrics(generatedSummary);
             }
 
@@ -411,6 +420,147 @@ public class WindowMode extends Application {
         quantifierCB.getItems().add(newQuantifier.getName());
         initialData.addQuantifier(newQuantifier);
     }
+
+
+    private void generateMultiSubjectSummary() {
+
+    }
+
+
+    private void initializeMultiSubjectPane() {
+        subject1CB.getItems().add(ContinentsEnum.EUROPE);
+        subject1CB.getItems().add(ContinentsEnum.ASIA);
+        subject1CB.getItems().add(ContinentsEnum.AFRICA);
+        subject1CB.getItems().add(ContinentsEnum.NORTH_AMERICA);
+        subject1CB.getItems().add(ContinentsEnum.SOUTH_AMERICA);
+        subject1CB.getItems().add(ContinentsEnum.OCEANIA);
+
+        subject2CB.getItems().add(ContinentsEnum.EUROPE);
+        subject2CB.getItems().add(ContinentsEnum.ASIA);
+        subject2CB.getItems().add(ContinentsEnum.AFRICA);
+        subject2CB.getItems().add(ContinentsEnum.NORTH_AMERICA);
+        subject2CB.getItems().add(ContinentsEnum.SOUTH_AMERICA);
+        subject2CB.getItems().add(ContinentsEnum.OCEANIA);
+
+        mQuantifierCB.getItems().add(initialData.getNearlyNone().getName());
+        mQuantifierCB.getItems().add(initialData.getAround1_4().getName());
+        mQuantifierCB.getItems().add(initialData.getAroundHalf().getName());
+        mQuantifierCB.getItems().add(initialData.getAround3_4().getName());
+        mQuantifierCB.getItems().add(initialData.getMost().getName());
+        mQuantifierCB.getItems().add(initialData.getNearlyAll().getName());
+        mQuantifierCB.getItems().add(initialData.getLessThan1000().getName());
+        mQuantifierCB.getItems().add(initialData.getAbout2000().getName());
+        mQuantifierCB.getItems().add(initialData.getAbout5000().getName());
+        mQuantifierCB.getItems().add(initialData.getAbout6000().getName());
+        mQuantifierCB.getItems().add(initialData.getOver8000().getName());
+        mQuantifierCB.getItems().add(initialData.getOver10000().getName());
+
+        mQualifiersTV.setRoot(new TreeItem<>("Kwalifikatory"));
+        mSummarizersTV.setRoot(new TreeItem<>("Summaryzatory"));
+
+        TreeItem<String> treeItem1 = new TreeItem<>("Coal");
+        TreeItem<String> treeItem2 = new TreeItem<>("Coal");
+
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        mQualifiersTV.getRoot().getChildren().add(treeItem1);
+        mSummarizersTV.getRoot().getChildren().add(treeItem2);
+
+        treeItem1 = new TreeItem<>("Oil");
+        treeItem2 = new TreeItem<>("Oil");
+
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        mQualifiersTV.getRoot().getChildren().add(treeItem1);
+        mSummarizersTV.getRoot().getChildren().add(treeItem2);
+
+        treeItem1 = new TreeItem<>("Gas");
+        treeItem2 = new TreeItem<>("Gas");
+
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasAnnChangeProdTwh().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProdPerCapita().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProd().getLabels()) {
+            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
+            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+        }
+        mQualifiersTV.getRoot().getChildren().add(treeItem1);
+        mSummarizersTV.getRoot().getChildren().add(treeItem2);
+
+        mQualifiersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        mQualifiersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                List<Integer> selected = mQualifiersTV.getSelectionModel().getSelectedIndices().stream().toList();
+                qualifiers.clear();
+
+                for (Integer id: selected) {
+                    TreeItem treeItem = mQualifiersTV.getTreeItem(id);
+                    if (mQualifiersTV.getTreeItemLevel(treeItem) == 2) {
+                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
+                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
+                                if (label.getName().equals(treeItem.getValue())) {
+                                    qualifiers.add(label);
+                                }
+                            }
+                        }
+                    }
+                }
+                generateMultiSubjectSummary();
+            }
+        });
+
+        mSummarizersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        mSummarizersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                List<Integer> selected = mSummarizersTV.getSelectionModel().getSelectedIndices().stream().toList();
+                summarizers.clear();
+
+                for (Integer id: selected) {
+                    TreeItem treeItem = mSummarizersTV.getTreeItem(id);
+                    if (mSummarizersTV.getTreeItemLevel(treeItem) == 2) {
+                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
+                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
+                                if (label.getName().equals(treeItem.getValue())) {
+                                    summarizers.add(label);
+                                }
+                            }
+                        }
+                    }
+                }
+                generateMultiSubjectSummary();
+            }
+        });
+    }
+
     public void initialize() {
         addQuantifiers();
         addQualifiersAndSummarizers();

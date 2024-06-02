@@ -48,10 +48,10 @@
                     <TreeView fx:id="mSummarizersTV" layoutX="622.0" layoutY="51.0" prefHeight="200" prefWidth="200.0" />
                     <Label fx:id="mT1" alignment="CENTER" layoutX="59.0" layoutY="195.0" prefHeight="33.0" prefWidth="78.0" style="-fx-border-color: black;" text="T1:" textAlignment="CENTER" />
                     <Label fx:id="mSummary" layoutX="79.0" layoutY="353.0" maxWidth="500" wrapText="true" />
-                    <ComboBox layoutX="23.0" layoutY="51.0" prefWidth="150.0" promptText="Podmiot 1" />
-                    <ComboBox layoutX="23.0" layoutY="112.0" prefWidth="150.0" promptText="Podmiot 2" />
-                    <CheckBox layoutX="412.0" layoutY="267.0" mnemonicParsing="false" text="Podmiot 1" />
-                    <CheckBox layoutX="538.0" layoutY="267.0" mnemonicParsing="false" text="Podmiot 2" />
+                    <ComboBox fx:id="subject1CB" layoutX="23.0" layoutY="51.0" prefWidth="150.0" promptText="Podmiot 1" />
+                    <ComboBox fx:id="subject2CB" layoutX="23.0" layoutY="112.0" prefWidth="150.0" promptText="Podmiot 2" />
+                    <CheckBox fx:id="subject1ChB" layoutX="412.0" layoutY="267.0" mnemonicParsing="false" text="Podmiot 1" />
+                    <CheckBox fx:id="subject2ChB" layoutX="538.0" layoutY="267.0" mnemonicParsing="false" text="Podmiot 2" />
                 </children>
               </AnchorPane>
             </content>
