@@ -329,7 +329,7 @@ public class  Summary<T> {
             for (Label label: this.summarizers) {
                 a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
             }
-            sum += implication(0, Collections.min(a));
+            sum += implication(Collections.min(a), 0);
         }
         return 1 - (sum / (this.objects.size() + this.objects2.size()));
     }
