@@ -38,9 +38,11 @@ public class  Summary<T> {
             if (subject1Qualifier) {
                 form = 3;
                 this.qualifiers = qualifiers;
+                this.quantifier = quantifier;
             } else {
                 form = 2;
                 this.qualifiers2 = qualifiers;
+                this.quantifier = quantifier;
             }
         } else {
             form = 1;
