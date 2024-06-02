@@ -72,21 +72,21 @@ public class Main {
                                 getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType2()}");
                     } else if (multiSubjectType.equals("3")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(3);
                         Summary summary = new Summary(getChosenQuantifier(multiChoices.get("Quantifier")), getChosenSummarizers(multiChoices.get("Qualifiers")), getChosenSubject(multiChoices.get("Subject1")),
                                 getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType3()}");
                     } else if (multiSubjectType.equals("4")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices(4);
                         Summary summary = new Summary(null, null, getChosenSubject(multiChoices.get("Subject1")),
                                 getChosenSubject(multiChoices.get("Subject2")), getChosenSummarizers(multiChoices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary);
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType4()}");
                     }
                 }
                 System.out.println("Do you want to continue? (y/n)");

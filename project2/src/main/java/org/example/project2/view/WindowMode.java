@@ -448,12 +448,7 @@ public class WindowMode extends Application {
         mQuantifierCB.getItems().add(initialData.getAround3_4().getName());
         mQuantifierCB.getItems().add(initialData.getMost().getName());
         mQuantifierCB.getItems().add(initialData.getNearlyAll().getName());
-        mQuantifierCB.getItems().add(initialData.getLessThan1000().getName());
-        mQuantifierCB.getItems().add(initialData.getAbout2000().getName());
-        mQuantifierCB.getItems().add(initialData.getAbout5000().getName());
-        mQuantifierCB.getItems().add(initialData.getAbout6000().getName());
-        mQuantifierCB.getItems().add(initialData.getOver8000().getName());
-        mQuantifierCB.getItems().add(initialData.getOver10000().getName());
+
 
         mQualifiersTV.setRoot(new TreeItem<>("Kwalifikatory"));
         mSummarizersTV.setRoot(new TreeItem<>("Summaryzatory"));
