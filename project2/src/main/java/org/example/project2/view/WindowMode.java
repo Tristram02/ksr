@@ -373,12 +373,17 @@ public class WindowMode extends Application {
         if (quantifier != null && summarizers.size() > 0) {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
+            List<Double> weights = new ArrayList<>();
+            weights.add(0.7);
+            for (int i = 0; i < 10; i++) {
+                weights.add(0.03);
+            }
             if (qualifiers.size() > 0) {
-                Summary generatedSummary = new Summary(quantifier, qualifiers, dataEntries, summarizers);
+                Summary generatedSummary = new Summary(quantifier, qualifiers, dataEntries, summarizers, weights);
                 summary.setText(generatedSummary.toStringSingle());
                 setMetrics(generatedSummary);
             } else {
-                Summary generatedSummary = new Summary(quantifier, null, dataEntries, summarizers);
+                Summary generatedSummary = new Summary(quantifier, null, dataEntries, summarizers, weights);
                 summary.setText(generatedSummary.toStringSingle());
                 setMetrics(generatedSummary);
             }

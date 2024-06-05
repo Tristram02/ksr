@@ -43,15 +43,20 @@ public class Main {
                     System.out.println("1. Q data entries are/have Sj [T]");
                     System.out.println("2. Q data entries being/having W are/have Sj [T]");
                     String type = new DataInputStream(System.in).readLine();
+                    List<Double> weights = new ArrayList<>();
+                    weights.add(0.7);
+                    for (int i = 0; i < 10; i++) {
+                        weights.add(0.03);
+                    }
                     if (type.equals("1")) {
                         Map<String, ArrayList<Integer>> choices = getChoices(1);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights);
                         List<Double> values = getValuesOfT(summary);
                         System.out.println(summary.toStringSingle());
                         printValuesOfT(values);
                     } else {
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")));
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights);
                         List<Double> values = getValuesOfT(summary);
                         System.out.println(summary.toStringSingle());
                         printValuesOfT(values);

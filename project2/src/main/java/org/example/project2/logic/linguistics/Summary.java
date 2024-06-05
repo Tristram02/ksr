@@ -15,14 +15,16 @@ public class  Summary<T> {
     private int form;
     private String subject1;
     private String subject2;
+    private List<Double> weights;
 
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
-                   List<Label> summarizers) {
+                   List<Label> summarizers, List<Double> weights) {
         this.quantifier = quantifier;
         this.qualifiers = qualifiers;
         this.summarizers = summarizers;
         this.objects = objects;
+        this.weights = weights;
     }
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
@@ -219,7 +221,6 @@ public class  Summary<T> {
     }
 
     public double quality() {
-        List<Double> weights = new ArrayList<>();
         double q = 0.0;
         double sum = 0.0;
         if (qualifiers == null) {
@@ -233,13 +234,9 @@ public class  Summary<T> {
                 add(degreeOfQuantifierCardinality());
                 add(degreeOfSummarizerCardinality());
             }};
-            weights.add(0.7);
-            for (int i = 0; i < measures.size() - 1; i++) {
-                weights.add(0.042);
-            }
             for (int i = 0; i < measures.size(); i++) {
-                q += weights.get(i) * measures.get(i);
-                sum += weights.get(i);
+                q += this.weights.get(i) * measures.get(i);
+                sum += this.weights.get(i);
             }
         } else {
             List<Double> measures = new ArrayList<>() {{
@@ -255,13 +252,9 @@ public class  Summary<T> {
                 add(degreeOfQualifierCardinality());
                 add(lengthOfQualifier());
             }};
-            weights.add(0.7);
-            for (int i = 0; i < measures.size() - 1; i++) {
-                weights.add(0.03);
-            }
             for (int i = 0; i < measures.size(); i++) {
-                q += weights.get(i) * measures.get(i);
-                sum += weights.get(i);
+                q += this.weights.get(i) * measures.get(i);
+                sum += this.weights.get(i);
             }
         }
         return q / sum;
