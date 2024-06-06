@@ -329,9 +329,9 @@ public class  Summary<T> {
 
     public String toStringSingle() {
         String result = "";
-        result += quantifier.getName() + " data entries ";
+        result += STR."\{quantifier.getName().charAt(0)}\{quantifier.getName().substring(1).toLowerCase()} data entries ";
         if (qualifiers != null && qualifiers.size() > 0) {
-            result += "being/having ";
+            result += "having ";
             for (int i = 0; i < qualifiers.size(); i++) {
                 result += STR."\{parseNameOfSummarizer(qualifiers.get(i).getName())} \{qualifiers.get(i).getLinguisticVariableName()}";
                 if (i < qualifiers.size() - 1) {
@@ -340,7 +340,7 @@ public class  Summary<T> {
             }
         }
 
-        result += " are/have ";
+        result += " have ";
         for (int i = 0; i < summarizers.size(); i++) {
             result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName())} \{summarizers.get(i).getLinguisticVariableName()}";
             if (i < summarizers.size() - 1) {
@@ -385,7 +385,7 @@ public class  Summary<T> {
         result += " are/have ";
 
         for (int i = 0; i < summarizers.size(); i++) {
-            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName())} \{summarizers.get(i).getLinguisticVariableName()}";
+            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName().toLowerCase())} \{summarizers.get(i).getLinguisticVariableName().toLowerCase()}";
             if (i < summarizers.size() - 1) {
                 result += " and ";
             }

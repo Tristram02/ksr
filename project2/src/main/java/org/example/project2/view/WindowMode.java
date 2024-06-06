@@ -23,12 +23,15 @@ import org.example.project2.logic.sets.FuzzySet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WindowMode extends Application {
 
-    Quantifier quantifier;
-    List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>();
+
+
+    List<org.example.project2.logic.linguistics.Label> attributes = new ArrayList<>();
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
     Initialization initialData = new Initialization();
     Double a;
@@ -51,9 +54,7 @@ public class WindowMode extends Application {
     @FXML
     private ComboBox mQuantifierCB;
     @FXML
-    private TreeView qualifiersTV;
-    @FXML
-    private TreeView summarizersTV;
+    private TreeView attributeTV;
     @FXML
     private TreeView mQualifiersTV;
     @FXML
@@ -112,140 +113,155 @@ public class WindowMode extends Application {
     private CheckBox quantifierType;
     @FXML
     private Button createQuantifier;
+    @FXML
+    private Button generateSummariesButton;
+    @FXML
+    private ListView summariesListView;
+    @FXML
+    private Button clearChosenAttributesButton;
 
-    private void addQuantifiers() {
-        quantifierCB.getItems().add(initialData.getNearlyNone().getName());
-        quantifierCB.getItems().add(initialData.getAround1_4().getName());
-        quantifierCB.getItems().add(initialData.getAroundHalf().getName());
-        quantifierCB.getItems().add(initialData.getAround3_4().getName());
-        quantifierCB.getItems().add(initialData.getMost().getName());
-        quantifierCB.getItems().add(initialData.getNearlyAll().getName());
-        quantifierCB.getItems().add(initialData.getLessThan1000().getName());
-        quantifierCB.getItems().add(initialData.getAbout2000().getName());
-        quantifierCB.getItems().add(initialData.getAbout5000().getName());
-        quantifierCB.getItems().add(initialData.getAbout6000().getName());
-        quantifierCB.getItems().add(initialData.getOver8000().getName());
-        quantifierCB.getItems().add(initialData.getOver10000().getName());
-
-        quantifierCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                String selected = (String) quantifierCB.getItems().get((Integer) t1);
-
-                for (Quantifier q: initialData.getAllQuantifiers()) {
-                    if (selected.equals(q.getName())) {
-                        quantifier = q;
-                    }
-                }
-                generateSummary();
-            }
-        });
-    }
+//    private void addQuantifiers() {
+//        quantifierCB.getItems().add(initialData.getNearlyNone().getName());
+//        quantifierCB.getItems().add(initialData.getAround1_4().getName());
+//        quantifierCB.getItems().add(initialData.getAroundHalf().getName());
+//        quantifierCB.getItems().add(initialData.getAround3_4().getName());
+//        quantifierCB.getItems().add(initialData.getMost().getName());
+//        quantifierCB.getItems().add(initialData.getNearlyAll().getName());
+//        quantifierCB.getItems().add(initialData.getLessThan1000().getName());
+//        quantifierCB.getItems().add(initialData.getAbout2000().getName());
+//        quantifierCB.getItems().add(initialData.getAbout5000().getName());
+//        quantifierCB.getItems().add(initialData.getAbout6000().getName());
+//        quantifierCB.getItems().add(initialData.getOver8000().getName());
+//        quantifierCB.getItems().add(initialData.getOver10000().getName());
+//
+//        quantifierCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+//                String selected = (String) quantifierCB.getItems().get((Integer) t1);
+//
+//                for (Quantifier q: initialData.getAllQuantifiers()) {
+//                    if (selected.equals(q.getName())) {
+//                        quantifier = q;
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void addQualifiersAndSummarizers() {
 
-        qualifiersTV.setRoot(new TreeItem<>("Kwalifikatory"));
-        summarizersTV.setRoot(new TreeItem<>("Summaryzatory"));
+        attributeTV.setRoot(new TreeItem<>("Cechy"));
+
 
         TreeItem<String> treeItem1 = new TreeItem<>("Coal");
-        TreeItem<String> treeItem2 = new TreeItem<>("Coal");
+
 
         for (org.example.project2.logic.linguistics.Label label: initialData.getCoalAnnChangeProdTwh().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProdPerCapita().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProd().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
-        qualifiersTV.getRoot().getChildren().add(treeItem1);
-        summarizersTV.getRoot().getChildren().add(treeItem2);
+        attributeTV.getRoot().getChildren().add(treeItem1);
+
 
         treeItem1 = new TreeItem<>("Oil");
-        treeItem2 = new TreeItem<>("Oil");
 
         for (org.example.project2.logic.linguistics.Label label: initialData.getOilAnnChangeProdTwh().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getOilProdPerCapita().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getOilProd().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
-        qualifiersTV.getRoot().getChildren().add(treeItem1);
-        summarizersTV.getRoot().getChildren().add(treeItem2);
+        attributeTV.getRoot().getChildren().add(treeItem1);
+
 
         treeItem1 = new TreeItem<>("Gas");
-        treeItem2 = new TreeItem<>("Gas");
+
 
         for (org.example.project2.logic.linguistics.Label label: initialData.getGasAnnChangeProdTwh().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getGasProdPerCapita().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
         for (org.example.project2.logic.linguistics.Label label: initialData.getGasProd().getLabels()) {
             treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
+
         }
-        qualifiersTV.getRoot().getChildren().add(treeItem1);
-        summarizersTV.getRoot().getChildren().add(treeItem2);
+        attributeTV.getRoot().getChildren().add(treeItem1);
 
-        qualifiersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        attributeTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        qualifiersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        attributeTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                List<Integer> selected = qualifiersTV.getSelectionModel().getSelectedIndices().stream().toList();
-                qualifiers.clear();
-
+                List<Integer> selected = attributeTV.getSelectionModel().getSelectedIndices().stream().toList();
                 for (Integer id: selected) {
-                    TreeItem treeItem = qualifiersTV.getTreeItem(id);
-                    if (qualifiersTV.getTreeItemLevel(treeItem) == 2) {
+                    TreeItem treeItem = attributeTV.getTreeItem(id);
+                    if (attributeTV.getTreeItemLevel(treeItem) == 2) {
                         for (Variable<DataEntry> var: initialData.getAllVariables()) {
                             for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
-                                if (label.getName().equals(treeItem.getValue())) {
-                                    qualifiers.add(label);
+                                if(!attributes.contains(label)) {
+                                    if (label.getName().equals(treeItem.getValue())) {
+                                        attributes.add(label);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                generateSummary();
             }
         });
 
-        summarizersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        summarizersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        clearChosenAttributesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                List<Integer> selected = summarizersTV.getSelectionModel().getSelectedIndices().stream().toList();
-                summarizers.clear();
+            public void handle(ActionEvent actionEvent) {
+                attributes.clear();
+            }
 
-                for (Integer id: selected) {
-                    TreeItem treeItem = summarizersTV.getTreeItem(id);
-                    if (summarizersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
-                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
-                                if (label.getName().equals(treeItem.getValue())) {
-                                    summarizers.add(label);
-                                }
-                            }
-                        }
+        });
+
+        generateSummariesButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                List<Summary> summaries = generateSummary();
+
+                summaries.sort((o1, o2) -> {
+                    int comparison = Double.compare(o2.degreeOfTruth(), o1.degreeOfTruth());
+                    if (comparison == 0) {
+                        return Double.compare(o2.quality(), o1.quality());
+                    }
+                    return comparison;
+                });
+
+                summariesListView.getItems().clear();
+                if (summaries != null) {
+                    for (Summary summary : summaries) {
+                        summariesListView.getItems().add(summary.toStringSingle());
                     }
                 }
-                generateSummary();
+
+                summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        Summary selected = summaries.get((Integer) t1);
+                        setMetrics(selected);
+                    }
+                });
             }
         });
     }
@@ -369,8 +385,9 @@ public class WindowMode extends Application {
         });
     }
 
-    private void generateSummary() {
-        if (quantifier != null && summarizers.size() > 0) {
+    private List<Summary> generateSummary() {
+
+        if (attributes.size() > 0) {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
             List<Double> weights = new ArrayList<>();
@@ -378,17 +395,54 @@ public class WindowMode extends Application {
             for (int i = 0; i < 10; i++) {
                 weights.add(0.03);
             }
-            if (qualifiers.size() > 0) {
-                Summary generatedSummary = new Summary(quantifier, qualifiers, dataEntries, summarizers, weights);
-                summary.setText(generatedSummary.toStringSingle());
-                setMetrics(generatedSummary);
-            } else {
-                Summary generatedSummary = new Summary(quantifier, null, dataEntries, summarizers, weights);
-                summary.setText(generatedSummary.toStringSingle());
-                setMetrics(generatedSummary);
-            }
+            List<Summary> summaries = new ArrayList<>();
+            for(int j = 0; j < initialData.getAllQuantifiers().size(); j++) {
+                Quantifier quantifier = initialData.getAllQuantifiers().get(j);
 
+                Set<List<org.example.project2.logic.linguistics.Label>> combinations = generateCombinations(attributes);
+                //first type
+                for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
+                    Summary summary = new Summary(quantifier, null, dataEntries, combination, weights);
+                    summaries.add(summary);
+                }
+
+                //second type
+
+                for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
+                    List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
+                    summarizers.removeAll(qualifiers);
+                    Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
+
+                    for (List<org.example.project2.logic.linguistics.Label> secondCombination : secondCombinations) {
+                        if (secondCombination.isEmpty()) continue;
+
+                        Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights);
+                        summaries.add(summary2);
+                    }
+                }
+
+            }
+            return summaries;
         }
+
+        return null;
+    }
+
+    private Set<List<org.example.project2.logic.linguistics.Label>> generateCombinations(List<org.example.project2.logic.linguistics.Label> attributes) {
+        Set<List<org.example.project2.logic.linguistics.Label>> combinations = new HashSet<>();
+        int n = attributes.size();
+
+        for (int i = 1; i < (1 << n); i++) {
+            List<org.example.project2.logic.linguistics.Label> combination = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                if ((i & (1 << j)) != 0) {
+                    combination.add(attributes.get(j));
+                }
+            }
+            combinations.add(new ArrayList<>(combination));
+        }
+
+        return combinations;
     }
 
     private void createNewQuantifier() {
@@ -542,7 +596,7 @@ public class WindowMode extends Application {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 List<Integer> selected = mSummarizersTV.getSelectionModel().getSelectedIndices().stream().toList();
-                summarizers.clear();
+                attributes.clear();
 
                 for (Integer id: selected) {
                     TreeItem treeItem = mSummarizersTV.getTreeItem(id);
@@ -550,7 +604,7 @@ public class WindowMode extends Application {
                         for (Variable<DataEntry> var: initialData.getAllVariables()) {
                             for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
                                 if (label.getName().equals(treeItem.getValue())) {
-                                    summarizers.add(label);
+                                    attributes.add(label);
                                 }
                             }
                         }
@@ -562,15 +616,16 @@ public class WindowMode extends Application {
     }
 
     public void initialize() {
-        addQuantifiers();
+//        addQuantifiers();
         addQualifiersAndSummarizers();
         initializeNewQuantifierPane();
+        initializeMultiSubjectPane();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 500);
         stage.setTitle("Project 2");
         stage.setScene(scene);
         stage.show();
