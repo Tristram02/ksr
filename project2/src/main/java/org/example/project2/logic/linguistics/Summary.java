@@ -12,10 +12,11 @@ public class  Summary<T> {
     private final List<Label> summarizers;
     private final List<DataEntry> objects;
     private List<DataEntry> objects2;
-    private int form;
+    private int form = 0;
     private String subject1;
     private String subject2;
     private List<Double> weights;
+
 
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
@@ -358,10 +359,10 @@ public class  Summary<T> {
         } else {
             result += "More ";
         }
-        result += subject1;
+        result += (" countries from " + subject1.toLowerCase()) ;
 
         if (this.form == 3) {
-            result += "being/having ";
+            result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
                 result += qualifiers.get(i).getName() + " " + qualifiers.get(i).getLinguisticVariableName();
                 if (i < qualifiers.size() - 1) {
@@ -370,10 +371,10 @@ public class  Summary<T> {
             }
         }
 
-        result += " compare to " + subject2;
+        result += " compare to countries from " + subject2.toLowerCase();
 
         if (this.form == 2) {
-            result += " being/having ";
+            result += " having ";
             for (int i = 0; i < qualifiers2.size(); i++) {
                 result += qualifiers2.get(i).getName() + " " + qualifiers2.get(i).getLinguisticVariableName();
                 if (i < qualifiers2.size() - 1) {
@@ -382,10 +383,10 @@ public class  Summary<T> {
             }
         }
 
-        result += " are/have ";
+        result += " have ";
 
         for (int i = 0; i < summarizers.size(); i++) {
-            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName().toLowerCase())} \{summarizers.get(i).getLinguisticVariableName().toLowerCase()}";
+            result += STR."\{parseNameOfSummarizer(summarizers.get(i).getName())} \{summarizers.get(i).getLinguisticVariableName()}";
             if (i < summarizers.size() - 1) {
                 result += " and ";
             }
@@ -400,5 +401,33 @@ public class  Summary<T> {
             }
         }
         return nameOfSummarizer;
+    }
+
+    public double getDegreeOfTruthToSort() {
+        if(this.form != 0) {
+            if(this.form == 1) {
+                return degreeOfTruthMultiType1();
+            } else if(this.form == 2) {
+                return degreeOfTruthMultiType2();
+            } else if(this.form == 3) {
+                return degreeOfTruthMultiType3();
+            } else {
+                return degreeOfTruthMultiType4();
+            }
+        } else {
+            return degreeOfTruth();
+        }
+    }
+
+    public String toString() {
+        if (this.form == 0) {
+            return toStringSingle();
+        } else {
+            return toStringMultiple();
+        }
+    }
+
+    public int getForm() {
+        return this.form;
     }
 }

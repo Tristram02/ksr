@@ -30,7 +30,8 @@ import java.util.Set;
 public class WindowMode extends Application {
 
 
-
+    String subject1;
+    String subject2;
     List<org.example.project2.logic.linguistics.Label> attributes = new ArrayList<>();
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
     Initialization initialData = new Initialization();
@@ -241,17 +242,13 @@ public class WindowMode extends Application {
                 List<Summary> summaries = generateSummary();
 
                 summaries.sort((o1, o2) -> {
-                    int comparison = Double.compare(o2.degreeOfTruth(), o1.degreeOfTruth());
-                    if (comparison == 0) {
-                        return Double.compare(o2.quality(), o1.quality());
-                    }
-                    return comparison;
+                    return Double.compare(o2.getDegreeOfTruthToSort(), o1.getDegreeOfTruthToSort());
                 });
 
                 summariesListView.getItems().clear();
                 if (summaries != null) {
                     for (Summary summary : summaries) {
-                        summariesListView.getItems().add(summary.toStringSingle());
+                        summariesListView.getItems().add(summary.toString());
                     }
                 }
 
@@ -267,7 +264,8 @@ public class WindowMode extends Application {
     }
 
     private void setMetrics(Summary summary) {
-        T1.setText(STR."T1: \{Math.round(summary.degreeOfTruth() * 100.0) / 100.0}");
+        T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
+        if(summary.getForm() == 0){
         T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
         T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
         T4.setText(STR."T4: \{Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0}");
@@ -279,6 +277,19 @@ public class WindowMode extends Application {
         T10.setText(STR."T10: \{Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0}");
         T11.setText(STR."T11: \{Math.round(summary.lengthOfQualifier() * 100.0) / 100.0}");
         T.setText(STR."T: \{Math.round(summary.quality() * 100.0) / 100.0}");
+        } else {
+            T2.setText("T2: ~");
+            T3.setText("T3: ~");
+            T4.setText("T4: ~");
+            T5.setText("T5: ~");
+            T6.setText("T6: ~");
+            T7.setText("T7: ~");
+            T8.setText("T8: ~");
+            T9.setText("T9: ~");
+            T10.setText("T10: ~");
+            T11.setText("T11: ~");
+            T.setText("T: ~");
+        }
     }
 
     private void initializeNewQuantifierPane() {
@@ -390,6 +401,8 @@ public class WindowMode extends Application {
         if (attributes.size() > 0) {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
+            List<DataEntry> subject1Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject1)).toList();
+            List<DataEntry> subject2Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject2)).toList();
             List<Double> weights = new ArrayList<>();
             weights.add(0.7);
             for (int i = 0; i < 10; i++) {
@@ -400,13 +413,18 @@ public class WindowMode extends Application {
                 Quantifier quantifier = initialData.getAllQuantifiers().get(j);
 
                 Set<List<org.example.project2.logic.linguistics.Label>> combinations = generateCombinations(attributes);
-                //first type
+                //first type one subj
                 for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
                     Summary summary = new Summary(quantifier, null, dataEntries, combination, weights);
                     summaries.add(summary);
+                    //first type with subjects chosen
+                    Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights);
+                    summaries.add(summary1);
+                    Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights);
+                    summaries.add(summary2);
                 }
 
-                //second type
+                //second type one subj
 
                 for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
                     List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
@@ -418,10 +436,55 @@ public class WindowMode extends Application {
 
                         Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights);
                         summaries.add(summary2);
+
+                        //with chosen subjects
+                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights);
+                        summaries.add(summary3);
+                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights);
+                        summaries.add(summary4);
+                    }
+                }
+
+                //first type multi subj
+                for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
+                    Summary summary1 = new Summary(quantifier, null, subject1Data, subject2Data, combination, subject1, subject2,false);
+                    summaries.add(summary1);
+//                    Summary summary2 = new Summary(quantifier, null, subject2Data, subject1Data, combination, subject2, subject1,false);
+//                    summaries.add(summary2);
+                }
+                //second and third type multi subj
+                for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
+                    List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
+                    summarizers.removeAll(qualifiers);
+                    Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
+
+                    for (List<org.example.project2.logic.linguistics.Label> secondCombination : secondCombinations) {
+                        if (secondCombination.isEmpty()) continue;
+
+                        Summary summary = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, false);
+                        summaries.add(summary);
+                        Summary summary2 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, false);
+                        summaries.add(summary2);
+                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, true);
+                        summaries.add(summary3);
+                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, true);
+                        summaries.add(summary4);
+                    }
+                }
+
+                if(j == 0) {
+                    //4th type multi subj
+                    for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
+                        Summary summary1 = new Summary(null, null, subject1Data, subject2Data, combination, subject1, subject2, false);
+                        summaries.add(summary1);
+                        Summary summary2 = new Summary(null, null, subject2Data, subject1Data, combination, subject2, subject1, false);
+                        summaries.add(summary2);
                     }
                 }
 
             }
+
+            System.getLogger("INFO").log(System.Logger.Level.INFO, "Summaries generated" + summaries.size());
             return summaries;
         }
 
@@ -486,7 +549,7 @@ public class WindowMode extends Application {
     }
 
 
-    private void initializeMultiSubjectPane() {
+    private void initializeMultiSubject() {
         subject1CB.getItems().add(ContinentsEnum.EUROPE);
         subject1CB.getItems().add(ContinentsEnum.ASIA);
         subject1CB.getItems().add(ContinentsEnum.AFRICA);
@@ -501,125 +564,37 @@ public class WindowMode extends Application {
         subject2CB.getItems().add(ContinentsEnum.SOUTH_AMERICA);
         subject2CB.getItems().add(ContinentsEnum.OCEANIA);
 
-        mQuantifierCB.getItems().add(initialData.getNearlyNone().getName());
-        mQuantifierCB.getItems().add(initialData.getAround1_4().getName());
-        mQuantifierCB.getItems().add(initialData.getAroundHalf().getName());
-        mQuantifierCB.getItems().add(initialData.getAround3_4().getName());
-        mQuantifierCB.getItems().add(initialData.getMost().getName());
-        mQuantifierCB.getItems().add(initialData.getNearlyAll().getName());
-
-
-        mQualifiersTV.setRoot(new TreeItem<>("Kwalifikatory"));
-        mSummarizersTV.setRoot(new TreeItem<>("Summaryzatory"));
-
-        TreeItem<String> treeItem1 = new TreeItem<>("Coal");
-        TreeItem<String> treeItem2 = new TreeItem<>("Coal");
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        mQualifiersTV.getRoot().getChildren().add(treeItem1);
-        mSummarizersTV.getRoot().getChildren().add(treeItem2);
-
-        treeItem1 = new TreeItem<>("Oil");
-        treeItem2 = new TreeItem<>("Oil");
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        mQualifiersTV.getRoot().getChildren().add(treeItem1);
-        mSummarizersTV.getRoot().getChildren().add(treeItem2);
-
-        treeItem1 = new TreeItem<>("Gas");
-        treeItem2 = new TreeItem<>("Gas");
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-            treeItem2.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        mQualifiersTV.getRoot().getChildren().add(treeItem1);
-        mSummarizersTV.getRoot().getChildren().add(treeItem2);
-
-        mQualifiersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        mQualifiersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        subject1CB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                List<Integer> selected = mQualifiersTV.getSelectionModel().getSelectedIndices().stream().toList();
-                qualifiers.clear();
-
-                for (Integer id: selected) {
-                    TreeItem treeItem = mQualifiersTV.getTreeItem(id);
-                    if (mQualifiersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
-                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
-                                if (label.getName().equals(treeItem.getValue())) {
-                                    qualifiers.add(label);
-                                }
-                            }
-                        }
+                ContinentsEnum selected = (ContinentsEnum) subject1CB.getItems().get((Integer) t1);
+                for (ContinentsEnum continent: ContinentsEnum.values()) {
+                    if (selected.getName().equals(continent.getName())) {
+                        subject1 = continent.toString();
                     }
                 }
-                generateMultiSubjectSummary();
             }
         });
 
-        mSummarizersTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        mSummarizersTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        subject2CB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                List<Integer> selected = mSummarizersTV.getSelectionModel().getSelectedIndices().stream().toList();
-                attributes.clear();
-
-                for (Integer id: selected) {
-                    TreeItem treeItem = mSummarizersTV.getTreeItem(id);
-                    if (mSummarizersTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
-                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
-                                if (label.getName().equals(treeItem.getValue())) {
-                                    attributes.add(label);
-                                }
-                            }
-                        }
+                ContinentsEnum selected = (ContinentsEnum) subject2CB.getItems().get((Integer) t1);
+                for (ContinentsEnum continent: ContinentsEnum.values()) {
+                    if (selected.getName().equals(continent.getName())) {
+                        subject2 = continent.toString();
                     }
                 }
-                generateMultiSubjectSummary();
             }
         });
+
+
     }
 
     public void initialize() {
-//        addQuantifiers();
+        initializeMultiSubject();
         addQualifiersAndSummarizers();
         initializeNewQuantifierPane();
-        initializeMultiSubjectPane();
     }
 
     @Override
