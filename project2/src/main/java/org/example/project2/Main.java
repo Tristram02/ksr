@@ -50,13 +50,13 @@ public class Main {
                     }
                     if (type.equals("1")) {
                         Map<String, ArrayList<Integer>> choices = getChoices(1);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), null, dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights, " data entries");
                         List<Double> values = getValuesOfT(summary);
                         System.out.println(summary.toStringSingle());
                         printValuesOfT(values);
                     } else {
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
-                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights);
+                        Summary summary = new Summary(getChosenQuantifier(choices.get("Quantifier")), getChosenSummarizers(choices.get("Qualifiers")), dataEntries, getChosenSummarizers(choices.get("Summarizers")), weights, " data entries");
                         List<Double> values = getValuesOfT(summary);
                         System.out.println(summary.toStringSingle());
                         printValuesOfT(values);

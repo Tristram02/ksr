@@ -15,17 +15,19 @@ public class  Summary<T> {
     private int form = 0;
     private String subject1;
     private String subject2;
+    private String subjectOne;
     private List<Double> weights;
 
 
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
-                   List<Label> summarizers, List<Double> weights) {
+                   List<Label> summarizers, List<Double> weights, String subjectOne) {
         this.quantifier = quantifier;
         this.qualifiers = qualifiers;
         this.summarizers = summarizers;
         this.objects = objects;
         this.weights = weights;
+        this.subjectOne = subjectOne;
     }
 
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
@@ -330,9 +332,15 @@ public class  Summary<T> {
 
     public String toStringSingle() {
         String result = "";
-        result += STR."\{quantifier.getName().charAt(0)}\{quantifier.getName().substring(1).toLowerCase()} data entries ";
+        String subject = "";
+        if(!subjectOne.equals(" data entries")){
+            subject = " countries from " + subjectOne.toLowerCase();
+        } else {
+            subject = " data entries";
+        }
+        result += STR."\{quantifier.getName().charAt(0)}\{quantifier.getName().substring(1).toLowerCase()}\{subject}";
         if (qualifiers != null && qualifiers.size() > 0) {
-            result += "having ";
+            result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
                 result += STR."\{parseNameOfSummarizer(qualifiers.get(i).getName())} \{qualifiers.get(i).getLinguisticVariableName()}";
                 if (i < qualifiers.size() - 1) {
@@ -355,7 +363,7 @@ public class  Summary<T> {
     public String toStringMultiple() {
         String result = "";
         if (this.form != 4) {
-            result += quantifier.getName() + " ";
+            result += quantifier.getName().charAt(0) + quantifier.getName().substring(1).toLowerCase() + " ";
         } else {
             result += "More ";
         }
@@ -364,7 +372,7 @@ public class  Summary<T> {
         if (this.form == 3) {
             result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
-                result += qualifiers.get(i).getName() + " " + qualifiers.get(i).getLinguisticVariableName();
+                result += STR."\{parseNameOfSummarizer(qualifiers.get(i).getName())} \{qualifiers.get(i).getLinguisticVariableName()}";
                 if (i < qualifiers.size() - 1) {
                     result += " and ";
                 }
@@ -376,7 +384,7 @@ public class  Summary<T> {
         if (this.form == 2) {
             result += " having ";
             for (int i = 0; i < qualifiers2.size(); i++) {
-                result += qualifiers2.get(i).getName() + " " + qualifiers2.get(i).getLinguisticVariableName();
+                result += STR."\{parseNameOfSummarizer(qualifiers2.get(i).getName())} \{qualifiers2.get(i).getLinguisticVariableName()}";
                 if (i < qualifiers2.size() - 1) {
                     result += " and ";
                 }

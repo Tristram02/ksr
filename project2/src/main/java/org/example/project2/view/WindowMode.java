@@ -219,7 +219,9 @@ public class WindowMode extends Application {
                 Platform.runLater(() -> {
                     summariesListView.getItems().clear();
                     summariesListView.getSelectionModel().clearSelection();
-                });            }
+                    summaries.clear();
+                });
+            }
         });
 
         generateSummariesButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -229,7 +231,10 @@ public class WindowMode extends Application {
 
                 generateSummary();
 
+                summariesListView.getItems().clear();
+
                 summaries.sort((o1, o2) -> Double.compare(o2.getDegreeOfTruthToSort(), o1.getDegreeOfTruthToSort()));
+
                 if (summaries != null) {
                     for (Summary summary : summaries) {
                         summariesListView.getItems().add(summary.toString());
@@ -386,18 +391,20 @@ public class WindowMode extends Application {
             for (int i = 0; i < 10; i++) {
                 weights.add(0.03);
             }
+            Set<List<org.example.project2.logic.linguistics.Label>> combinations = generateCombinations(attributes);
+
             for(int j = 0; j < initialData.getAllQuantifiers().size(); j++) {
                 Quantifier quantifier = initialData.getAllQuantifiers().get(j);
 
-                Set<List<org.example.project2.logic.linguistics.Label>> combinations = generateCombinations(attributes);
                 //first type one subj
                 for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
-                    Summary summary = new Summary(quantifier, null, dataEntries, combination, weights);
+                    Summary summary = new Summary(quantifier, null, dataEntries, combination, weights, " data entries");
                     summaries.add(summary);
+
                     //first type with subjects chosen
-                    Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights);
+                    Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights, subject1);
                     summaries.add(summary1);
-                    Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights);
+                    Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights, subject2);
                     summaries.add(summary2);
                 }
 
@@ -407,17 +414,15 @@ public class WindowMode extends Application {
                     List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
                     summarizers.removeAll(qualifiers);
                     Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
-
                     for (List<org.example.project2.logic.linguistics.Label> secondCombination : secondCombinations) {
                         if (secondCombination.isEmpty()) continue;
 
-                        Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights);
-                        summaries.add(summary2);
+                        Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights, " data entries");
 
                         //with chosen subjects
-                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights);
+                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
                         summaries.add(summary3);
-                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights);
+                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights, subject2);
                         summaries.add(summary4);
                     }
                 }
@@ -503,7 +508,7 @@ public class WindowMode extends Application {
                 a = Double.parseDouble(quantifierParameter1TF.getText());
                 b = Double.parseDouble(quantifierParameter2TF.getText());
                 c = Double.parseDouble(quantifierParameter3TF.getText());
-                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TriangularFunction(a, b, c, a, d)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TriangularFunction(a, b, c, a, c)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
                 break;
             }
             case "Gaussa": {
