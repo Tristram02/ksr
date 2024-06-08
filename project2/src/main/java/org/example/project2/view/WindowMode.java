@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.stage.Stage;
 import org.example.project2.Initialization;
 import org.example.project2.db.CsvReader;
@@ -23,6 +24,7 @@ import org.example.project2.logic.sets.ClassicSet;
 import org.example.project2.logic.sets.FuzzySet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,31 +46,16 @@ public class WindowMode extends Application {
     Double d;
     String name;
     boolean isAbsolute;
+    List<Double> weights = new ArrayList<>();
 
     @FXML
     private ComboBox subject1CB;
     @FXML
     private ComboBox subject2CB;
     @FXML
-    private CheckBox subject1ChB;
-    @FXML
-    private CheckBox subject2ChB;
-    @FXML
     private ComboBox quantifierCB;
     @FXML
-    private ComboBox mQuantifierCB;
-    @FXML
     private TreeView attributeTV;
-    @FXML
-    private TreeView mQualifiersTV;
-    @FXML
-    private TreeView mSummarizersTV;
-    @FXML
-    private Label summary;
-    @FXML
-    private Label mSummary;
-    @FXML
-    private Label mT1;
     @FXML
     private Label T1;
     @FXML
@@ -93,6 +80,17 @@ public class WindowMode extends Application {
     private Label T11;
     @FXML
     private Label T;
+    @FXML private TextField w1;
+    @FXML private TextField w2;
+    @FXML private TextField w3;
+    @FXML private TextField w4;
+    @FXML private TextField w5;
+    @FXML private TextField w6;
+    @FXML private TextField w7;
+    @FXML private TextField w8;
+    @FXML private TextField w9;
+    @FXML private TextField w10;
+    @FXML private TextField w11;
     @FXML
     private TextField quantifierName;
     @FXML
@@ -127,90 +125,37 @@ public class WindowMode extends Application {
     private Button clearListView;
 
     private void addQualifiersAndSummarizers() {
+        CheckBoxTreeItem<String> root = new CheckBoxTreeItem<>("Cechy");
+        attributeTV.setRoot(root);
 
-        attributeTV.setRoot(new TreeItem<>("Cechy"));
+        CheckBoxTreeItem<String> treeItem1 = new CheckBoxTreeItem<>("Coal");
+        addLabelsToTreeItem(treeItem1, initialData.getCoalAnnChangeProdTwh().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getCoalProdPerCapita().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getCoalProd().getLabels());
+        root.getChildren().add(treeItem1);
 
+        treeItem1 = new CheckBoxTreeItem<>("Oil");
+        addLabelsToTreeItem(treeItem1, initialData.getOilAnnChangeProdTwh().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getOilProdPerCapita().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getOilProd().getLabels());
+        root.getChildren().add(treeItem1);
 
-        TreeItem<String> treeItem1 = new TreeItem<>("Coal");
+        treeItem1 = new CheckBoxTreeItem<>("Gas");
+        addLabelsToTreeItem(treeItem1, initialData.getGasAnnChangeProdTwh().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getGasProdPerCapita().getLabels());
+        addLabelsToTreeItem(treeItem1, initialData.getGasProd().getLabels());
+        root.getChildren().add(treeItem1);
 
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getCoalProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        attributeTV.getRoot().getChildren().add(treeItem1);
-
-
-        treeItem1 = new TreeItem<>("Oil");
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getOilProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        attributeTV.getRoot().getChildren().add(treeItem1);
-
-
-        treeItem1 = new TreeItem<>("Gas");
-
-
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasAnnChangeProdTwh().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProdPerCapita().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        for (org.example.project2.logic.linguistics.Label label: initialData.getGasProd().getLabels()) {
-            treeItem1.getChildren().add(new TreeItem<>(label.getName()));
-
-        }
-        attributeTV.getRoot().getChildren().add(treeItem1);
+        attributeTV.setCellFactory(CheckBoxTreeCell.forTreeView());
 
         attributeTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        attributeTV.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                List<Integer> selected = attributeTV.getSelectionModel().getSelectedIndices().stream().toList();
-                for (Integer id: selected) {
-                    TreeItem treeItem = attributeTV.getTreeItem(id);
-                    if (attributeTV.getTreeItemLevel(treeItem) == 2) {
-                        for (Variable<DataEntry> var: initialData.getAllVariables()) {
-                            for (org.example.project2.logic.linguistics.Label label: var.getLabels()) {
-                                if(!attributes.contains(label)) {
-                                    if (label.getName().equals(treeItem.getValue())) {
-                                        attributes.add(label);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
 
         clearChosenAttributesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 attributes.clear();
+                uncheckAll(root);
             }
-
         });
 
         clearListView.setOnAction(new EventHandler<ActionEvent>() {
@@ -256,6 +201,42 @@ public class WindowMode extends Application {
             }
         });
 
+    }
+
+    private void addLabelsToTreeItem(CheckBoxTreeItem<String> parentItem, List<org.example.project2.logic.linguistics.Label> labels) {
+        for (org.example.project2.logic.linguistics.Label label : labels) {
+            CheckBoxTreeItem<String> childItem = new CheckBoxTreeItem<>(label.getName());
+            childItem.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if (newValue) {
+                        addLabelToAttributes(label);
+                    } else {
+                        removeLabelFromAttributes(label);
+                    }
+                }
+            });
+            parentItem.getChildren().add(childItem);
+        }
+    }
+
+    private void addLabelToAttributes(org.example.project2.logic.linguistics.Label label) {
+        if (!attributes.contains(label)) {
+            attributes.add(label);
+        }
+    }
+
+    private void removeLabelFromAttributes(org.example.project2.logic.linguistics.Label label) {
+        attributes.remove(label);
+    }
+
+    private void uncheckAll(CheckBoxTreeItem<String> item) {
+        item.setSelected(false);
+        for (TreeItem<String> child : item.getChildren()) {
+            if (child instanceof CheckBoxTreeItem) {
+                uncheckAll((CheckBoxTreeItem<String>) child);
+            }
+        }
     }
 
     private void setMetrics(Summary summary) {
@@ -400,11 +381,6 @@ public class WindowMode extends Application {
             List<DataEntry> dataEntries = csvReader.readData();
             List<DataEntry> subject1Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject1)).toList();
             List<DataEntry> subject2Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject2)).toList();
-            List<Double> weights = new ArrayList<>();
-            weights.add(0.7);
-            for (int i = 0; i < 10; i++) {
-                weights.add(0.03);
-            }
             Set<List<org.example.project2.logic.linguistics.Label>> combinations = generateCombinations(attributes);
 
             for(int j = 0; j < initialData.getAllQuantifiers().size(); j++) {
@@ -432,6 +408,7 @@ public class WindowMode extends Application {
                         if (secondCombination.isEmpty()) continue;
 
                         Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights, " data entries");
+                        summaries.add(summary2);
 
                         //with chosen subjects
                         Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
@@ -539,6 +516,52 @@ public class WindowMode extends Application {
         initialData.addQuantifier(newQuantifier);
     }
 
+    @FXML
+    private void handleSave() {
+        try {
+            BigDecimal sum = new BigDecimal(w1.getText())
+                    .add(new BigDecimal(w2.getText()))
+                    .add(new BigDecimal(w3.getText()))
+                    .add(new BigDecimal(w4.getText()))
+                    .add(new BigDecimal(w5.getText()))
+                    .add(new BigDecimal(w6.getText()))
+                    .add(new BigDecimal(w7.getText()))
+                    .add(new BigDecimal(w8.getText()))
+                    .add(new BigDecimal(w9.getText()))
+                    .add(new BigDecimal(w10.getText()))
+                    .add(new BigDecimal(w11.getText()));
+
+            BigDecimal target = new BigDecimal("1.0");
+
+            if (sum.compareTo(target) == 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Sukces", "Wagi zostały zapisane poprawnie!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Błąd", "Suma wag musi wynosić dokładnie 1.");
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Błąd", "Wszystkie pola muszą zawierać liczby.");
+        }
+        this.weights = new ArrayList<>();
+        this.weights.add(Double.parseDouble(w1.getText()));
+        this.weights.add(Double.parseDouble(w2.getText()));
+        this.weights.add(Double.parseDouble(w3.getText()));
+        this.weights.add(Double.parseDouble(w4.getText()));
+        this.weights.add(Double.parseDouble(w5.getText()));
+        this.weights.add(Double.parseDouble(w6.getText()));
+        this.weights.add(Double.parseDouble(w7.getText()));
+        this.weights.add(Double.parseDouble(w8.getText()));
+        this.weights.add(Double.parseDouble(w9.getText()));
+        this.weights.add(Double.parseDouble(w10.getText()));
+        this.weights.add(Double.parseDouble(w11.getText()));
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     private void initializeMultiSubject() {
         subject1CB.getItems().add(ContinentsEnum.EUROPE);
@@ -561,7 +584,7 @@ public class WindowMode extends Application {
                 ContinentsEnum selected = (ContinentsEnum) subject1CB.getItems().get((Integer) t1);
                 for (ContinentsEnum continent: ContinentsEnum.values()) {
                     if (selected.getName().equals(continent.getName())) {
-                        subject1 = continent.toString();
+                        subject1 = continent.getName();
                     }
                 }
             }
@@ -573,7 +596,7 @@ public class WindowMode extends Application {
                 ContinentsEnum selected = (ContinentsEnum) subject2CB.getItems().get((Integer) t1);
                 for (ContinentsEnum continent: ContinentsEnum.values()) {
                     if (selected.getName().equals(continent.getName())) {
-                        subject2 = continent.toString();
+                        subject2 = continent.getName();
                     }
                 }
             }
@@ -586,7 +609,6 @@ public class WindowMode extends Application {
         initializeMultiSubject();
         addQualifiersAndSummarizers();
         initializeNewQuantifierPane();
-
         summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -594,6 +616,20 @@ public class WindowMode extends Application {
                 setMetrics(selected);
             }
         });
+
+        this.weights = new ArrayList<>();
+        this.weights.add(Double.parseDouble(w1.getText()));
+        this.weights.add(Double.parseDouble(w2.getText()));
+        this.weights.add(Double.parseDouble(w3.getText()));
+        this.weights.add(Double.parseDouble(w4.getText()));
+        this.weights.add(Double.parseDouble(w5.getText()));
+        this.weights.add(Double.parseDouble(w6.getText()));
+        this.weights.add(Double.parseDouble(w7.getText()));
+        this.weights.add(Double.parseDouble(w8.getText()));
+        this.weights.add(Double.parseDouble(w9.getText()));
+        this.weights.add(Double.parseDouble(w10.getText()));
+        this.weights.add(Double.parseDouble(w11.getText()));
+
     }
 
     @Override

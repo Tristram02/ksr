@@ -2,11 +2,9 @@ package org.example.project2.logic.sets;
 
 import org.example.project2.logic.functions.IntersectMembershipFunction;
 import org.example.project2.logic.functions.MembershipFunction;
+import org.example.project2.logic.linguistics.DataEntry;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FuzzySet {
     private ClassicSet universeOfDiscourse;
@@ -18,16 +16,12 @@ public class FuzzySet {
         this.membershipFunction = membershipFunction;
     }
 
-    public double degreeOfMembership(double x) {
-        return this.membershipFunction.degreeOfMembership(x);
-    }
-
     public ClassicSet getUniverseOfDiscourse() {
         return this.universeOfDiscourse;
     }
 
-    public MembershipFunction getMembershipFunction() {
-        return this.membershipFunction;
+    public double degreeOfMembership(double x) {
+        return this.universeOfDiscourse.contains(x) ? this.membershipFunction.degreeOfMembership(x) : 0.0;
     }
 
     public ClassicSet support() {
@@ -36,41 +30,26 @@ public class FuzzySet {
                     .stream()
                     .filter(x -> degreeOfMembership(x) > 0)
                     .toList();
-            return new ClassicSet(set);
+            return new ClassicSet(set, membershipFunction.universeBegin(), membershipFunction.universeEnd());
         } else {
-            return new ClassicSet(membershipFunction.universeBegin(), membershipFunction.universeEnd());
+            return this.membershipFunction.support(this.universeOfDiscourse);
         }
     }
 
-    public ClassicSet support(List<Double> values) {
-        List<Double> set = values.stream()
-                .filter(x -> degreeOfMembership(x) > 0)
-                .toList();
-        return new ClassicSet(set);
+    public double cardinality(List<DataEntry> objects, String label) {
+        double sum = 0.0;
+        for (DataEntry object: objects) {
+            sum += this.membershipFunction.degreeOfMembership(object.getValueByName(label));
+        }
+        return sum;
     }
 
-    public double cardinality() {
-        if (universeOfDiscourse.isDiscrete()) {
-            return universeOfDiscourse.getSet()
-                    .stream()
-                    .mapToDouble(this::degreeOfMembership)
-                    .sum();
-        } else {
-            return membershipFunction.cardinality();
-        }
+    public double clm() {
+        return this.membershipFunction.area(universeOfDiscourse.getBegin(), universeOfDiscourse.getEnd());
     }
 
-    public ClassicSet alphacut(double alfa) {
-        if (universeOfDiscourse.isDiscrete()) {
-            List<Double> set = new ArrayList<>();
-            for (Double x: universeOfDiscourse.getSet()) {
-                if (membershipFunction.degreeOfMembership(x) > alfa) {
-                    set.add(x);
-                }
-                return new ClassicSet(set);
-            }
-        }
-        return null;
+    public ClassicSet alfacut(double alfa) {
+        return this.membershipFunction.alfacut(universeOfDiscourse, alfa);
     }
 
     public double height() {
@@ -81,6 +60,8 @@ public class FuzzySet {
                     height = membershipFunction.degreeOfMembership(x);
                 }
             }
+        } else {
+            return 1.0;
         }
         return height;
     }
@@ -90,7 +71,9 @@ public class FuzzySet {
     }
 
     public double degreeOfFuzziness(List<Double> values) {
-        return support(values).getSize() / universeOfDiscourse.getSize();
+        double count = values.stream().filter(v -> support().contains(v)).count();
+        double all = values.stream().filter(v -> universeOfDiscourse.contains(v)).count();
+        return count / all;
     }
 
     public FuzzySet and(FuzzySet set) {
@@ -99,20 +82,35 @@ public class FuzzySet {
     }
 
     public boolean isNormal() {
-        if (height() == 1) {
-            return true;
-        } else {
+        if (height() != 1) {
             return false;
         }
+        return true;
     }
 
     public boolean isConvex() {
-        for (double x1 : universeOfDiscourse.getSet()) {
-            for (double x2 : universeOfDiscourse.getSet()) {
-                if (x1 < x2) {
-                    double x = 0.5 * (x1 + x2);
-                    if (membershipFunction.degreeOfMembership(x) < Math.min(membershipFunction.degreeOfMembership(x1), membershipFunction.degreeOfMembership(x2))) {
-                        return false;
+        if (this.universeOfDiscourse.isDiscrete()) {
+            for (double x1 : universeOfDiscourse.getSet()) {
+                for (double x2 : universeOfDiscourse.getSet()) {
+                    if (x1 < x2) {
+                        double x = 0.5 * (x1 + x2);
+                        if (membershipFunction.degreeOfMembership(x) <
+                                Math.min(membershipFunction.degreeOfMembership(x1),
+                                         membershipFunction.degreeOfMembership(x2))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (double i = universeOfDiscourse.getBegin(); i < universeOfDiscourse.getEnd(); i++) {
+                for (double j = universeOfDiscourse.getBegin(); j < universeOfDiscourse.getEnd(); j++) {
+                    if (i < j) {
+                        double x = 0.5 * (i + j);
+                        if (membershipFunction.degreeOfMembership(x) <
+                        Math.min(membershipFunction.degreeOfMembership(i), membershipFunction.degreeOfMembership(j))) {
+                            return false;
+                        }
                     }
                 }
             }

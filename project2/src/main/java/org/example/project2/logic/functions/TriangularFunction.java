@@ -1,5 +1,7 @@
 package org.example.project2.logic.functions;
 
+import org.example.project2.logic.sets.ClassicSet;
+
 public class TriangularFunction extends TrapezoidalFunction {
 
     public TriangularFunction(double a, double b, double c,
@@ -13,13 +15,18 @@ public class TriangularFunction extends TrapezoidalFunction {
     }
 
     @Override
-    public double cardinality() {
-        return super.cardinality();
+    public ClassicSet support(ClassicSet universeOfDiscourse) {
+        return super.support(universeOfDiscourse);
     }
 
     @Override
-    public double support() {
-        return super.support();
+    public ClassicSet alfacut(ClassicSet universeOfDiscourse, double alfa) {
+        return super.alfacut(universeOfDiscourse, alfa);
+    }
+
+    @Override
+    public double area(double beginOfUniverse, double endOfUniverse) {
+        return super.area(beginOfUniverse, endOfUniverse);
     }
 
     @Override

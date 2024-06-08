@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project2.view.WindowMode">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project2.view.WindowMode">
    <children>
       <TabPane prefHeight="900.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -37,7 +49,6 @@
                   </AnchorPane>
             </content>
           </Tab>
-<!--           -->
             <Tab text="Nowy kwantyfiaktor">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -75,6 +86,68 @@
                          <TextField layoutX="376.0" layoutY="425.0" />
                          <Label layoutX="421.0" layoutY="401.0" text="Parametr 4" />
                         <Button layoutX="670.0" layoutY="221.0" mnemonicParsing="false" text="Utwórz" />
+                     </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Wagi miar">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                         <GridPane hgap="10" layoutX="483.0" layoutY="31.0" vgap="10">
+                             <children>
+                                 <Label text="W1" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w1" text="0.7" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                 <Label text="W2" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w2" text="0.03" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                 <Label text="W3" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w3" text="0.03" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                 <Label text="W4" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w4" text="0.03" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                                 <Label text="W5" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w5" text="0.03" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                                 <Label text="W6" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w6" text="0.03" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                                 <Label text="W7" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w7" text="0.03" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                                 <Label text="W8" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w8" text="0.03" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+                                 <Label text="W9" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w9" text="0.03" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+                                 <Label text="W10" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w10" text="0.03" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+
+                                 <Label text="W11" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+                                 <TextField fx:id="w11" text="0.03" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+                             </children>
+                           <columnConstraints>
+                              <ColumnConstraints />
+                              <ColumnConstraints />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                         </GridPane>
+                        <Button onAction="#handleSave" layoutX="567.0" layoutY="436.0" mnemonicParsing="false" text="Zapisz" />
                      </children>
                 </AnchorPane>
               </content>

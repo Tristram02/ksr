@@ -19,7 +19,6 @@ public class  Summary<T> {
     private List<Double> weights;
 
 
-
     public Summary(Quantifier quantifier, List<Label> qualifiers, List<DataEntry> objects,
                    List<Label> summarizers, List<Double> weights, String subjectOne) {
         this.quantifier = quantifier;
@@ -88,51 +87,42 @@ public class  Summary<T> {
 
     /* T2 */
     public double degreeOfImprecision() {
-        double t2 = 1;
-        for (Label label : summarizers) {
-            t2 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
+        double t2 = 1.0;
+        for (Label label: summarizers) {
+            List<Double> values = new ArrayList<>();
+            for (DataEntry object: objects) {
+                values.add(object.getValueByName(label.getLinguisticVariableName()));
+            }
+            t2 *= label.getFuzzySet().degreeOfFuzziness(values);
         }
-        t2 = Math.pow(t2, 1.0 / summarizers.size());
-        t2 = 1 - t2;
-        return t2;
+        return 1 - Math.pow(t2, 1.0 / summarizers.size());
     }
 
     /* T3 */
     public double degreeOfCovering() {
-        List<Double> a;
-        List<Double> b;
-        double resA = 0.0;
-        double resB = 0.0;
-        for (DataEntry data : objects) {
-            a = new ArrayList<>();
-            b = new ArrayList<>();
-            for (Label label : summarizers) {
-                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+        if (qualifiers != null) {
+            double a = objects.stream().filter(
+                o -> this.summarizers.stream().anyMatch(
+                        s -> s.getFuzzySet().degreeOfMembership(o.getValueByName(s.getLinguisticVariableName())) > 0
+                ) &&
+                this.qualifiers.stream().anyMatch(
+                        q -> q.getFuzzySet().degreeOfMembership(o.getValueByName(q.getLinguisticVariableName())) > 0
+                )
+            ).count();
+            if (a == 0) {
+                return 0.0;
             }
-            if (qualifiers != null) {
-                for (Label label : qualifiers) {
-                    b.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
-                }
-            }
-
-            double minB = 1.0;
-            if (qualifiers != null) {
-                minB = Collections.min(b);
-            }
-            double membership = Math.min(Collections.min(a), minB);
-
-            if (membership > 0) {
-                resA += 1.0;
-            }
-
-            if (minB > 0) {
-                resB += 1.0;
-            }
+            double b = this.objects.stream().filter(
+                    o -> this.qualifiers.stream().anyMatch(
+                            q -> q.getFuzzySet().degreeOfMembership(o.getValueByName(q.getLinguisticVariableName())) > 0
+                    )
+            ).count();
+            return a / b;
         }
-        if (resB == 0) {
-            return 0.0;
-        }
-        return resA / resB;
+        return (double) this.objects.stream().filter(
+                o -> this.summarizers.stream().anyMatch(
+                        s -> s.getFuzzySet().degreeOfMembership(o.getValueByName(s.getLinguisticVariableName())) > 0)
+        ).count() / this.objects.size();
     }
 
     /* T4 */
@@ -163,40 +153,40 @@ public class  Summary<T> {
 
     /* T6 */
     public double degreeOfQuantifierImprecision() {
-        double supp = quantifier.getFuzzySet().getMembershipFunction().support();
-        if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
-            supp /= objects.size();
-        }
-        return 1 - supp;
+        return 1 - this.quantifier.getFuzzySet().degreeOfFuzziness();
     }
 
     /* T7 */
     public double degreeOfQuantifierCardinality() {
-        double card = quantifier.getFuzzySet().cardinality();
-        if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
-            card /= objects.size();
-        }
-        return 1 - card;
+        return 1 - (this.quantifier.getFuzzySet().clm() / quantifier.getFuzzySet().getUniverseOfDiscourse().getSize());
     }
 
     /* T8 */
     public double degreeOfSummarizerCardinality() {
-        double card = 1;
+        double card = 1.0;
         for (Label summarizer : summarizers) {
-            card *= summarizer.getFuzzySet().cardinality() / summarizer.getFuzzySet().getUniverseOfDiscourse().getSize();
+            card *= summarizer.getFuzzySet().cardinality(objects, summarizer.getLinguisticVariableName()) /
+                    objects.size();
         }
         card = Math.pow(card, 1.0 / summarizers.size());
+        if (card > 1.0) {
+            System.out.println("Coś jest kurwa nie tak");
+        }
         return 1 - card;
     }
 
     /* T9 */
     public double degreeOfQualifierImprecision() {
         if (qualifiers == null) {
-            return 1.0;
+            return 0.0;
         }
         double t9 = 1.0;
         for (Label label : qualifiers) {
-            t9 *= label.getFuzzySet().getMembershipFunction().support() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
+            List<Double> values = new ArrayList<>();
+            for (DataEntry object: objects) {
+                values.add(object.getValueByName(label.getLinguisticVariableName()));
+            }
+            t9 *= label.getFuzzySet().degreeOfFuzziness(values);
         }
         t9 = Math.pow(t9, 1.0 / qualifiers.size());
         return 1.0 - t9;
@@ -205,11 +195,11 @@ public class  Summary<T> {
     /* T10 */
     public double degreeOfQualifierCardinality() {
         if (qualifiers == null) {
-            return 1.0;
+            return 0.0;
         }
         double t10 = 1.0;
         for (Label label : qualifiers) {
-            t10 *= label.getFuzzySet().cardinality() / label.getFuzzySet().getUniverseOfDiscourse().getSize();
+            t10 *= label.getFuzzySet().cardinality(this.objects, label.getLinguisticVariableName()) / objects.size();
         }
         t10 = Math.pow(t10, 1.0 / qualifiers.size());
         return 1 - t10;
@@ -218,7 +208,7 @@ public class  Summary<T> {
     /* T11 */
     public double lengthOfQualifier() {
         if (qualifiers == null) {
-            return 0.0;
+            return 1.0;
         }
         return 2.0 * Math.pow(0.5, qualifiers.size());
     }
@@ -296,38 +286,44 @@ public class  Summary<T> {
     public double degreeOfTruthMultiType1() {
         double sigma1 = sigmaCount(this.objects);
         double sigma2 = sigmaCount(this.objects2);
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) /
+                ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType2() {
         double sigma1 = sigmaCount(this.objects);
         double sigma2 = sigmaCount(this.objects2, Stream.concat(this.qualifiers2.stream(), this.summarizers.stream()).toList());
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) /
+                ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType3() {
         double sigma1 = sigmaCount(this.objects, Stream.concat(this.qualifiers.stream(), this.summarizers.stream()).toList());
         double sigma2 = sigmaCount(this.objects2);
-        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) / ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
+        return quantifier.getFuzzySet().degreeOfMembership((sigma1 / this.objects.size()) /
+                ((sigma1 / this.objects.size()) + (sigma2 / this.objects2.size())));
     }
     public double degreeOfTruthMultiType4() {
         double sum = 0;
-        List<Double> a;
-        for (DataEntry data: this.objects) {
-            a = new ArrayList<>();
-
-            for (Label label: this.summarizers) {
-                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+        int s = Math.max(this.objects.size(), this.objects2.size());
+        for(int i = 0; i < s; i++) {
+            double a = 1;
+            double b = 1;
+            if (i < this.objects.size()) {
+                List<Double> tmp = new ArrayList<>();
+                for (Label label: this.summarizers) {
+                    tmp.add(label.getFuzzySet().degreeOfMembership(objects.get(i).getValueByName(label.getLinguisticVariableName())));
+                }
+                a = Collections.min(tmp);
             }
-            sum += implication(0, Collections.min(a));
-        }
-        for (DataEntry data: this.objects2) {
-            a = new ArrayList<>();
-
-            for (Label label: this.summarizers) {
-                a.add(label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+            if (i < this.objects2.size()) {
+                List<Double> tmp = new ArrayList<>();
+                for (Label label: this.summarizers) {
+                    tmp.add(label.getFuzzySet().degreeOfMembership(objects2.get(i).getValueByName(label.getLinguisticVariableName())));
+                }
+                b = Collections.min(tmp);
             }
-            sum += implication(Collections.min(a), 0);
+            sum += implication(a, b);
         }
-        return 1 - (sum / (this.objects.size() + this.objects2.size()));
+        return 1 - (sum / s);
     }
 
     public String toStringSingle() {

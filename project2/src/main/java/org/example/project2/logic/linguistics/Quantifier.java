@@ -9,13 +9,12 @@ public class Quantifier {
     private final QuantifierType quantifierType;
 
     public Quantifier(String name, FuzzySet fuzzySet, QuantifierType quantifierType) {
+        if (!(fuzzySet.isConvex() && fuzzySet.isNormal())) {
+            throw new IllegalArgumentException("Cannot create quantifier! Quantifier has to be convex and normal");
+        }
         this.name = name;
         this.fuzzySet = fuzzySet;
         this.quantifierType = quantifierType;
-    }
-
-    public double compatibilityLevel(double x) {
-        return fuzzySet.degreeOfMembership(x);
     }
 
     public String getName() {
