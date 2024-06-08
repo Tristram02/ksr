@@ -233,15 +233,29 @@ public class WindowMode extends Application {
 
                 summariesListView.getItems().clear();
 
-                summaries.sort((o1, o2) -> Double.compare(o2.getDegreeOfTruthToSort(), o1.getDegreeOfTruthToSort()));
+                summaries.sort((o1, o2) -> {
+                    Double t1 = o1.getDegreeOfTruthToSort();
+                    Double t2 = o2.getDegreeOfTruthToSort();
+                    if (t1.isNaN() && t2.isNaN()) {
+                        return 0;
+                    } else if (t1.isNaN()) {
+                        return 1;
+                    } else if (t2.isNaN()) {
+                        return -1;
+                    } else {
+                        return Double.compare(t2, t1);
+                    }
+                });
 
-                if (summaries != null) {
+                if (!summaries.isEmpty()) {
                     for (Summary summary : summaries) {
                         summariesListView.getItems().add(summary.toString());
                     }
                 }
+
             }
         });
+
     }
 
     private void setMetrics(Summary summary) {
