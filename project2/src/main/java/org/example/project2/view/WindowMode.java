@@ -1,6 +1,7 @@
 package org.example.project2.view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -34,6 +35,8 @@ public class WindowMode extends Application {
     String subject2;
     List<org.example.project2.logic.linguistics.Label> attributes = new ArrayList<>();
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
+
+    List<Summary> summaries = new ArrayList<>();
     Initialization initialData = new Initialization();
     Double a;
     Double b;
@@ -120,34 +123,8 @@ public class WindowMode extends Application {
     private ListView summariesListView;
     @FXML
     private Button clearChosenAttributesButton;
-
-//    private void addQuantifiers() {
-//        quantifierCB.getItems().add(initialData.getNearlyNone().getName());
-//        quantifierCB.getItems().add(initialData.getAround1_4().getName());
-//        quantifierCB.getItems().add(initialData.getAroundHalf().getName());
-//        quantifierCB.getItems().add(initialData.getAround3_4().getName());
-//        quantifierCB.getItems().add(initialData.getMost().getName());
-//        quantifierCB.getItems().add(initialData.getNearlyAll().getName());
-//        quantifierCB.getItems().add(initialData.getLessThan1000().getName());
-//        quantifierCB.getItems().add(initialData.getAbout2000().getName());
-//        quantifierCB.getItems().add(initialData.getAbout5000().getName());
-//        quantifierCB.getItems().add(initialData.getAbout6000().getName());
-//        quantifierCB.getItems().add(initialData.getOver8000().getName());
-//        quantifierCB.getItems().add(initialData.getOver10000().getName());
-//
-//        quantifierCB.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-//                String selected = (String) quantifierCB.getItems().get((Integer) t1);
-//
-//                for (Quantifier q: initialData.getAllQuantifiers()) {
-//                    if (selected.equals(q.getName())) {
-//                        quantifier = q;
-//                    }
-//                }
-//            }
-//        });
-//    }
+    @FXML
+    private Button clearListView;
 
     private void addQualifiersAndSummarizers() {
 
@@ -236,29 +213,28 @@ public class WindowMode extends Application {
 
         });
 
+        clearListView.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Platform.runLater(() -> {
+                    summariesListView.getItems().clear();
+                    summariesListView.getSelectionModel().clearSelection();
+                });            }
+        });
+
         generateSummariesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                List<Summary> summaries = generateSummary();
+                System.getLogger("INFO").log(System.Logger.Level.INFO, "Generating summaries...");
 
-                summaries.sort((o1, o2) -> {
-                    return Double.compare(o2.getDegreeOfTruthToSort(), o1.getDegreeOfTruthToSort());
-                });
+                generateSummary();
 
-                summariesListView.getItems().clear();
+                summaries.sort((o1, o2) -> Double.compare(o2.getDegreeOfTruthToSort(), o1.getDegreeOfTruthToSort()));
                 if (summaries != null) {
                     for (Summary summary : summaries) {
                         summariesListView.getItems().add(summary.toString());
                     }
                 }
-
-                summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        Summary selected = summaries.get((Integer) t1);
-                        setMetrics(selected);
-                    }
-                });
             }
         });
     }
@@ -392,11 +368,13 @@ public class WindowMode extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 createNewQuantifier();
+
             }
         });
     }
 
     private List<Summary> generateSummary() {
+        summaries.clear();
 
         if (attributes.size() > 0) {
             CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
@@ -408,7 +386,6 @@ public class WindowMode extends Application {
             for (int i = 0; i < 10; i++) {
                 weights.add(0.03);
             }
-            List<Summary> summaries = new ArrayList<>();
             for(int j = 0; j < initialData.getAllQuantifiers().size(); j++) {
                 Quantifier quantifier = initialData.getAllQuantifiers().get(j);
 
@@ -484,7 +461,7 @@ public class WindowMode extends Application {
 
             }
 
-            System.getLogger("INFO").log(System.Logger.Level.INFO, "Summaries generated" + summaries.size());
+            System.getLogger("INFO").log(System.Logger.Level.INFO, "Summaries generated " + summaries.size());
             return summaries;
         }
 
@@ -539,13 +516,8 @@ public class WindowMode extends Application {
                 throw new IllegalStateException("Unexpected value: " + membershipFunction);
         }
 
-        quantifierCB.getItems().add(newQuantifier.getName());
+//        quantifierCB.getItems().add(newQuantifier.getName());
         initialData.addQuantifier(newQuantifier);
-    }
-
-
-    private void generateMultiSubjectSummary() {
-
     }
 
 
@@ -595,6 +567,14 @@ public class WindowMode extends Application {
         initializeMultiSubject();
         addQualifiersAndSummarizers();
         initializeNewQuantifierPane();
+
+        summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                Summary selected = summaries.get((Integer) t1);
+                setMetrics(selected);
+            }
+        });
     }
 
     @Override
