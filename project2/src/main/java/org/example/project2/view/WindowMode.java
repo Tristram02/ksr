@@ -484,10 +484,12 @@ public class WindowMode extends Application {
                     summaries.add(summary);
 
                     //first type with subjects chosen
-                    Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights, subject1);
-                    summaries.add(summary1);
-                    Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights, subject2);
-                    summaries.add(summary2);
+                    if (subject1 != null && subject2 != null) {
+                        Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights, subject1);
+                        summaries.add(summary1);
+                        Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights, subject2);
+                        summaries.add(summary2);
+                    }
                 }
 
                 //second type one subj
@@ -503,47 +505,52 @@ public class WindowMode extends Application {
                         summaries.add(summary2);
 
                         //with chosen subjects
-                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
-                        summaries.add(summary3);
-                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights, subject2);
-                        summaries.add(summary4);
+                        if (subject1 != null && subject2 != null) {
+                            Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
+                            summaries.add(summary3);
+                            Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights, subject2);
+                            summaries.add(summary4);
+                        }
                     }
                 }
 
-                //first type multi subj
-                for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
-                    Summary summary1 = new Summary(quantifier, null, subject1Data, subject2Data, combination, subject1, subject2,false);
-                    summaries.add(summary1);
-//                    Summary summary2 = new Summary(quantifier, null, subject2Data, subject1Data, combination, subject2, subject1,false);
-//                    summaries.add(summary2);
-                }
-                //second and third type multi subj
-                for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
-                    List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
-                    summarizers.removeAll(qualifiers);
-                    Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
+                if (subject1 != null && subject2 != null) {
 
-                    for (List<org.example.project2.logic.linguistics.Label> secondCombination : secondCombinations) {
-                        if (secondCombination.isEmpty()) continue;
-
-                        Summary summary = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, false);
-                        summaries.add(summary);
-                        Summary summary2 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, false);
-                        summaries.add(summary2);
-                        Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, true);
-                        summaries.add(summary3);
-                        Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, true);
-                        summaries.add(summary4);
-                    }
-                }
-
-                if(j == 0) {
-                    //4th type multi subj
+                    //first type multi subj
                     for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
-                        Summary summary1 = new Summary(null, null, subject1Data, subject2Data, combination, subject1, subject2, false);
+                        Summary summary1 = new Summary(quantifier, null, subject1Data, subject2Data, combination, subject1, subject2,false);
                         summaries.add(summary1);
-                        Summary summary2 = new Summary(null, null, subject2Data, subject1Data, combination, subject2, subject1, false);
-                        summaries.add(summary2);
+    //                    Summary summary2 = new Summary(quantifier, null, subject2Data, subject1Data, combination, subject2, subject1,false);
+    //                    summaries.add(summary2);
+                    }
+                    //second and third type multi subj
+                    for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
+                        List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
+                        summarizers.removeAll(qualifiers);
+                        Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
+
+                        for (List<org.example.project2.logic.linguistics.Label> secondCombination : secondCombinations) {
+                            if (secondCombination.isEmpty()) continue;
+
+                            Summary summary = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, false);
+                            summaries.add(summary);
+                            Summary summary2 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, false);
+                            summaries.add(summary2);
+                            Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, subject2Data, secondCombination, subject1,subject2, true);
+                            summaries.add(summary3);
+                            Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, subject1Data, secondCombination, subject2,subject1, true);
+                            summaries.add(summary4);
+                        }
+                    }
+
+                    if(j == 0) {
+                        //4th type multi subj
+                        for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
+                            Summary summary1 = new Summary(null, null, subject1Data, subject2Data, combination, subject1, subject2, false);
+                            summaries.add(summary1);
+                            Summary summary2 = new Summary(null, null, subject2Data, subject1Data, combination, subject2, subject1, false);
+                            summaries.add(summary2);
+                        }
                     }
                 }
 
@@ -932,9 +939,13 @@ public class WindowMode extends Application {
 
     private void sortByQuality() {
         filteredSummaries.sort((o1, o2) -> {
-            Double t1 = o1.quality();
-            Double t2 = o2.quality();
-            return compareDegrees(t1, t2);
+            if (o1.getObjects2() != null && o2.getObjects2() != null) {
+                Double t1 = o1.quality();
+                Double t2 = o2.quality();
+                return compareDegrees(t1, t2);
+            } else {
+                return compareDegrees(0.0, 0.0);
+            }
         });
         List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
         updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
