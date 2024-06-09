@@ -29,10 +29,7 @@ import org.example.project2.logic.sets.FuzzySet;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class WindowMode extends Application {
 
@@ -41,9 +38,8 @@ public class WindowMode extends Application {
     String subject2;
     List<org.example.project2.logic.linguistics.Label> attributes = new ArrayList<>();
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
-
+    private Map<Summary, BooleanProperty> selectionState = new HashMap<>();
     List<Summary> summaries = new ArrayList<>();
-    List<BooleanProperty> selectionState = new ArrayList<>();
     List<Summary> filteredSummaries = new ArrayList<>();
     Initialization initialData = new Initialization();
     Double a;
@@ -156,6 +152,7 @@ public class WindowMode extends Application {
                     summariesListView.getItems().clear();
                     summariesListView.getSelectionModel().clearSelection();
                     summaries.clear();
+                    selectionState.clear();
                 });
             }
         });
@@ -172,9 +169,9 @@ public class WindowMode extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 List<Summary> selectedSummaries = new ArrayList<>();
-                for (int i = 0; i < summaries.size(); i++) {
-                    if (selectionState.get(i).get()) {
-                        selectedSummaries.add(summaries.get(i));
+                for (Map.Entry<Summary, BooleanProperty> entry : selectionState.entrySet()) {
+                    if (entry.getValue().get()) {
+                        selectedSummaries.add(entry.getKey());
                     }
                 }
 
@@ -305,6 +302,7 @@ public class WindowMode extends Application {
         summariesListView.getSelectionModel().clearSelection();
         summariesListView.getItems().clear();
         filteredSummaries.clear();
+        selectionState.clear();
         if (summaries != null) {
             for (Summary summary : summaries) {
                 if (selectedToggle != null) {
@@ -319,13 +317,11 @@ public class WindowMode extends Application {
                 }
             }
         }
-        for (Summary summary: filteredSummaries) {
+        for (Summary summary : filteredSummaries) {
             CheckBox checkBox = new CheckBox(summary.toString());
-            BooleanProperty isSelected = new SimpleBooleanProperty(false);
+            BooleanProperty isSelected = selectionState.computeIfAbsent(summary, k -> new SimpleBooleanProperty(false));
             checkBox.selectedProperty().bindBidirectional(isSelected);
-            selectionState.add(isSelected);
             summariesListView.getItems().add(checkBox);
-//            summariesListView.getItems().add(summary.toString());
         }
     }
 
