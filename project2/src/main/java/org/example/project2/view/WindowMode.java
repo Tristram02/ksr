@@ -39,6 +39,7 @@ public class WindowMode extends Application {
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
 
     List<Summary> summaries = new ArrayList<>();
+    List<Summary> filteredSummaries = new ArrayList<>();
     Initialization initialData = new Initialization();
     Double a;
     Double b;
@@ -123,6 +124,12 @@ public class WindowMode extends Application {
     private Button clearChosenAttributesButton;
     @FXML
     private Button clearListView;
+    @FXML
+    RadioButton allButton;
+    @FXML
+    RadioButton singleButton;
+    @FXML
+    RadioButton multiButton;
 
     private void addQualifiersAndSummarizers() {
         CheckBoxTreeItem<String> root = new CheckBoxTreeItem<>("Cechy");
@@ -149,6 +156,12 @@ public class WindowMode extends Application {
         attributeTV.setCellFactory(CheckBoxTreeCell.forTreeView());
 
         attributeTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        ToggleGroup filterGroup = new ToggleGroup();
+        allButton.setToggleGroup(filterGroup);
+        singleButton.setToggleGroup(filterGroup);
+        multiButton.setToggleGroup(filterGroup);
+        allButton.setSelected(true); // Default selection
 
         clearChosenAttributesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -192,12 +205,18 @@ public class WindowMode extends Application {
                     }
                 });
 
-                if (!summaries.isEmpty()) {
-                    for (Summary summary : summaries) {
-                        summariesListView.getItems().add(summary.toString());
-                    }
-                }
+                updateSummariesListView(summaries, filterGroup.getSelectedToggle());
 
+            }
+        });
+
+        filterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle oldToggle, Toggle newToggle) {
+                if (newToggle != null) {
+                    List<Summary> currentSummaries = generateSummary();
+                    updateSummariesListView(currentSummaries, newToggle);
+                }
             }
         });
 
@@ -239,8 +258,47 @@ public class WindowMode extends Application {
         }
     }
 
+    private void updateSummariesListView(List<Summary> summaries, Toggle selectedToggle) {
+        summariesListView.getSelectionModel().clearSelection();
+        summariesListView.getItems().clear();
+        filteredSummaries.clear();
+        if (summaries != null) {
+            for (Summary summary : summaries) {
+                if (selectedToggle != null) {
+                    RadioButton selectedRadioButton = (RadioButton) selectedToggle;
+                    if (selectedRadioButton.getText().equals("Jednopodmiotowe") && summary.getObjects2() == null) {
+                        filteredSummaries.add(summary);
+                    } else if (selectedRadioButton.getText().equals("Wielopodmiotowe") && summary.getObjects2() != null) {
+                        filteredSummaries.add(summary);
+                    } else if (selectedRadioButton.getText().equals("Wszystkie")) {
+                        filteredSummaries.add(summary);
+                    }
+                }
+            }
+        }
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.getDegreeOfTruthToSort();
+            Double t2 = o2.getDegreeOfTruthToSort();
+            if (t1.isNaN() && t2.isNaN()) {
+                return 0;
+            } else if (t1.isNaN()) {
+                return 1;
+            } else if (t2.isNaN()) {
+                return -1;
+            } else {
+                return Double.compare(t2, t1);
+            }
+        });
+        for (Summary summary: filteredSummaries) {
+            summariesListView.getItems().add(summary.toString());
+        }
+    }
+
     private void setMetrics(Summary summary) {
         T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
+        System.out.println();
+        System.out.print("T1: ");
+        System.out.println(summary.getDegreeOfTruthToSort());
         if(summary.getForm() == 0){
         T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
         T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
@@ -612,8 +670,10 @@ public class WindowMode extends Application {
         summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                Summary selected = summaries.get((Integer) t1);
-                setMetrics(selected);
+                if ((Integer) t1 >= 0) {
+                    Summary selected = filteredSummaries.get((Integer) t1);
+                    setMetrics(selected);
+                }
             }
         });
 

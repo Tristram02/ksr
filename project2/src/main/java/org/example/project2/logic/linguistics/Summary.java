@@ -55,6 +55,10 @@ public class  Summary<T> {
         }
     }
 
+    public List<DataEntry> getObjects2() {
+        return objects2;
+    }
+
     /* T1 */
     public double degreeOfTruth() {
         double t1 = 0.0;

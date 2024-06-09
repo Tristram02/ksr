@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -45,6 +46,9 @@
                         <Button fx:id="generateSummariesButton" layoutX="31.0" layoutY="253.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="126.0" text="Generate summaries" />
                         <Button fx:id="clearChosenAttributesButton" layoutX="16.0" layoutY="210.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="139.0" text="Clear chosen attributes" />
                         <Button fx:id="clearListView" layoutX="30.0" layoutY="174.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="124.0" text="Clear summaries" />
+                        <RadioButton fx:id="allButton" layoutX="497.0" layoutY="14.0" mnemonicParsing="false" text="Wszystkie" />
+                        <RadioButton fx:id="singleButton" layoutX="593.0" layoutY="14.0" mnemonicParsing="false" text="Jednopodmiotowe" />
+                        <RadioButton fx:id="multiButton" layoutX="739.0" layoutY="14.0" mnemonicParsing="false" text="Wielopodmiotowe" />
                      </children>
                   </AnchorPane>
             </content>
@@ -96,38 +100,38 @@
                      <children>
                          <GridPane hgap="10" layoutX="483.0" layoutY="31.0" vgap="10">
                              <children>
-                                 <Label text="W1" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w1" text="0.7" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                 <Label text="W1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                 <TextField fx:id="w1" text="0.7" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                 <Label text="W2" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w2" text="0.03" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                 <Label text="W2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                 <TextField fx:id="w2" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                                 <Label text="W3" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w3" text="0.03" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                 <Label text="W3" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                 <TextField fx:id="w3" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                                 <Label text="W4" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w4" text="0.03" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                 <Label text="W4" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                 <TextField fx:id="w4" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                                 <Label text="W5" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w5" text="0.03" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                                 <Label text="W5" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                 <TextField fx:id="w5" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                                 <Label text="W6" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w6" text="0.03" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                                 <Label text="W6" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                 <TextField fx:id="w6" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                                 <Label text="W7" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w7" text="0.03" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                                 <Label text="W7" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                 <TextField fx:id="w7" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-                                 <Label text="W8" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w8" text="0.03" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+                                 <Label text="W8" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                                 <TextField fx:id="w8" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-                                 <Label text="W9" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w9" text="0.03" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+                                 <Label text="W9" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                                 <TextField fx:id="w9" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 
-                                 <Label text="W10" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w10" text="0.03" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+                                 <Label text="W10" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+                                 <TextField fx:id="w10" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="9" />
 
-                                 <Label text="W11" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
-                                 <TextField fx:id="w11" text="0.03" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+                                 <Label text="W11" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+                                 <TextField fx:id="w11" text="0.03" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                              </children>
                            <columnConstraints>
                               <ColumnConstraints />
@@ -147,7 +151,7 @@
                               <RowConstraints />
                            </rowConstraints>
                          </GridPane>
-                        <Button onAction="#handleSave" layoutX="567.0" layoutY="436.0" mnemonicParsing="false" text="Zapisz" />
+                        <Button layoutX="567.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleSave" text="Zapisz" />
                      </children>
                 </AnchorPane>
               </content>
