@@ -7,23 +7,19 @@ import org.example.project2.logic.functions.TriangularFunction;
 import org.example.project2.logic.linguistics.*;
 import org.example.project2.logic.sets.ClassicSet;
 import org.example.project2.logic.sets.FuzzySet;
-import org.example.project2.variables.coal.CoalAnnChangeProdTwh;
-import org.example.project2.variables.coal.CoalProd;
-import org.example.project2.variables.coal.CoalProdPerCapita;
-import org.example.project2.variables.gas.GasAnnChangeProdTwh;
-import org.example.project2.variables.gas.GasProd;
-import org.example.project2.variables.gas.GasProdPerCapita;
-import org.example.project2.variables.oil.OilAnnChangeProdTwh;
-import org.example.project2.variables.oil.OilProd;
-import org.example.project2.variables.oil.OilProdPerCapita;
+import org.example.project2.logic.variables.coal.CoalAnnChangeProdTwh;
+import org.example.project2.logic.variables.coal.CoalProd;
+import org.example.project2.logic.variables.coal.CoalProdPerCapita;
+import org.example.project2.logic.variables.gas.GasAnnChangeProdTwh;
+import org.example.project2.logic.variables.gas.GasProd;
+import org.example.project2.logic.variables.gas.GasProdPerCapita;
+import org.example.project2.logic.variables.oil.OilAnnChangeProdTwh;
+import org.example.project2.logic.variables.oil.OilProd;
+import org.example.project2.logic.variables.oil.OilProdPerCapita;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Initialization {
 

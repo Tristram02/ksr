@@ -1,4 +1,4 @@
-package org.example.project2.db;
+package org.example.project2.database;
 
 import org.example.project2.logic.linguistics.DataEntry;
 

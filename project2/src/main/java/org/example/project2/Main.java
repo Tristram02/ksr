@@ -1,8 +1,7 @@
 package org.example.project2;
 
 import javafx.application.Application;
-import org.example.project2.db.CsvReader;
-import org.example.project2.enums.ContinentsEnum;
+import org.example.project2.database.CsvReader;
 import org.example.project2.logic.linguistics.DataEntry;
 import org.example.project2.logic.linguistics.Label;
 import org.example.project2.logic.linguistics.Quantifier;

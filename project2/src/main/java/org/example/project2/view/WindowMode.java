@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.stage.Stage;
 import org.example.project2.Initialization;
-import org.example.project2.db.CsvReader;
+import org.example.project2.database.CsvReader;
 import org.example.project2.enums.ContinentsEnum;
 import org.example.project2.enums.VariablesEnum;
 import org.example.project2.logic.functions.GaussianFunction;

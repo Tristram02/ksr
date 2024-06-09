@@ -1,4 +1,4 @@
-package org.example.project2.variables.coal;
+package org.example.project2.logic.variables.oil;
 
 import org.example.project2.enums.VariablesEnum;
 import org.example.project2.logic.linguistics.DataEntry;
@@ -7,15 +7,15 @@ import org.example.project2.logic.linguistics.Variable;
 
 import java.util.List;
 
-public class CoalAnnChangeProdTwh extends Variable<DataEntry> {
+public class OilProdPerCapita extends Variable<DataEntry> {
 
-    public CoalAnnChangeProdTwh(List<Label> labels) {
-        super(VariablesEnum.ANN_COAL_CHANGE_PROD_TWH.getName(), labels);
+    public OilProdPerCapita(List<Label> labels) {
+        super(VariablesEnum.OIL_PROD_PER_CAPITA.getName(), labels);
     }
 
     @Override
     public Double extractAttribute(DataEntry object) {
-        return object.getCoalChangeProdTwh();
+        return object.getOilProdPerCapita();
     }
 
 }
