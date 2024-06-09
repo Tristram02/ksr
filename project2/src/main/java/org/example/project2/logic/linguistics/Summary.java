@@ -329,7 +329,7 @@ public class  Summary<T> {
         } else {
             subject = " data entries";
         }
-        result += STR."\{quantifier.getName().charAt(0)}\{quantifier.getName().substring(1).toLowerCase()}\{subject}";
+        result += STR."\{quantifier.getName()}\{subject}";
         if (qualifiers != null && qualifiers.size() > 0) {
             result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
@@ -354,7 +354,7 @@ public class  Summary<T> {
     public String toStringMultiple() {
         String result = "";
         if (this.form != 4) {
-            result += quantifier.getName().charAt(0) + quantifier.getName().substring(1).toLowerCase() + " ";
+            result += quantifier.getName() + " ";
         } else {
             result += "More ";
         }

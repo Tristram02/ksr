@@ -2,6 +2,8 @@ package org.example.project2.view;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -41,6 +43,7 @@ public class WindowMode extends Application {
     List<org.example.project2.logic.linguistics.Label> qualifiers = new ArrayList<>();
 
     List<Summary> summaries = new ArrayList<>();
+    List<BooleanProperty> selectionState = new ArrayList<>();
     List<Summary> filteredSummaries = new ArrayList<>();
     Initialization initialData = new Initialization();
     Double a;
@@ -103,6 +106,8 @@ public class WindowMode extends Application {
     @FXML RadioButton multiButton;
     @FXML RadioButton quantifierButton;
     @FXML RadioButton labelButton;
+    @FXML private Button saveChosenSummariesBtn;
+
 
     private void addQualifiersAndSummarizers() {
         CheckBoxTreeItem<String> root = new CheckBoxTreeItem<>("Cechy");
@@ -162,6 +167,22 @@ public class WindowMode extends Application {
                 showAlert(Alert.AlertType.INFORMATION, "Sukces", "Podsumowania zostały zapisane do pliku summaries.txt");
             }
         });
+
+        saveChosenSummariesBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                List<Summary> selectedSummaries = new ArrayList<>();
+                for (int i = 0; i < summaries.size(); i++) {
+                    if (selectionState.get(i).get()) {
+                        selectedSummaries.add(summaries.get(i));
+                    }
+                }
+
+                saveToTxt(selectedSummaries);
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Selected summaries have been saved.");
+            }
+        });
+
 
         generateSummariesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -299,7 +320,12 @@ public class WindowMode extends Application {
             }
         }
         for (Summary summary: filteredSummaries) {
-            summariesListView.getItems().add(summary.toString());
+            CheckBox checkBox = new CheckBox(summary.toString());
+            BooleanProperty isSelected = new SimpleBooleanProperty(false);
+            checkBox.selectedProperty().bindBidirectional(isSelected);
+            selectionState.add(isSelected);
+            summariesListView.getItems().add(checkBox);
+//            summariesListView.getItems().add(summary.toString());
         }
     }
 
