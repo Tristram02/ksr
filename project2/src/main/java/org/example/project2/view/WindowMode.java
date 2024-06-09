@@ -223,7 +223,7 @@ public class WindowMode extends Application {
 
     public void saveToTxt(List<Summary> summaries) {
         try (FileWriter writer = new FileWriter("summaries.txt")) {
-            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T\n");
+            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T\n");
             for (Summary summary : summaries) {
                 writer.append(summary.toString())
                         .append(", ")
@@ -231,6 +231,8 @@ public class WindowMode extends Application {
 
                 if (summary.getForm() == 0) {
                     writer.append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfImprecision() * 100.0) / 100.0))
+                            .append(", ")
                             .append(String.valueOf(Math.round(summary.degreeOfCovering() * 100.0) / 100.0))
                             .append(", ")
                             .append(String.valueOf(Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0))
