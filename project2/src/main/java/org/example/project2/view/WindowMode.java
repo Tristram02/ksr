@@ -23,6 +23,7 @@ import org.example.project2.logic.linguistics.*;
 import org.example.project2.logic.sets.ClassicSet;
 import org.example.project2.logic.sets.FuzzySet;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -125,6 +126,8 @@ public class WindowMode extends Application {
     @FXML
     private Button clearListView;
     @FXML
+    public Button saveSummariesBtn;
+    @FXML
     RadioButton allButton;
     @FXML
     RadioButton singleButton;
@@ -182,6 +185,14 @@ public class WindowMode extends Application {
             }
         });
 
+        saveSummariesBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                saveToCSV(summaries);
+                showAlert(Alert.AlertType.INFORMATION, "Sukces", "Podsumowania zostały zapisane do pliku summaries.csv");
+            }
+        });
+
         generateSummariesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -220,6 +231,49 @@ public class WindowMode extends Application {
             }
         });
 
+    }
+
+    private void saveToCSV(List<Summary> summaries) {
+        try (FileWriter writer = new FileWriter("summaries.csv")) {
+            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T\n");
+            for (Summary summary : summaries) {
+                writer.append(summary.toString())
+                        .append(",")
+                        .append(String.valueOf(summary.getDegreeOfTruthToSort()));
+
+                if(summary.getForm() == 0){
+                    writer.append(",")
+                            .append(String.valueOf(summary.degreeOfImprecision()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfCovering()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfAppropriateness()))
+                            .append(",")
+                            .append(String.valueOf(summary.lengthOfSummary()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfQuantifierImprecision()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfQuantifierCardinality()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfSummarizerCardinality()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfQualifierImprecision()))
+                            .append(",")
+                            .append(String.valueOf(summary.degreeOfQualifierCardinality()))
+                            .append(",")
+                            .append(String.valueOf(summary.lengthOfQualifier()))
+                            .append(",")
+                            .append(String.valueOf(summary.quality()));
+                }else {
+                    writer.append(", ~, ~, ~, ~, ~, ~, ~, ~, ~, ~, ~");
+                }
+                writer.append("\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się zapisać do pliku CSV.");
+        }
     }
 
     private void addLabelsToTreeItem(CheckBoxTreeItem<String> parentItem, List<org.example.project2.logic.linguistics.Label> labels) {
@@ -695,7 +749,7 @@ public class WindowMode extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 600);
         stage.setTitle("Project 2");
         stage.setScene(scene);
         stage.show();
