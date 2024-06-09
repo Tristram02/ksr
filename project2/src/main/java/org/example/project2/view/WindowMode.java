@@ -50,6 +50,7 @@ public class WindowMode extends Application {
     String name;
     boolean isAbsolute;
     List<Double> weights = new ArrayList<>();
+    ToggleGroup filterGroup;
 
     @FXML private ComboBox subject1CB;
     @FXML private ComboBox subject2CB;
@@ -129,7 +130,7 @@ public class WindowMode extends Application {
 
         attributeTV.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        ToggleGroup filterGroup = new ToggleGroup();
+        filterGroup = new ToggleGroup();
         allButton.setToggleGroup(filterGroup);
         singleButton.setToggleGroup(filterGroup);
         multiButton.setToggleGroup(filterGroup);
@@ -297,19 +298,6 @@ public class WindowMode extends Application {
                 }
             }
         }
-        filteredSummaries.sort((o1, o2) -> {
-            Double t1 = o1.getDegreeOfTruthToSort();
-            Double t2 = o2.getDegreeOfTruthToSort();
-            if (t1.isNaN() && t2.isNaN()) {
-                return 0;
-            } else if (t1.isNaN()) {
-                return 1;
-            } else if (t2.isNaN()) {
-                return -1;
-            } else {
-                return Double.compare(t2, t1);
-            }
-        });
         for (Summary summary: filteredSummaries) {
             summariesListView.getItems().add(summary.toString());
         }
@@ -724,6 +712,20 @@ public class WindowMode extends Application {
         initializeMultiSubject();
         addQualifiersAndSummarizers();
         initializeNewQuantifierPane();
+
+        T1.setOnMouseClicked(event -> sortByDegreeOfTruthToSort());
+        T2.setOnMouseClicked(event -> sortByDegreeOfImprecision());
+        T3.setOnMouseClicked(event -> sortByDegreeOfCovering());
+        T4.setOnMouseClicked(event -> sortByDegreeOfAppropriateness());
+        T5.setOnMouseClicked(event -> sortByLengthOfSummary());
+        T6.setOnMouseClicked(event -> sortByDegreeOfQuantifierImprecision());
+        T7.setOnMouseClicked(event -> sortByDegreeOfQuantifierCardinality());
+        T8.setOnMouseClicked(event -> sortByDegreeOfSummarizerCardinality());
+        T9.setOnMouseClicked(event -> sortByDegreeOfQualifierImprecision());
+        T10.setOnMouseClicked(event -> sortByDegreeOfQualifierCardinality());
+        T11.setOnMouseClicked(event -> sortByLengthOfQualifier());
+        T.setOnMouseClicked(event -> sortByQuality());
+        sortByDegreeOfTruthToSort();
         summariesListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -792,6 +794,138 @@ public class WindowMode extends Application {
         this.weights.add(Double.parseDouble(w10.getText()));
         this.weights.add(Double.parseDouble(w11.getText()));
 
+    }
+
+    private void sortByDegreeOfTruthToSort() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.getDegreeOfTruthToSort();
+            Double t2 = o2.getDegreeOfTruthToSort();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfImprecision() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfImprecision();
+            Double t2 = o2.degreeOfImprecision();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfCovering() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfCovering();
+            Double t2 = o2.degreeOfCovering();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfAppropriateness() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfAppropriateness();
+            Double t2 = o2.degreeOfAppropriateness();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByLengthOfSummary() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.lengthOfSummary();
+            Double t2 = o2.lengthOfSummary();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfQuantifierImprecision() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfQuantifierImprecision();
+            Double t2 = o2.degreeOfQuantifierImprecision();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfQuantifierCardinality() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfQuantifierCardinality();
+            Double t2 = o2.degreeOfQuantifierCardinality();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfSummarizerCardinality() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfSummarizerCardinality();
+            Double t2 = o2.degreeOfSummarizerCardinality();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfQualifierImprecision() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfQualifierImprecision();
+            Double t2 = o2.degreeOfQualifierImprecision();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByDegreeOfQualifierCardinality() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.degreeOfQualifierCardinality();
+            Double t2 = o2.degreeOfQualifierCardinality();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByLengthOfQualifier() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.lengthOfQualifier();
+            Double t2 = o2.lengthOfQualifier();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private void sortByQuality() {
+        filteredSummaries.sort((o1, o2) -> {
+            Double t1 = o1.quality();
+            Double t2 = o2.quality();
+            return compareDegrees(t1, t2);
+        });
+        List<Summary> copiedFilteredSummaries = new ArrayList<>(filteredSummaries);
+        updateSummariesListView(copiedFilteredSummaries, filterGroup.getSelectedToggle());
+    }
+
+    private int compareDegrees(Double t1, Double t2) {
+        if (t1.isNaN() && t2.isNaN()) {
+            return 0;
+        } else if (t1.isNaN()) {
+            return 1;
+        } else if (t2.isNaN()) {
+            return -1;
+        } else {
+            return Double.compare(t2, t1);
+        }
     }
 
     @Override
