@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.example.project2.Initialization;
 import org.example.project2.db.CsvReader;
 import org.example.project2.enums.ContinentsEnum;
+import org.example.project2.enums.VariablesEnum;
 import org.example.project2.logic.functions.GaussianFunction;
 import org.example.project2.logic.functions.TrapezoidalFunction;
 import org.example.project2.logic.functions.TriangularFunction;
@@ -50,38 +51,21 @@ public class WindowMode extends Application {
     boolean isAbsolute;
     List<Double> weights = new ArrayList<>();
 
-    @FXML
-    private ComboBox subject1CB;
-    @FXML
-    private ComboBox subject2CB;
-    @FXML
-    private ComboBox quantifierCB;
-    @FXML
-    private TreeView attributeTV;
-    @FXML
-    private Label T1;
-    @FXML
-    private Label T2;
-    @FXML
-    private Label T3;
-    @FXML
-    private Label T4;
-    @FXML
-    private Label T5;
-    @FXML
-    private Label T6;
-    @FXML
-    private Label T7;
-    @FXML
-    private Label T8;
-    @FXML
-    private Label T9;
-    @FXML
-    private Label T10;
-    @FXML
-    private Label T11;
-    @FXML
-    private Label T;
+    @FXML private ComboBox subject1CB;
+    @FXML private ComboBox subject2CB;
+    @FXML private TreeView attributeTV;
+    @FXML private Label T1;
+    @FXML private Label T2;
+    @FXML private Label T3;
+    @FXML private Label T4;
+    @FXML private Label T5;
+    @FXML private Label T6;
+    @FXML private Label T7;
+    @FXML private Label T8;
+    @FXML private Label T9;
+    @FXML private Label T10;
+    @FXML private Label T11;
+    @FXML private Label T;
     @FXML private TextField w1;
     @FXML private TextField w2;
     @FXML private TextField w3;
@@ -93,46 +77,31 @@ public class WindowMode extends Application {
     @FXML private TextField w9;
     @FXML private TextField w10;
     @FXML private TextField w11;
-    @FXML
-    private TextField quantifierName;
-    @FXML
-    private ComboBox quantifierMembershipFunction;
-    @FXML
-    private Label quantifierParameter1;
-    @FXML
-    private Label quantifierParameter2;
-    @FXML
-    private Label quantifierParameter3;
-    @FXML
-    private Label quantifierParameter4;
-    @FXML
-    private TextField quantifierParameter1TF;
-    @FXML
-    private TextField quantifierParameter2TF;
-    @FXML
-    private TextField quantifierParameter3TF;
-    @FXML
-    private TextField quantifierParameter4TF;
-    @FXML
-    private CheckBox quantifierType;
-    @FXML
-    private Button createQuantifier;
-    @FXML
-    private Button generateSummariesButton;
-    @FXML
-    private ListView summariesListView;
-    @FXML
-    private Button clearChosenAttributesButton;
-    @FXML
-    private Button clearListView;
-    @FXML
-    public Button saveSummariesBtn;
-    @FXML
-    RadioButton allButton;
-    @FXML
-    RadioButton singleButton;
-    @FXML
-    RadioButton multiButton;
+    @FXML private TextField quantifierName;
+    @FXML private ComboBox quantifierMembershipFunction;
+    @FXML private ComboBox linguisticVariableComboBox;
+    @FXML private Label quantifierParameter1;
+    @FXML private Label quantifierParameter2;
+    @FXML private Label quantifierParameter3;
+    @FXML private Label quantifierParameter4;
+    @FXML private Label begin;
+    @FXML private Label end;
+    @FXML private TextField quantifierParameter1TF;
+    @FXML private TextField quantifierParameter2TF;
+    @FXML private TextField quantifierParameter3TF;
+    @FXML private TextField quantifierParameter4TF;
+    @FXML private CheckBox quantifierType;
+    @FXML private Button createQuantifier;
+    @FXML private Button generateSummariesButton;
+    @FXML private ListView summariesListView;
+    @FXML private Button clearChosenAttributesButton;
+    @FXML private Button clearListView;
+    @FXML private Button saveSummariesBtn;
+    @FXML RadioButton allButton;
+    @FXML RadioButton singleButton;
+    @FXML RadioButton multiButton;
+    @FXML RadioButton quantifierButton;
+    @FXML RadioButton labelButton;
 
     private void addQualifiersAndSummarizers() {
         CheckBoxTreeItem<String> root = new CheckBoxTreeItem<>("Cechy");
@@ -350,9 +319,6 @@ public class WindowMode extends Application {
 
     private void setMetrics(Summary summary) {
         T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
-        System.out.println();
-        System.out.print("T1: ");
-        System.out.println(summary.getDegreeOfTruthToSort());
         if(summary.getForm() == 0){
         T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
         T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
@@ -384,6 +350,10 @@ public class WindowMode extends Application {
         quantifierMembershipFunction.getItems().add("Trapezoidalna");
         quantifierMembershipFunction.getItems().add("Trójkątna");
         quantifierMembershipFunction.getItems().add("Gaussa");
+
+        for (VariablesEnum v: VariablesEnum.values()) {
+            linguisticVariableComboBox.getItems().add(v.getName());
+        }
 
         quantifierMembershipFunction.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -594,38 +564,73 @@ public class WindowMode extends Application {
     }
 
     private void createNewQuantifier() {
-        String membershipFunction = (String) quantifierMembershipFunction.getItems().get(quantifierMembershipFunction.getSelectionModel().getSelectedIndex());
-        Quantifier newQuantifier;
-        name = quantifierName.getText();
-        isAbsolute = quantifierType.isSelected();
-        switch (membershipFunction) {
-            case "Trapezoidalna": {
-                a = Double.parseDouble(quantifierParameter1TF.getText());
-                b = Double.parseDouble(quantifierParameter2TF.getText());
-                c = Double.parseDouble(quantifierParameter3TF.getText());
-                d = Double.parseDouble(quantifierParameter4TF.getText());
-                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TrapezoidalFunction(a, b, c, d, a, d)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
-                break;
-            }
-            case "Trójkątna": {
-                a = Double.parseDouble(quantifierParameter1TF.getText());
-                b = Double.parseDouble(quantifierParameter2TF.getText());
-                c = Double.parseDouble(quantifierParameter3TF.getText());
-                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TriangularFunction(a, b, c, a, c)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
-                break;
-            }
-            case "Gaussa": {
-                a = Double.parseDouble(quantifierParameter1TF.getText());
-                b = Double.parseDouble(quantifierParameter2TF.getText());
-                newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new GaussianFunction(a, b)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
-                break;
-            }
-            default:
-                throw new IllegalStateException("Unexpected value: " + membershipFunction);
-        }
+        String membershipFunction = (String) quantifierMembershipFunction.getSelectionModel().getSelectedItem();
+        String name = quantifierName.getText();
+        boolean isAbsolute = quantifierType.isSelected();
+        double a, b, c, d;
 
-//        quantifierCB.getItems().add(newQuantifier.getName());
-        initialData.addQuantifier(newQuantifier);
+        if (quantifierButton.isSelected()) {
+            // Creating a new Quantifier
+            Quantifier newQuantifier;
+            switch (membershipFunction) {
+                case "Trapezoidalna":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    c = Double.parseDouble(quantifierParameter3TF.getText());
+                    d = Double.parseDouble(quantifierParameter4TF.getText());
+                    newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TrapezoidalFunction(a, b, c, d, a, d)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                    break;
+                case "Trójkątna":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    c = Double.parseDouble(quantifierParameter3TF.getText());
+                    newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new TriangularFunction(a, b, c, a, c)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                    break;
+                case "Gaussa":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new GaussianFunction(a, b)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + membershipFunction);
+            }
+            initialData.addQuantifier(newQuantifier);
+        } else if (labelButton.isSelected()) {
+            String linguisticVariable = (String) linguisticVariableComboBox.getSelectionModel().getSelectedItem();
+            Variable var = initialData.getAllVariables().stream().filter(
+                    v -> v.getName().equals(linguisticVariable)
+            ).toList().getFirst();
+            org.example.project2.logic.linguistics.Label newLabel;
+            org.example.project2.logic.linguistics.Label l = (org.example.project2.logic.linguistics.Label) var.getLabels().getFirst();
+            double beg = l.getFuzzySet().getUniverseOfDiscourse().getBegin();
+            double e = l.getFuzzySet().getUniverseOfDiscourse().getEnd();
+
+            switch (membershipFunction) {
+                case "Trapezoidalna":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    c = Double.parseDouble(quantifierParameter3TF.getText());
+                    d = Double.parseDouble(quantifierParameter4TF.getText());
+                    newLabel = new org.example.project2.logic.linguistics.Label(name, new FuzzySet(new ClassicSet(beg, e), new TrapezoidalFunction(a, b, c, d, a, d)), linguisticVariable);
+                    break;
+                case "Trójkątna":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    c = Double.parseDouble(quantifierParameter3TF.getText());
+                    newLabel = new org.example.project2.logic.linguistics.Label(name, new FuzzySet(new ClassicSet(beg, e), new TriangularFunction(a, b, c, a, c)), linguisticVariable);
+                    break;
+                case "Gaussa":
+                    a = Double.parseDouble(quantifierParameter1TF.getText());
+                    b = Double.parseDouble(quantifierParameter2TF.getText());
+                    newLabel = new org.example.project2.logic.linguistics.Label(name, new FuzzySet(new ClassicSet(beg, e), new GaussianFunction(a, b)), linguisticVariable);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + membershipFunction);
+            }
+            var.addLabel(newLabel);
+
+            addQualifiersAndSummarizers();
+        }
     }
 
     @FXML
@@ -731,6 +736,51 @@ public class WindowMode extends Application {
             }
         });
 
+        linguisticVariableComboBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                for (Variable v: initialData.getAllVariables()) {
+                    if (v.getName().equals((String) linguisticVariableComboBox.getSelectionModel().getSelectedItem())) {
+                        org.example.project2.logic.linguistics.Label l = (org.example.project2.logic.linguistics.Label)v.getLabels().getFirst();
+                        begin.setText(String.valueOf(l.getFuzzySet().getUniverseOfDiscourse().getBegin()));
+                        end.setText(String.valueOf(l.getFuzzySet().getUniverseOfDiscourse().getEnd()));
+                    }
+                }
+            }
+        });
+
+        ToggleGroup radioGroup = new ToggleGroup();
+        quantifierButton.setToggleGroup(radioGroup);
+        labelButton.setToggleGroup(radioGroup);
+        quantifierButton.setSelected(true);
+        quantifierType.setDisable(false);
+        linguisticVariableComboBox.setDisable(true);
+        radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+                if (radioGroup.getSelectedToggle() == quantifierButton) {
+                    quantifierType.setDisable(false);
+                    linguisticVariableComboBox.setDisable(true);
+                } else if (radioGroup.getSelectedToggle() == labelButton) {
+                    quantifierType.setDisable(true);
+                    linguisticVariableComboBox.setDisable(false);
+                }
+            }
+        });
+
+        quantifierType.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (quantifierType.isSelected()) {
+                    begin.setText("0");
+                    end.setText(String.valueOf(initialData.getAbout2000().getFuzzySet().getUniverseOfDiscourse().getEnd()));
+                } else {
+                    begin.setText("0");
+                    end.setText("1");
+                }
+            }
+        });
+
         this.weights = new ArrayList<>();
         this.weights.add(Double.parseDouble(w1.getText()));
         this.weights.add(Double.parseDouble(w2.getText()));
@@ -749,7 +799,7 @@ public class WindowMode extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         stage.setTitle("Project 2");
         stage.setScene(scene);
         stage.show();

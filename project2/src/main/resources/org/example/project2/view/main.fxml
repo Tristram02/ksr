@@ -41,45 +41,31 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Nowy kwantyfiaktor">
+            <Tab text="Nowy element">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="quantifierName" layoutX="376.0" layoutY="69.0" />
-                        <Label layoutX="436.0" layoutY="43.0" text="Nazwa" />
-                        <ComboBox fx:id="quantifierMembershipFunction" layoutX="351.0" layoutY="119.0" minWidth="200.0" prefWidth="150.0" promptText="Funkcja przynależności" />
-                        <Label fx:id="quantifierParameter1" layoutX="425.0" layoutY="177.0" text="Parametr 1" />
-                        <TextField fx:id="quantifierParameter1TF" layoutX="376.0" layoutY="203.0" />
-                        <Label fx:id="quantifierParameter2" layoutX="421.0" layoutY="238.0" text="Parametr 2" />
-                        <TextField fx:id="quantifierParameter2TF" layoutX="376.0" layoutY="262.0" />
-                        <Label fx:id="quantifierParameter3" layoutX="421.0" layoutY="298.0" text="Parametr 3" />
-                        <TextField fx:id="quantifierParameter3TF" layoutX="376.0" layoutY="322.0" />
-                        <Label fx:id="quantifierParameter4" layoutX="421.0" layoutY="362.0" text="Parametr 4" />
-                        <TextField fx:id="quantifierParameter4TF" layoutX="376.0" layoutY="386.0" />
+                        <TextField fx:id="quantifierName" layoutX="374.0" layoutY="124.0" />
+                        <Label layoutX="434.0" layoutY="98.0" text="Nazwa" />
+                        <ComboBox fx:id="quantifierMembershipFunction" layoutX="349.0" layoutY="174.0" minWidth="200.0" prefWidth="150.0" promptText="Funkcja przynależności" />
+                        <ComboBox fx:id="linguisticVariableComboBox" layoutX="348.0" layoutY="227.0" minWidth="200.0" prefWidth="150.0" promptText="Zmienna lingwistyczna" />
+                        <Label fx:id="quantifierParameter1" layoutX="419.0" layoutY="285.0" text="Parametr 1" />
+                        <TextField fx:id="quantifierParameter1TF" layoutX="374.0" layoutY="311.0" />
+                        <Label fx:id="quantifierParameter2" layoutX="419.0" layoutY="346.0" text="Parametr 2" />
+                        <TextField fx:id="quantifierParameter2TF" layoutX="374.0" layoutY="370.0" />
+                        <Label fx:id="quantifierParameter3" layoutX="419.0" layoutY="406.0" text="Parametr 3" />
+                        <TextField fx:id="quantifierParameter3TF" layoutX="374.0" layoutY="430.0" />
+                        <Label fx:id="quantifierParameter4" layoutX="419.0" layoutY="470.0" text="Parametr 4" />
+                        <TextField fx:id="quantifierParameter4TF" layoutX="374.0" layoutY="494.0" />
                         <Button fx:id="createQuantifier" layoutX="638.0" layoutY="226.0" mnemonicParsing="false" text="Utwórz" />
                         <CheckBox fx:id="quantifierType" layoutX="146.0" layoutY="144.0" mnemonicParsing="false" text="Absolutny" />
+                        <RadioButton fx:id="quantifierButton" layoutX="331.0" layoutY="52.0" mnemonicParsing="false" text="Kwantyfiaktor" />
+                        <RadioButton fx:id="labelButton" layoutX="480.0" layoutY="52.0" mnemonicParsing="false" text="Etykieta" />
+                        <Label layoutX="130.0" layoutY="244.0" text="Przestrzeń rozważań" />
+                        <Label fx:id="begin" layoutX="109.0" layoutY="285.0" text="0" />
+                        <Label fx:id="end" layoutX="248.0" layoutY="285.0" text="1" />
+                        <Label layoutX="181.0" layoutY="285.0" prefHeight="17.0" prefWidth="7.0" text="-" />
                      </children></AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Nowa etykieta">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                         <TextField layoutX="376.0" layoutY="69.0" />
-                         <Label layoutX="436.0" layoutY="43.0" text="Nazwa" />
-                         <TextField layoutX="376.0" layoutY="242.0" />
-                         <ComboBox layoutX="351.0" layoutY="117.0" minWidth="200.0" prefWidth="150.0" promptText="Zmienna lingwistyczna" />
-                        <ComboBox layoutX="350.0" layoutY="164.0" minWidth="200.0" prefWidth="150.0" promptText="Funkcja przynależności" />
-                         <Label layoutX="425.0" layoutY="216.0" text="Parametr 1" />
-                         <TextField layoutX="376.0" layoutY="301.0" />
-                         <Label layoutX="421.0" layoutY="277.0" text="Parametr 2" />
-                         <TextField layoutX="376.0" layoutY="361.0" />
-                         <Label layoutX="421.0" layoutY="337.0" text="Parametr 3" />
-                         <TextField layoutX="376.0" layoutY="425.0" />
-                         <Label layoutX="421.0" layoutY="401.0" text="Parametr 4" />
-                        <Button layoutX="670.0" layoutY="221.0" mnemonicParsing="false" text="Utwórz" />
-                     </children>
-                </AnchorPane>
               </content>
             </Tab>
             <Tab text="Wagi miar">

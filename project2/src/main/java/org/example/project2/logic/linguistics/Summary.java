@@ -131,23 +131,31 @@ public class  Summary<T> {
 
     /* T4 */
     public double degreeOfAppropriateness() {
-        List<Integer> moreThanZero = new ArrayList<>();
-        for (DataEntry data : objects) {
-            for (Label label : summarizers) {
-                double a = (label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
-                if (a > 0) {
-                    moreThanZero.add(1);
-                } else {
-                    moreThanZero.add(0);
-                }
-            }
-        }
+//        List<Integer> moreThanZero = new ArrayList<>();
+//        for (DataEntry data : objects) {
+//            for (Label label : summarizers) {
+//                double a = (label.getFuzzySet().degreeOfMembership(data.getValueByName(label.getLinguisticVariableName())));
+//                if (a > 0) {
+//                    moreThanZero.add(1);
+//                } else {
+//                    moreThanZero.add(0);
+//                }
+//            }
+//        }
+//        double t4 = 1.0;
+//        for (Integer x : moreThanZero) {
+//            t4 *= (x * 1.0) / objects.size();
+//        }
+//        t4 -= degreeOfCovering();
+//        return Math.abs(t4);
         double t4 = 1.0;
-        for (Integer x : moreThanZero) {
-            t4 *= (x * 1.0) / objects.size();
+        for (Label label: this.summarizers) {
+            double a = (double) this.objects.stream().filter(
+                    o -> label.getFuzzySet().degreeOfMembership(o.getValueByName(label.getLinguisticVariableName())) > 0
+            ).count() / this.objects.size();
+            t4 *= a;
         }
-        t4 -= degreeOfCovering();
-        return Math.abs(t4);
+        return Math.abs(t4 - degreeOfCovering());
     }
 
     /* T5 */
