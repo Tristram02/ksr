@@ -96,7 +96,7 @@ public class WindowMode extends Application {
     @FXML private ListView summariesListView;
     @FXML private Button clearChosenAttributesButton;
     @FXML private Button clearListView;
-    @FXML private Button saveSummariesBtn;
+    @FXML private Button saveAllSummariesBtn;
     @FXML RadioButton allButton;
     @FXML RadioButton singleButton;
     @FXML RadioButton multiButton;
@@ -154,11 +154,11 @@ public class WindowMode extends Application {
             }
         });
 
-        saveSummariesBtn.setOnAction(new EventHandler<ActionEvent>() {
+        saveAllSummariesBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                saveToCSV(summaries);
-                showAlert(Alert.AlertType.INFORMATION, "Sukces", "Podsumowania zostały zapisane do pliku summaries.csv");
+                saveToTxt(summaries);
+                showAlert(Alert.AlertType.INFORMATION, "Sukces", "Podsumowania zostały zapisane do pliku summaries.txt");
             }
         });
 
@@ -202,38 +202,37 @@ public class WindowMode extends Application {
 
     }
 
-    private void saveToCSV(List<Summary> summaries) {
-        try (FileWriter writer = new FileWriter("summaries.csv")) {
-            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T\n");
+    public void saveToTxt(List<Summary> summaries) {
+        try (FileWriter writer = new FileWriter("summaries.txt")) {
+            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T\n");
             for (Summary summary : summaries) {
                 writer.append(summary.toString())
-                        .append(",")
-                        .append(String.valueOf(summary.getDegreeOfTruthToSort()));
+                        .append(", ")
+                        .append(String.valueOf(Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0));
 
-                if(summary.getForm() == 0){
-                    writer.append(",")
-                            .append(String.valueOf(summary.degreeOfImprecision()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfCovering()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfAppropriateness()))
-                            .append(",")
-                            .append(String.valueOf(summary.lengthOfSummary()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfQuantifierImprecision()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfQuantifierCardinality()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfSummarizerCardinality()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfQualifierImprecision()))
-                            .append(",")
-                            .append(String.valueOf(summary.degreeOfQualifierCardinality()))
-                            .append(",")
-                            .append(String.valueOf(summary.lengthOfQualifier()))
-                            .append(",")
-                            .append(String.valueOf(summary.quality()));
-                }else {
+                if (summary.getForm() == 0) {
+                    writer.append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfCovering() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.lengthOfSummary() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfQuantifierImprecision() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfQuantifierCardinality() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfSummarizerCardinality() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfQualifierImprecision() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.lengthOfQualifier() * 100.0) / 100.0))
+                            .append(", ")
+                            .append(String.valueOf(Math.round(summary.quality() * 100.0) / 100.0));
+
+                } else {
                     writer.append(", ~, ~, ~, ~, ~, ~, ~, ~, ~, ~, ~");
                 }
                 writer.append("\n");
@@ -241,7 +240,6 @@ public class WindowMode extends Application {
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się zapisać do pliku CSV.");
         }
     }
 

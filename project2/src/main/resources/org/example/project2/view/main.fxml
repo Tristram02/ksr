@@ -36,7 +36,7 @@
                         <RadioButton fx:id="allButton" layoutX="497.0" layoutY="14.0" mnemonicParsing="false" text="Wszystkie" />
                         <RadioButton fx:id="singleButton" layoutX="593.0" layoutY="14.0" mnemonicParsing="false" text="Jednopodmiotowe" />
                         <RadioButton fx:id="multiButton" layoutX="739.0" layoutY="14.0" mnemonicParsing="false" text="Wielopodmiotowe" />
-                        <Button fx:id="saveSummariesBtn" layoutX="235.0" layoutY="307.0" mnemonicParsing="false" text="Save summaries" />
+                        <Button fx:id="saveAllSummariesBtn" layoutX="235.0" layoutY="307.0" mnemonicParsing="false" text="Save all summaries" />
                      </children>
                   </AnchorPane>
             </content>
