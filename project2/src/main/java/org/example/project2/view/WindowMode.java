@@ -471,7 +471,7 @@ public class WindowMode extends Application {
         summaries.clear();
 
         if (attributes.size() > 0) {
-            CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
+            CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/database/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
             List<DataEntry> subject1Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject1)).toList();
             List<DataEntry> subject2Data = dataEntries.stream().filter(dataEntry -> dataEntry.getContinent().equals(subject2)).toList();

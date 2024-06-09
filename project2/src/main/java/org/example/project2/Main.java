@@ -26,7 +26,7 @@ public class Main {
         if (args.length == 0) {
             Application.launch(WindowMode.class, args);
         } else {
-            CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/db/db.csv");
+            CsvReader csvReader = new CsvReader("src/main/java/org/example/project2/database/db.csv");
             List<DataEntry> dataEntries = csvReader.readData();
 
             boolean end = false;
