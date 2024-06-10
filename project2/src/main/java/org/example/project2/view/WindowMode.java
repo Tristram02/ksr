@@ -42,12 +42,6 @@ public class WindowMode extends Application {
     List<Summary> summaries = new ArrayList<>();
     List<Summary> filteredSummaries = new ArrayList<>();
     Initialization initialData = new Initialization();
-    Double a;
-    Double b;
-    Double c;
-    Double d;
-    String name;
-    boolean isAbsolute;
     List<Double> weights = new ArrayList<>();
     ToggleGroup filterGroup;
 
@@ -135,7 +129,7 @@ public class WindowMode extends Application {
         allButton.setToggleGroup(filterGroup);
         singleButton.setToggleGroup(filterGroup);
         multiButton.setToggleGroup(filterGroup);
-        allButton.setSelected(true); // Default selection
+        allButton.setSelected(true);
 
         clearChosenAttributesButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -176,7 +170,7 @@ public class WindowMode extends Application {
                 }
 
                 saveToTxt(selectedSummaries);
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Selected summaries have been saved.");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Podsumowania zostały zapisane do pliku summaries.txt");
             }
         });
 
@@ -490,12 +484,11 @@ public class WindowMode extends Application {
             for(int j = 0; j < initialData.getAllQuantifiers().size(); j++) {
                 Quantifier quantifier = initialData.getAllQuantifiers().get(j);
 
-                //first type one subj
+                //one subject summaries first form
                 for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
                     Summary summary = new Summary(quantifier, null, dataEntries, combination, weights, " data entries");
                     summaries.add(summary);
 
-                    //first type with subjects chosen
                     if (subject1 != null && subject2 != null) {
                         Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights, subject1);
                         summaries.add(summary1);
@@ -504,8 +497,7 @@ public class WindowMode extends Application {
                     }
                 }
 
-                //second type one subj
-
+                //one subjecy summaries second form
                 for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
                     List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
                     summarizers.removeAll(qualifiers);
@@ -516,7 +508,6 @@ public class WindowMode extends Application {
                         Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights, " data entries");
                         summaries.add(summary2);
 
-                        //with chosen subjects
                         if (subject1 != null && subject2 != null) {
                             Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
                             summaries.add(summary3);
@@ -526,16 +517,16 @@ public class WindowMode extends Application {
                     }
                 }
 
+                //two subjects summaries
                 if (subject1 != null && subject2 != null && quantifier.getQuantifierType() != QuantifierType.ABSOLUTE) {
 
-                    //first type multi subj
+                    //first form
                     for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
                         Summary summary1 = new Summary(quantifier, null, subject1Data, subject2Data, combination, subject1, subject2,false);
                         summaries.add(summary1);
-    //                    Summary summary2 = new Summary(quantifier, null, subject2Data, subject1Data, combination, subject2, subject1,false);
-    //                    summaries.add(summary2);
                     }
-                    //second and third type multi subj
+
+                    //second and third form
                     for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
                         List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
                         summarizers.removeAll(qualifiers);
@@ -555,8 +546,8 @@ public class WindowMode extends Application {
                         }
                     }
 
+                    //fourth form
                     if(j == 0) {
-                        //4th type multi subj
                         for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
                             Summary summary1 = new Summary(null, null, subject1Data, subject2Data, combination, subject1, subject2, false);
                             summaries.add(summary1);
@@ -568,7 +559,7 @@ public class WindowMode extends Application {
 
             }
 
-            System.getLogger("INFO").log(System.Logger.Level.INFO, "Summaries generated " + summaries.size());
+            System.getLogger("INFO").log(System.Logger.Level.INFO, "Number of summaries generated " + summaries.size());
             return summaries;
         }
 
