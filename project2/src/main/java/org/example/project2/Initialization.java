@@ -75,8 +75,8 @@ public class Initialization {
     Quantifier around3_4 = new Quantifier("AROUND_3/4", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.55, 0.6, 0.75, 0.8, 0.55, 0.8 )), QuantifierType.RELATIVE);
     Quantifier most = new Quantifier("MOST", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.7, 0.8, 0.95,  0.7, 0.95 )), QuantifierType.RELATIVE);
     Quantifier nearlyAll = new Quantifier("NEARLY_ALL", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.85, 0.9, 1, 1, 0.85, 1 )), QuantifierType.RELATIVE);
-    List<Quantifier> allQuantifiers = new ArrayList<>(Arrays.asList(lessThan1000, about2000, about5000, about6000, over8000, over10000,
-            nearlyNone, around1_4, aroundHalf, around3_4, most, nearlyAll));
+    List<Quantifier> allQuantifiers = new ArrayList<>(Arrays.asList(nearlyNone, around1_4, aroundHalf, around3_4, most, nearlyAll,
+            lessThan1000, about2000, about5000, about6000, over8000, over10000));
 
     public Variable<DataEntry> getCoalAnnChangeProdTwh() {
         return coalAnnChangeProdTwh;

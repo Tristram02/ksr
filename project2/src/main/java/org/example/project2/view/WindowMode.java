@@ -223,7 +223,7 @@ public class WindowMode extends Application {
 
     public void saveToTxt(List<Summary> summaries) {
         try (FileWriter writer = new FileWriter("summaries.txt")) {
-            writer.append("Summary, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T\n");
+            writer.append("Summary, degree of truth, degree of imprecision, degree of covering, degree of appropriateness, length of summary, degree of quantifier imprecision, degree of quantifier cardinality, degree of summarizer cardinality, degree of qualifier imprecision, degree of qualifier cardinality, length of qualifier, T\n");
             for (Summary summary : summaries) {
                 writer.append(summary.toString())
                         .append(", ")
@@ -311,7 +311,7 @@ public class WindowMode extends Application {
                     RadioButton selectedRadioButton = (RadioButton) selectedToggle;
                     if (selectedRadioButton.getText().equals("Jednopodmiotowe") && summary.getObjects2() == null) {
                         filteredSummaries.add(summary);
-                    } else if (selectedRadioButton.getText().equals("Wielopodmiotowe") && summary.getObjects2() != null) {
+                    } else if (selectedRadioButton.getText().equals("Dwupodmiotowe") && summary.getObjects2() != null) {
                         filteredSummaries.add(summary);
                     } else if (selectedRadioButton.getText().equals("Wszystkie")) {
                         filteredSummaries.add(summary);
@@ -328,31 +328,43 @@ public class WindowMode extends Application {
     }
 
     private void setMetrics(Summary summary) {
-        T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
         if(summary.getForm() == 0){
-        T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
-        T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
-        T4.setText(STR."T4: \{Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0}");
-        T5.setText(STR."T5: \{Math.round(summary.lengthOfSummary() * 100.0) / 100.0}");
-        T6.setText(STR."T6: \{Math.round(summary.degreeOfQuantifierImprecision() * 100.0) / 100.0}");
-        T7.setText(STR."T7: \{Math.round(summary.degreeOfQuantifierCardinality() * 100.0) / 100.0}");
-        T8.setText(STR."T8: \{Math.round(summary.degreeOfSummarizerCardinality() * 100.0) / 100.0}");
-        T9.setText(STR."T9: \{Math.round(summary.degreeOfQualifierImprecision() * 100.0) / 100.0}");
-        T10.setText(STR."T10: \{Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0}");
-        T11.setText(STR."T11: \{Math.round(summary.lengthOfQualifier() * 100.0) / 100.0}");
-        T.setText(STR."T: \{Math.round(summary.quality() * 100.0) / 100.0}");
+            T2.setVisible(true);
+            T3.setVisible(true);
+            T4.setVisible(true);
+            T5.setVisible(true);
+            T6.setVisible(true);
+            T7.setVisible(true);
+            T8.setVisible(true);
+            T9.setVisible(true);
+            T10.setVisible(true);
+            T11.setVisible(true);
+            T.setVisible(true);
+            T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
+            T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
+            T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
+            T4.setText(STR."T4: \{Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0}");
+            T5.setText(STR."T5: \{Math.round(summary.lengthOfSummary() * 100.0) / 100.0}");
+            T6.setText(STR."T6: \{Math.round(summary.degreeOfQuantifierImprecision() * 100.0) / 100.0}");
+            T7.setText(STR."T7: \{Math.round(summary.degreeOfQuantifierCardinality() * 100.0) / 100.0}");
+            T8.setText(STR."T8: \{Math.round(summary.degreeOfSummarizerCardinality() * 100.0) / 100.0}");
+            T9.setText(STR."T9: \{Math.round(summary.degreeOfQualifierImprecision() * 100.0) / 100.0}");
+            T10.setText(STR."T10: \{Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0}");
+            T11.setText(STR."T11: \{Math.round(summary.lengthOfQualifier() * 100.0) / 100.0}");
+            T.setText(STR."T: \{Math.round(summary.quality() * 100.0) / 100.0}");
         } else {
-            T2.setText("T2: ~");
-            T3.setText("T3: ~");
-            T4.setText("T4: ~");
-            T5.setText("T5: ~");
-            T6.setText("T6: ~");
-            T7.setText("T7: ~");
-            T8.setText("T8: ~");
-            T9.setText("T9: ~");
-            T10.setText("T10: ~");
-            T11.setText("T11: ~");
-            T.setText("T: ~");
+            T1.setText(STR."T: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
+            T2.setVisible(false);
+            T3.setVisible(false);
+            T4.setVisible(false);
+            T5.setVisible(false);
+            T6.setVisible(false);
+            T7.setVisible(false);
+            T8.setVisible(false);
+            T9.setVisible(false);
+            T10.setVisible(false);
+            T11.setVisible(false);
+            T.setVisible(false);
         }
     }
 
@@ -514,7 +526,7 @@ public class WindowMode extends Application {
                     }
                 }
 
-                if (subject1 != null && subject2 != null) {
+                if (subject1 != null && subject2 != null && quantifier.getQuantifierType() != QuantifierType.ABSOLUTE) {
 
                     //first type multi subj
                     for (List<org.example.project2.logic.linguistics.Label> combination : combinations) {
