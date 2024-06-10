@@ -325,7 +325,7 @@ public class  Summary<T> {
         String result = "";
         String subject = "";
         if(!subjectOne.equals(" data entries")){
-            subject = " countries from " + subjectOne.toLowerCase();
+            subject = " data entries from " + subjectOne.toLowerCase();
         } else {
             subject = " data entries";
         }
@@ -358,7 +358,7 @@ public class  Summary<T> {
         } else {
             result += "More ";
         }
-        result += (" countries from " + subject1.toLowerCase()) ;
+        result += (" data entries from " + subject1.toLowerCase()) ;
 
         if (this.form == 3) {
             result += " having ";
@@ -370,7 +370,7 @@ public class  Summary<T> {
             }
         }
 
-        result += " compare to countries from " + subject2.toLowerCase();
+        result += " compare to data entries from " + subject2.toLowerCase();
 
         if (this.form == 2) {
             result += " having ";
