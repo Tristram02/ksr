@@ -62,19 +62,19 @@ public class Initialization {
             new Label("averageOilProd", new FuzzySet(new ClassicSet(0, 52200), new GaussianFunction(26100, 8700)), VariablesEnum.OIL_PROD.getName()),
             new Label("bigOilProd", new FuzzySet(new ClassicSet(0, 52200), new TrapezoidalFunction(32100, 40100, 52200, 52200, 32100, 52200)), VariablesEnum.OIL_PROD.getName())));
 
-    Quantifier lessThan1000 = new Quantifier("LESS_THAN_1000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(0, 0, 1000, 2000, 0, 2000 )), QuantifierType.ABSOLUTE);
-    Quantifier about2000 = new Quantifier("ABOUT_2000", new FuzzySet(new ClassicSet(0, 11067), new TriangularFunction(1000, 2000, 4500,  1000, 4500 )), QuantifierType.ABSOLUTE);
-    Quantifier about5000 = new Quantifier("ABOUT_5000", new FuzzySet(new ClassicSet(0, 11067), new TriangularFunction(3000, 5000, 6000,  3000, 6000 )), QuantifierType.ABSOLUTE);
-    Quantifier about6000 = new Quantifier("ABOUT_6000", new FuzzySet(new ClassicSet(0, 11067), new GaussianFunction(6000, 1000)), QuantifierType.ABSOLUTE);
-    Quantifier over8000 = new Quantifier("OVER_8000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(7000, 8000, 11067, 11067,  7000, 11067 )), QuantifierType.ABSOLUTE);
-    Quantifier over10000 = new Quantifier("OVER_10000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(9000, 10000, 11067, 11067, 9000, 11067 )), QuantifierType.ABSOLUTE);
+    Quantifier lessThan1000 = new Quantifier("LESS THAN 1 000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(0, 0, 1000, 2000, 0, 2000 )), QuantifierType.ABSOLUTE);
+    Quantifier about2000 = new Quantifier("ABOUT 2 000", new FuzzySet(new ClassicSet(0, 11067), new TriangularFunction(1000, 2000, 4500,  1000, 4500 )), QuantifierType.ABSOLUTE);
+    Quantifier about5000 = new Quantifier("ABOUT 5 000", new FuzzySet(new ClassicSet(0, 11067), new TriangularFunction(3000, 5000, 6000,  3000, 6000 )), QuantifierType.ABSOLUTE);
+    Quantifier about6000 = new Quantifier("ABOUT 6 000", new FuzzySet(new ClassicSet(0, 11067), new GaussianFunction(6000, 1000)), QuantifierType.ABSOLUTE);
+    Quantifier over8000 = new Quantifier("OVER 8 000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(7000, 8000, 11067, 11067,  7000, 11067 )), QuantifierType.ABSOLUTE);
+    Quantifier over10000 = new Quantifier("OVER 10 000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(9000, 10000, 11067, 11067, 9000, 11067 )), QuantifierType.ABSOLUTE);
 
-    Quantifier nearlyNone = new Quantifier("NEARLY_NONE", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0, 0, 0.2, 0.3, 0, 0.3 )), QuantifierType.RELATIVE);
-    Quantifier around1_4 = new Quantifier("AROUND_1/4", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.1, 0.3, 0.45,  0.1, 0.45 )), QuantifierType.RELATIVE);
-    Quantifier aroundHalf = new Quantifier("AROUND_HALF", new FuzzySet(new ClassicSet(0, 1), new GaussianFunction(0.5, 0.17)), QuantifierType.RELATIVE);
-    Quantifier around3_4 = new Quantifier("AROUND_3/4", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.55, 0.6, 0.75, 0.8, 0.55, 0.8 )), QuantifierType.RELATIVE);
+    Quantifier nearlyNone = new Quantifier("NEARLY NONE", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0, 0, 0.2, 0.3, 0, 0.3 )), QuantifierType.RELATIVE);
+    Quantifier around1_4 = new Quantifier("AROUND 1/4", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.1, 0.3, 0.45,  0.1, 0.45 )), QuantifierType.RELATIVE);
+    Quantifier aroundHalf = new Quantifier("AROUND HALF", new FuzzySet(new ClassicSet(0, 1), new GaussianFunction(0.5, 0.17)), QuantifierType.RELATIVE);
+    Quantifier around3_4 = new Quantifier("AROUND 3/4", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.55, 0.6, 0.75, 0.8, 0.55, 0.8 )), QuantifierType.RELATIVE);
     Quantifier most = new Quantifier("MOST", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.7, 0.8, 0.95,  0.7, 0.95 )), QuantifierType.RELATIVE);
-    Quantifier nearlyAll = new Quantifier("NEARLY_ALL", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.85, 0.9, 1, 1, 0.85, 1 )), QuantifierType.RELATIVE);
+    Quantifier nearlyAll = new Quantifier("NEARLY ALL", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.85, 0.9, 1, 1, 0.85, 1 )), QuantifierType.RELATIVE);
     List<Quantifier> allQuantifiers = new ArrayList<>(Arrays.asList(nearlyNone, around1_4, aroundHalf, around3_4, most, nearlyAll,
             lessThan1000, about2000, about5000, about6000, over8000, over10000));
 
