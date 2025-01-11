@@ -275,9 +275,9 @@ public class Main {
     private static Quantifier getChosenQuantifier(ArrayList<Integer> choice) {
         return switch (choice.getFirst()) {
             case 1 -> initialData.getNearlyNone();
-            case 2 -> initialData.getAround1_4();
-            case 3 -> initialData.getAroundHalf();
-            case 4 -> initialData.getAround3_4();
+            case 2 -> initialData.getAbout1_4();
+            case 3 -> initialData.getAboutHalf();
+            case 4 -> initialData.getAbout3_4();
             case 5 -> initialData.getMost();
             case 6 -> initialData.getNearlyAll();
             case 7 -> initialData.getLessThan1000();

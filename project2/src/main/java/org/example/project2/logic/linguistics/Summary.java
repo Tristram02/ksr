@@ -107,7 +107,7 @@ public class  Summary<T> {
 
     /* T2 */
     public double degreeOfImprecision() {
-        System.out.println("degreeOfImprecision/summarizers.count: " + summarizers.size());
+        System.out.println("[T2] degreeOfImprecision/summarizers.count: " + summarizers.size());
         double t2 = 1.0;
         for (Label label: summarizers) {
             List<Double> values = new ArrayList<>();
@@ -116,7 +116,7 @@ public class  Summary<T> {
             }
             t2 *= label.getFuzzySet().degreeOfFuzziness(values);
         }
-        System.out.println("degreeOfImprecision/t2: " + t2);
+        System.out.println("[T2] degreeOfImprecision/t2: " + t2);
         return 1 - Math.pow(t2, 1.0 / summarizers.size());
     }
 
@@ -150,7 +150,7 @@ public class  Summary<T> {
                     .orElse(1.0);
             if (S > 0.0) t++;
         }
-        System.out.println("degreeOfCovering/t: " + t);
+        System.out.println("[T3] degreeOfCovering/t: " + t);
 
         return t == 0 ? 0.0 : (double) t / objects.size();
     }
@@ -163,10 +163,10 @@ public class  Summary<T> {
             for (DataEntry object: objects) {
                 count += label.getFuzzySet().degreeOfMembership(object.getValueByName(label.getLinguisticVariableName()));
             }
-            System.out.println("degreeOfAppropriateness/count: " + count);
+            System.out.println("[T4] degreeOfAppropriateness/count: " + count);
             t4 *= (count / objects.size());
         }
-        System.out.println("degreeOfAppropriateness/t4: " + t4);
+        System.out.println("[T4] degreeOfAppropriateness/t4: " + t4);
         return Math.abs(t4 - degreeOfCovering());
     }
 
@@ -178,8 +178,14 @@ public class  Summary<T> {
     /* T6 */
     public double degreeOfQuantifierImprecision() {
         if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) {
+            System.out.println("[T6] degreeOfQuantifierImprecision/AbsoluteQuantifier/support.size: "
+                    + quantifier.getFuzzySet().support().getSize());
+            System.out.println("[T6] degreeOfQuantifierImprecision/AbsoluteQuantifier/objects.size: "
+                    + objects.size());
             return 1.0 - (quantifier.getFuzzySet().support().getSize() / objects.size());
         } else {
+            System.out.println("[T6] degreeOfQuantifierImprecision/RelativeQuantifier/support.size: "
+                    + quantifier.getFuzzySet().support().getSize());
             return 1.0 - quantifier.getFuzzySet().support().getSize();
         }
     }
@@ -197,11 +203,11 @@ public class  Summary<T> {
     public double degreeOfSummarizerCardinality() {
         double card = 1.0;
         for (Label summarizer : summarizers) {
-            System.out.println("degreeOfSummarizerCardinaluty/cardinality: " + summarizer.getFuzzySet().cardinality(objects, summarizer.getLinguisticVariableName()));
+            System.out.println("[T8] degreeOfSummarizerCardinaluty/cardinality: " + summarizer.getFuzzySet().cardinality(objects, summarizer.getLinguisticVariableName()));
             card *= (summarizer.getFuzzySet().cardinality(objects, summarizer.getLinguisticVariableName()) /
                     objects.size());
         }
-        System.out.println("degreeOfSummarizerCardinaluty/card: " + card);
+        System.out.println("[T8] degreeOfSummarizerCardinaluty/card: " + card);
         card = Math.pow(card, 1.0 / summarizers.size());
         return 1 - card;
     }

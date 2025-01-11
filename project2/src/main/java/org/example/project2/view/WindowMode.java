@@ -489,7 +489,7 @@ public class WindowMode extends Application {
                     Summary summary = new Summary(quantifier, null, dataEntries, combination, weights, " data entries");
                     summaries.add(summary);
 
-                    if (subject1 != null && subject2 != null) {
+                    if (subject1 != null && subject2 != null && quantifier.getQuantifierType() != QuantifierType.ABSOLUTE) {
                         Summary summary1 = new Summary(quantifier, null, subject1Data, combination, weights, subject1);
                         summaries.add(summary1);
                         Summary summary2 = new Summary(quantifier, null, subject2Data, combination, weights, subject2);
@@ -499,6 +499,8 @@ public class WindowMode extends Application {
 
                 //one subjecy summaries second form
                 for (List<org.example.project2.logic.linguistics.Label> qualifiers : combinations) {
+                    if (quantifier.getQuantifierType() == QuantifierType.ABSOLUTE) continue; // Only relative quantifiers are valid
+
                     List<org.example.project2.logic.linguistics.Label> summarizers = new ArrayList<>(attributes);
                     summarizers.removeAll(qualifiers);
                     Set<List<org.example.project2.logic.linguistics.Label>> secondCombinations = generateCombinations(summarizers);
@@ -508,7 +510,7 @@ public class WindowMode extends Application {
                         Summary summary2 = new Summary(quantifier, qualifiers, dataEntries, secondCombination, weights, " data entries");
                         summaries.add(summary2);
 
-                        if (subject1 != null && subject2 != null) {
+                        if (subject1 != null && subject2 != null && quantifier.getQuantifierType() != QuantifierType.ABSOLUTE) {
                             Summary summary3 = new Summary(quantifier, qualifiers, subject1Data, secondCombination, weights, subject1);
                             summaries.add(summary3);
                             Summary summary4 = new Summary(quantifier, qualifiers, subject2Data, secondCombination, weights, subject2);
