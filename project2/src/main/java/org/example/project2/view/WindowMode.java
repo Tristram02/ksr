@@ -334,20 +334,20 @@ public class WindowMode extends Application {
             T10.setVisible(true);
             T11.setVisible(true);
             T.setVisible(true);
-            T1.setText(STR."T1: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
-            T2.setText(STR."T2: \{Math.round(summary.degreeOfImprecision() * 100.0) / 100.0}");
-            T3.setText(STR."T3: \{Math.round(summary.degreeOfCovering() * 100.0) / 100.0}");
-            T4.setText(STR."T4: \{Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0}");
-            T5.setText(STR."T5: \{Math.round(summary.lengthOfSummary() * 100.0) / 100.0}");
-            T6.setText(STR."T6: \{Math.round(summary.degreeOfQuantifierImprecision() * 100.0) / 100.0}");
-            T7.setText(STR."T7: \{Math.round(summary.degreeOfQuantifierCardinality() * 100.0) / 100.0}");
-            T8.setText(STR."T8: \{Math.round(summary.degreeOfSummarizerCardinality() * 100.0) / 100.0}");
-            T9.setText(STR."T9: \{Math.round(summary.degreeOfQualifierImprecision() * 100.0) / 100.0}");
-            T10.setText(STR."T10: \{Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0}");
-            T11.setText(STR."T11: \{Math.round(summary.lengthOfQualifier() * 100.0) / 100.0}");
-            T.setText(STR."T: \{Math.round(summary.quality() * 100.0) / 100.0}");
+            T1.setText(String.format("T1: %s", Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0));
+            T2.setText(String.format("T2: %s", Math.round(summary.degreeOfImprecision() * 100.0) / 100.0));
+            T3.setText(String.format("T3: %s", Math.round(summary.degreeOfCovering() * 100.0) / 100.0));
+            T4.setText(String.format("T4: %s", Math.round(summary.degreeOfAppropriateness() * 100.0) / 100.0));
+            T5.setText(String.format("T5: %s", Math.round(summary.lengthOfSummary() * 100.0) / 100.0));
+            T6.setText(String.format("T6: %s", Math.round(summary.degreeOfQuantifierImprecision() * 100.0) / 100.0));
+            T7.setText(String.format("T7: %s", Math.round(summary.degreeOfQuantifierCardinality() * 100.0) / 100.0));
+            T8.setText(String.format("T8: %s", Math.round(summary.degreeOfSummarizerCardinality() * 100.0) / 100.0));
+            T9.setText(String.format("T9: %s", Math.round(summary.degreeOfQualifierImprecision() * 100.0) / 100.0));
+            T10.setText(String.format("T10: %s", Math.round(summary.degreeOfQualifierCardinality() * 100.0) / 100.0));
+            T11.setText(String.format("T11: %s", Math.round(summary.lengthOfQualifier() * 100.0) / 100.0));
+            T.setText(String.format("T: %s", Math.round(summary.quality() * 100.0) / 100.0));
         } else {
-            T1.setText(STR."T: \{Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0}");
+            T1.setText(String.format("T1: %s", Math.round(summary.getDegreeOfTruthToSort() * 100.0) / 100.0));
             T2.setVisible(false);
             T3.setVisible(false);
             T4.setVisible(false);
@@ -609,7 +609,7 @@ public class WindowMode extends Application {
                 case "Gaussa":
                     a = Double.parseDouble(quantifierParameter1TF.getText());
                     b = Double.parseDouble(quantifierParameter2TF.getText());
-                    newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new GaussianFunction(a, b)), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
+                    newQuantifier = new Quantifier(name, new FuzzySet(new ClassicSet(0, isAbsolute ? 11067 : 1), new GaussianFunction(a, b, a - (3 * b), a + (3 * b))), isAbsolute ? QuantifierType.ABSOLUTE : QuantifierType.RELATIVE);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + membershipFunction);
@@ -642,7 +642,7 @@ public class WindowMode extends Application {
                 case "Gaussa":
                     a = Double.parseDouble(quantifierParameter1TF.getText());
                     b = Double.parseDouble(quantifierParameter2TF.getText());
-                    newLabel = new org.example.project2.logic.linguistics.Label(name, new FuzzySet(new ClassicSet(beg, e), new GaussianFunction(a, b)), linguisticVariable);
+                    newLabel = new org.example.project2.logic.linguistics.Label(name, new FuzzySet(new ClassicSet(beg, e), new GaussianFunction(a, b, a - (3 * b), a + (3 * b))), linguisticVariable);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + membershipFunction);

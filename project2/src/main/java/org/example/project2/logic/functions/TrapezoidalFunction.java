@@ -19,34 +19,20 @@ public class TrapezoidalFunction implements MembershipFunction {
 
     @Override
     public double degreeOfMembership(double x) {
-        if (x < this.a) {
-            return 0;
-        } else if (x < this.b) {
-            return (1.0 / (this.b - this.a)) * x + ((-this.a) / (this.b - this.a));
-        } else if (x < this.c) {
-            return 1;
-        } else if (x < this.d) {
-            return (1.0 / (this.c - this.d)) * x + ((-this.d) / (this.c - this.d));
+        if (x >= b && x <= c) {
+            return 1.0;
+        } else if (x <= a || x >= d) {
+            return 0.0;
+        } else if (x > a && x < b) {
+            return (x - a) / (b - a);
         } else {
-            return 0;
+            return (d - x) / (d - c);
         }
     }
 
     @Override
-    public double area(double beginOfUniverse, double endOfUniverse) {
-        double P = ((d - a) + (c - b)) / 2;
-        double min = Math.max(beginOfUniverse, this.a);
-        double max = Math.min(endOfUniverse, this.d);
-
-        if (min <= a &&
-            max >= b) {
-            return P;
-        }
-        double x = min - a;
-        double y = max - a;
-        double Px = partOfArea(x);
-        double Py = P - partOfArea(y);
-        return P - Px - Py;
+    public double area() {
+        return ((d - a) + (c - b)) / 2;
     }
 
     private double partOfArea(double x) {
@@ -60,13 +46,6 @@ public class TrapezoidalFunction implements MembershipFunction {
                     0.5 * (1.0 / (this.c - this.d)) * Math.pow((this.a + x), 2) + (this.a + x) * ((-this.d) / (this.c - this.d)) -
                     0.5 * (1.0 / (this.c - this.d)) * Math.pow(this.c, 2) - this.c * ((-this.d) / (this.c - this.d));
         }
-    }
-
-    @Override
-    public ClassicSet support(ClassicSet universeOfDiscourse) {
-        double a = Math.max(this.a, universeOfDiscourse.getBegin());
-        double b = Math.min(this.d, universeOfDiscourse.getEnd());
-        return universeOfDiscourse.getSubset(a, b);
     }
 
     @Override

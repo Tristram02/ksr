@@ -15,18 +15,13 @@ public class TriangularFunction extends TrapezoidalFunction {
     }
 
     @Override
-    public ClassicSet support(ClassicSet universeOfDiscourse) {
-        return super.support(universeOfDiscourse);
-    }
-
-    @Override
     public ClassicSet alfacut(ClassicSet universeOfDiscourse, double alfa) {
         return super.alfacut(universeOfDiscourse, alfa);
     }
 
     @Override
-    public double area(double beginOfUniverse, double endOfUniverse) {
-        return super.area(beginOfUniverse, endOfUniverse);
+    public double area() {
+        return super.area();
     }
 
     @Override

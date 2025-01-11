@@ -32,20 +32,40 @@ public class FuzzySet {
                     .toList();
             return new ClassicSet(set, membershipFunction.universeBegin(), membershipFunction.universeEnd());
         } else {
-            return this.membershipFunction.support(this.universeOfDiscourse);
+            return new ClassicSet(membershipFunction.universeBegin(), membershipFunction.universeEnd());
         }
+    }
+
+    public ClassicSet support(List<Double> values) {
+        List<Double> set = values
+                .stream()
+                .filter(v -> membershipFunction.degreeOfMembership(v) > 0)
+                .toList();
+        return new ClassicSet(set,
+                set.stream().min(Double::compareTo).orElse(membershipFunction.universeBegin()),
+                set.stream().max(Double::compareTo).orElse(membershipFunction.universeEnd()));
     }
 
     public double cardinality(List<DataEntry> objects, String label) {
-        double sum = 0.0;
-        for (DataEntry object: objects) {
-            sum += this.membershipFunction.degreeOfMembership(object.getValueByName(label));
+        return objects.stream()
+                .mapToDouble(object -> degreeOfMembership(object.getValueByName(label)))
+                .sum();
+    }
+
+    public double cardinality() {
+        if (universeOfDiscourse.isDiscrete()) {
+            double sum = 0.0;
+            for (double object: universeOfDiscourse.getSet()) {
+                sum += this.membershipFunction.degreeOfMembership(object);
+            }
+            return sum;
+        } else {
+            return clm();
         }
-        return sum;
     }
 
     public double clm() {
-        return this.membershipFunction.area(universeOfDiscourse.getBegin(), universeOfDiscourse.getEnd());
+        return this.membershipFunction.area();
     }
 
     public ClassicSet alfacut(double alfa) {
@@ -66,14 +86,10 @@ public class FuzzySet {
         return height;
     }
 
-    public double degreeOfFuzziness() {
-        return support().getSize() / universeOfDiscourse.getSize();
-    }
-
     public double degreeOfFuzziness(List<Double> values) {
-        double count = values.stream().filter(v -> support().contains(v)).count();
-        double all = values.stream().filter(v -> universeOfDiscourse.contains(v)).count();
-        return count / all;
+        double supp = support(values).getSize();
+        double all = values.size();
+        return supp / all;
     }
 
     public FuzzySet and(FuzzySet set) {

@@ -17,18 +17,11 @@ public class IntersectMembershipFunction implements MembershipFunction {
     }
 
     @Override
-    public ClassicSet support(ClassicSet universeOfDiscourse) {
-        double begin = Math.max(function1.universeBegin(), function2.universeBegin());
-        double end = Math.min(function1.universeEnd(), function2.universeEnd());
-        begin = Math.max(begin, universeOfDiscourse.getBegin());
-        end = Math.min(end, universeOfDiscourse.getEnd());
-        return universeOfDiscourse.getSubset(begin, end);
-    }
-
-    @Override
-    public double area(double beginOfUniverse, double endOfUniverse) {
+    public double area() {
         double step = 0.01;
         double area = 0;
+        double beginOfUniverse = Math.max(function1.universeBegin(), function2.universeBegin());
+        double endOfUniverse = Math.min(function1.universeEnd(), function2.universeEnd());
         for (double x = beginOfUniverse; x <= endOfUniverse; x += step) {
             double minDegree = Math.min(function1.degreeOfMembership(x), function2.degreeOfMembership(x));
             area += minDegree * step;

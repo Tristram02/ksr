@@ -74,7 +74,7 @@ public class Main {
                                 getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), false);
                         System.out.println(summary.toStringMultiple());
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType1()}");
+                        System.out.println(String.format("T: %s", summary.degreeOfTruthMultiType1()));
                     } else if (multiSubjectType.equals("2")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
@@ -82,7 +82,7 @@ public class Main {
                                 getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), false);
                         System.out.println(summary.toStringMultiple());
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType2()}");
+                        System.out.println(String.format("T: %s", summary.degreeOfTruthMultiType2()));
                     } else if (multiSubjectType.equals("3")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(2);
@@ -90,7 +90,7 @@ public class Main {
                                 getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), true);
                         System.out.println(summary.toStringMultiple());
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType3()}");
+                        System.out.println(String.format("T: %s", summary.degreeOfTruthMultiType3()));
                     } else if (multiSubjectType.equals("4")) {
                         Map<String, ArrayList<Integer>> multiChoices = getMultiChoices();
                         Map<String, ArrayList<Integer>> choices = getChoices(3);
@@ -98,7 +98,7 @@ public class Main {
                                 getChosenSubject(multiChoices.get("Subject2"), dataEntries), getChosenSummarizers(choices.get("Summarizers")),
                                 getChosenSubjectName(multiChoices.get("Subject1")), getChosenSubjectName(multiChoices.get("Subject2")), false);
                         System.out.println(summary.toStringMultiple());
-                        System.out.println(STR."T: \{summary.degreeOfTruthMultiType4()}");
+                        System.out.println(String.format("T: %s", summary.degreeOfTruthMultiType4()));
                     }
                 }
                 System.out.println("Do you want to continue? (y/n)");
@@ -113,12 +113,12 @@ public class Main {
 
     private static String getChosenSubjectName(ArrayList<Integer> subject1) {
         return switch (subject1.getFirst()) {
-            case 1 -> STR."data entries from \{AFRICA.getName()}";
-            case 2 -> STR."data entries from \{ASIA.getName()}";
-            case 3 -> STR."data entries from \{EUROPE.getName()}";
-            case 4 -> STR."data entries from \{NORTH_AMERICA.getName()}";
-            case 5 -> STR."data entries from \{OCEANIA.getName()}";
-            case 6 -> STR."data entries from \{SOUTH_AMERICA.getName()}";
+            case 1 -> String.format("data entries from %s", AFRICA.getName());
+            case 2 -> String.format("data entries from %s", ASIA.getName());
+            case 3 -> String.format("data entries from %s", EUROPE.getName());
+            case 4 -> String.format("data entries from %s", NORTH_AMERICA.getName());
+            case 5 -> String.format("data entries from %s", OCEANIA.getName());
+            case 6 -> String.format("data entries from %s", SOUTH_AMERICA.getName());
             default -> null;
         };
     }

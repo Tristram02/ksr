@@ -10,23 +10,24 @@ public class GaussianFunction implements MembershipFunction {
 
     private final double stdev;
     private final double mean;
+    private final double start;
+    private final double end;
 
-    public GaussianFunction(double mean, double stdev) {
+    public GaussianFunction(double mean, double stdev, double start, double end) {
         this.stdev = stdev;
         this.mean = mean;
+        this.start = start;
+        this.end = end;
     }
     @Override
     public double degreeOfMembership(double x) {
-        return Math.exp(-0.5 * Math.pow((x - mean) / stdev, 2));
+        if (x < start || x > end) {
+            return 0;
+        }
+        double exponent = -1 * Math.pow((x - mean), 2) / Math.pow(2 * stdev, 2);
+        return Math.exp(exponent);
     }
 
-    @Override
-    public ClassicSet support(ClassicSet universeOfDiscourse) {
-        return universeOfDiscourse.getSubset(
-                universeOfDiscourse.getBegin(),
-                universeOfDiscourse.getEnd()
-        );
-    }
 
     @Override
     public ClassicSet alfacut(ClassicSet universeOfDiscourse, double alfa) {
@@ -37,10 +38,17 @@ public class GaussianFunction implements MembershipFunction {
     }
 
     @Override
-    public double area(double beginOfUniverse, double endOfUniverse) {
-        UnivariateFunction gaussianFunction = x -> (1 / (stdev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / stdev, 2));
-        BaseAbstractUnivariateIntegrator integrator = new SimpsonIntegrator();
-        return integrator.integrate(Integer.MAX_VALUE, gaussianFunction, beginOfUniverse, endOfUniverse);
+    public double area() {
+        int numSteps = 10000;
+        double stepSize = (end - start) / numSteps;
+        double area = 0.0;
+
+        for (int i = 0; i < numSteps; i++) {
+            double x = end + i * stepSize;
+            area += degreeOfMembership(x) * stepSize;
+        }
+
+        return area;
     }
 
     @Override
