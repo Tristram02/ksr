@@ -28,7 +28,7 @@ public class Initialization {
             new Label("bigCoalAnnualChange", new FuzzySet(new ClassicSet(150, 2440), new TrapezoidalFunction(150, 250, 2440, 2440, 150, 2440)), VariablesEnum.ANN_COAL_CHANGE_PROD_TWH.getName())), new ClassicSet(-1605, 2440));
 
     public Variable coalProdPerCapita = new CoalProdPerCapita(Arrays.asList(new Label("smallCoalProdPerCapita", new FuzzySet(new ClassicSet(0, 200), new TrapezoidalFunction(0, 0, 100, 200, 0, 200)), VariablesEnum.COAL_PROD_PER_CAPITA.getName()),
-            new Label("averageCoalProdPerCapita", new FuzzySet(new ClassicSet(100, 1200), new TriangularFunction(100, 1000, 1200, 100, 1200)), VariablesEnum.COAL_PROD_PER_CAPITA.getName()),
+            new Label("averageCoalProdPerCapita", new FuzzySet(new ClassicSet(100, 1200), new TriangularFunction(100, 650, 1200, 100, 1200)), VariablesEnum.COAL_PROD_PER_CAPITA.getName()),
             new Label("bigCoalProdPerCapita", new FuzzySet(new ClassicSet(1100, 151665), new TrapezoidalFunction(1100, 1300, 151665, 151665, 1100, 151665)), VariablesEnum.COAL_PROD_PER_CAPITA.getName())), new ClassicSet(0, 151665));
 
     public Variable coalProd = new CoalProd(Arrays.asList(new Label("smallCoalProd", new FuzzySet(new ClassicSet(0, 4), new TrapezoidalFunction(0, 0, 2, 4, 0, 4)), VariablesEnum.COAL_PROD.getName()),
@@ -40,7 +40,7 @@ public class Initialization {
             new Label("bigGasAnnualChange", new FuzzySet(new ClassicSet(5, 1310), new TrapezoidalFunction(5, 100, 1310, 1310, 5, 1310)), VariablesEnum.ANN_GAS_CHANGE_PROD_TWH.getName())), new ClassicSet(-840, 1310));
 
     public Variable gasProdPerCapita = new GasProdPerCapita(Arrays.asList(new Label("smallGasProdPerCapita", new FuzzySet(new ClassicSet(0, 100), new TrapezoidalFunction(0, 0, 80, 100, 0, 100)), VariablesEnum.GAS_PROD_PER_CAPITA.getName()),
-            new Label("averageGasProdPerCapita", new FuzzySet(new ClassicSet(90, 10000), new TriangularFunction(90, 300, 10000, 90, 10000)), VariablesEnum.GAS_PROD_PER_CAPITA.getName()),
+            new Label("averageGasProdPerCapita", new FuzzySet(new ClassicSet(90, 10000), new TriangularFunction(90, 5045, 10000, 90, 10000)), VariablesEnum.GAS_PROD_PER_CAPITA.getName()),
             new Label("bigGasProdPerCapita", new FuzzySet(new ClassicSet(8000, 853000), new TrapezoidalFunction(8000, 10000, 853000, 853000, 8000, 853000)), VariablesEnum.GAS_PROD_PER_CAPITA.getName())), new ClassicSet(0, 853000));
 
     public Variable gasProd = new GasProd(Arrays.asList(new Label("smallGasProd", new FuzzySet(new ClassicSet(0, 40), new TrapezoidalFunction(0, 0, 10, 40, 0, 40)), VariablesEnum.GAS_PROD.getName()),
@@ -52,7 +52,7 @@ public class Initialization {
             new Label("bigOilAnnualChange", new FuzzySet(new ClassicSet(100, 1110), new TrapezoidalFunction(100, 200, 1110, 1110, 100, 1110)), VariablesEnum.ANN_OIL_CHANGE_PROD_TWH.getName())), new ClassicSet(-1935, 1110));
 
     public Variable oilProdPerCapita = new OilProdPerCapita(Arrays.asList(new Label("smallOilProdPerCapita", new FuzzySet(new ClassicSet(0, 816205), new TrapezoidalFunction(0, 0, 500, 700, 0, 700)), VariablesEnum.OIL_PROD_PER_CAPITA.getName()),
-            new Label("averageOilProdPerCapita", new FuzzySet(new ClassicSet(0, 816205), new TriangularFunction(600, 10000, 15000, 600, 15000)), VariablesEnum.OIL_PROD_PER_CAPITA.getName()),
+            new Label("averageOilProdPerCapita", new FuzzySet(new ClassicSet(0, 816205), new TriangularFunction(600, 7800, 15000, 600, 15000)), VariablesEnum.OIL_PROD_PER_CAPITA.getName()),
             new Label("bigOilProdPerCapita", new FuzzySet(new ClassicSet(0, 816205), new TrapezoidalFunction(12000, 16000, 816205, 816205, 12000, 816205)), VariablesEnum.OIL_PROD_PER_CAPITA.getName())), new ClassicSet(0, 816205));
 
     public Variable oilProd = new OilProd(Arrays.asList(new Label("smallOilProd", new FuzzySet(new ClassicSet(0, 50), new TrapezoidalFunction(0, 0, 30, 50, 0, 50)), VariablesEnum.OIL_PROD.getName()),
