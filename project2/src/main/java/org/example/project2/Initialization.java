@@ -67,12 +67,12 @@ public class Initialization {
     Quantifier over10000 = new Quantifier("OVER 10 000", new FuzzySet(new ClassicSet(0, 11067), new TrapezoidalFunction(9000, 10000, 11067, 11067, 9000, 11067 )), QuantifierType.ABSOLUTE);
 
     Quantifier nearlyNone = new Quantifier("NEARLY NONE", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0, 0, 0.2, 0.3, 0, 0.3 )), QuantifierType.RELATIVE);
-    Quantifier about1_4 = new Quantifier("ABOUT 1/4", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.1, 0.3, 0.45,  0.1, 0.45 )), QuantifierType.RELATIVE);
+    Quantifier around1_4 = new Quantifier("AROUND 1/4", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.1, 0.3, 0.45,  0.1, 0.45 )), QuantifierType.RELATIVE);
     Quantifier aboutHalf = new Quantifier("ABOUT HALF", new FuzzySet(new ClassicSet(0, 1), new GaussianFunction(0.5, 0.07, 0.3, 0.7)), QuantifierType.RELATIVE);
-    Quantifier about3_4 = new Quantifier("ABOUT 3/4", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.55, 0.6, 0.75, 0.8, 0.55, 0.8 )), QuantifierType.RELATIVE);
+    Quantifier around3_4 = new Quantifier("AROUND 3/4", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.55, 0.6, 0.75, 0.8, 0.55, 0.8 )), QuantifierType.RELATIVE);
     Quantifier most = new Quantifier("MOST", new FuzzySet(new ClassicSet(0, 1), new TriangularFunction(0.7, 0.8, 0.95,  0.7, 0.95 )), QuantifierType.RELATIVE);
     Quantifier nearlyAll = new Quantifier("NEARLY ALL", new FuzzySet(new ClassicSet(0, 1), new TrapezoidalFunction(0.85, 0.9, 1, 1, 0.85, 1 )), QuantifierType.RELATIVE);
-    List<Quantifier> allQuantifiers = new ArrayList<>(Arrays.asList(nearlyNone, about1_4, aboutHalf, about3_4, most, nearlyAll,
+    List<Quantifier> allQuantifiers = new ArrayList<>(Arrays.asList(nearlyNone, around1_4, aboutHalf, around3_4, most, nearlyAll,
             lessThan1000, about2000, about5000, about6000, over8000, over10000));
 
     public Variable<DataEntry> getCoalAnnChangeProdTwh() {
@@ -139,16 +139,16 @@ public class Initialization {
         return nearlyNone;
     }
 
-    public Quantifier getAbout1_4() {
-        return about1_4;
+    public Quantifier getAround1_4() {
+        return around1_4;
     }
 
     public Quantifier getAboutHalf() {
         return aboutHalf;
     }
 
-    public Quantifier getAbout3_4() {
-        return about3_4;
+    public Quantifier getAround3_4() {
+        return around3_4;
     }
 
     public Quantifier getMost() {
