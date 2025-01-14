@@ -367,12 +367,12 @@ public class  Summary<T> {
         String result = "";
         String subject = "";
         if(!subject1.equals(" data entries")){
-            subject = " data entries from " + subject1.toLowerCase();
+            subject = " data entries from " + subject1;
         } else {
             subject = " data entries";
         }
 
-        result += String.format("%s %s", quantifier.getName(), subject);
+        result += String.format("%s%s", quantifier.getName(), subject);
         if (qualifiers != null && qualifiers.size() > 0) {
             result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
@@ -404,12 +404,12 @@ public class  Summary<T> {
         } else {
             result += "More ";
         }
-        result += (" data entries from " + subject1.toLowerCase()) ;
+        result += (" data entries from " + subject1) ;
 
         if (this.form == 3) {
             result += " having ";
             for (int i = 0; i < qualifiers.size(); i++) {
-                result += String.format("%s %s",
+                result += String.format("%s%s",
                         parseNameOfSummarizer(qualifiers.get(i).getName()), qualifiers.get(i).getLinguisticVariableName());
                 if (i < qualifiers.size() - 1) {
                     result += " and ";
@@ -417,7 +417,7 @@ public class  Summary<T> {
             }
         }
 
-        result += " compare to data entries from " + subject2.toLowerCase();
+        result += " compare to data entries from " + subject2;
 
         if (this.form == 2) {
             result += " having ";

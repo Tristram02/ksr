@@ -317,6 +317,9 @@ public class WindowMode extends Application {
             CheckBox checkBox = new CheckBox(summary.toString());
             BooleanProperty isSelected = selectionState.computeIfAbsent(summary, k -> new SimpleBooleanProperty(false));
             checkBox.selectedProperty().bindBidirectional(isSelected);
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                setMetrics(summary);
+            });
             summariesListView.getItems().add(checkBox);
         }
     }
