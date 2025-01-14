@@ -101,23 +101,23 @@ public class DataEntry {
 
     public double getValueByName(String variableName) {
         switch (variableName) {
-            case "Annual change in coal production":
+            case "annual change in coal production":
                 return coalChangeProdTwh;
-            case "Coal production per capita":
+            case "coal production per capita":
                 return coalProdPerCapita;
-            case "Coal production":
+            case "coal production":
                 return coalProd;
-            case "Annual change in gas production":
+            case "annual change in gas production":
                 return gasChangeProdTwh;
-            case "Gas production per capita":
+            case "gas production per capita":
                 return gasProdPerCapita;
-            case "Gas production":
+            case "gas production":
                 return gasProd;
-            case "Annual change in oil production":
+            case "annual change in oil production":
                 return oilChangeProdTwh;
-            case "Oil production per capita":
+            case "oil production per capita":
                 return oilProdPerCapita;
-            case "Oil production":
+            case "oil production":
                 return oilProd;
             default: {
                 System.out.println(variableName);
